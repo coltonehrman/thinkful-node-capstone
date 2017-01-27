@@ -3,7 +3,7 @@ module.exports = {
     app: './app/js/app.js'
   },
   output: {
-    path: './app/dev',
+    path: './app/temp/',
     filename: '[name].js'
   },
   module: {

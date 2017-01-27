@@ -15,5 +15,5 @@ gulp.task('styles', () =>
       console.log(err.toString());
       this.emit('end');
     })
-    .pipe(gulp.dest('./app/dev/'))
+    .pipe(gulp.dest('./app/temp/'))
 );
