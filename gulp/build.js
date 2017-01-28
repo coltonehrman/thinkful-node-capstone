@@ -16,8 +16,12 @@ gulp.task('copyGeneralFiles', ['deleteDocsFolder'], () =>
     '!./app/index.html',
     '!./app/assets/',
     '!./app/assets/**/*',
-    '!./app/dev/',
-    '!./app/dev/**/*'
+    '!./app/css/',
+    '!./app/css/**/*',
+    '!./app/js/',
+    '!./app/js/**/*',
+    '!./app/temp/',
+    '!./app/temp/**/*'
   ])
   .pipe(gulp.dest('./docs/'))
 );
