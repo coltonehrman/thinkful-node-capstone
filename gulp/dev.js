@@ -24,7 +24,7 @@ gulp.task('dev', ['styles', 'scripts'], () => {
 });
 
 gulp.task('injectCss', ['styles'], () =>
-  gulp.src('./app/dev/styles.css')
+  gulp.src('./app/temp/styles.css')
     .pipe(browserSync.stream())
 );
 
