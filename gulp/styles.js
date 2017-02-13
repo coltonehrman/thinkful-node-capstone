@@ -11,7 +11,7 @@ gulp.task('styles', () =>
       require('postcss-hexrgba'),
       require('autoprefixer')
     ]))
-    .on('error', err => {
+    .on('error', function (err) {
       console.log(err.toString());
       this.emit('end');
     })
