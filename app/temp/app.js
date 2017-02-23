@@ -54,22 +54,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_jquery2.default.ajax('https://api.foursquare.com/v2/venues/explore', {
-	  data: {
-	    client_id: 'HIRHIF3ESK5TAJTKTU0HQDMY3KABRJSFN3EA1SSOE2ULSCWH',
-	    client_secret: 'GACVTXG4OQ5KKICSQBNNHM5DPBGZGCLR0D0JG5LEX5TWMIOL',
-	    near: 'Houston, TX',
-	    m: 'foursquare',
-	    v: 20170101
-	  }
-	}).done(function () {
-	  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	    args[_key] = arguments[_key];
-	  }
-
-	  return console.log(args);
-	});
-
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
@@ -10300,8 +10284,15 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	// Sample module
 	"use strict";
+
+	/* global google */
+
+	var autocomplete = new google.maps.places.AutocompleteService();
+
+	// autocomplete.getQueryPredictions({
+	//   input: 'lond',
+	// }, (...args) => console.log(args));
 
 /***/ }
 /******/ ]);
