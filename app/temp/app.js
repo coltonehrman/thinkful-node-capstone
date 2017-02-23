@@ -52,7 +52,13 @@
 
 	__webpack_require__(2);
 
+	var _UIController = __webpack_require__(4);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _jquery2.default)(function () {
+	  (0, _jquery2.default)(_UIController.DOM.homeScreen).show();
+	});
 
 /***/ },
 /* 1 */
@@ -10282,17 +10288,158 @@
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _googleAPI = __webpack_require__(3);
+
+	var _UIController = __webpack_require__(4);
+
+	var _UIController2 = _interopRequireDefault(_UIController);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var $placeSearch = (0, _jquery2.default)(_UIController.DOM.placeSearch); /* global window document */
+
+
+	function placeSearchChanged(placeSearch) {
+	  if (placeSearch.trim() === '') {
+	    _UIController2.default.hideSearchResults();
+	  } else {
+	    _googleAPI.autocomplete.getQueryPredictions({
+	      input: placeSearch
+	    }, function (data) {
+	      var results = data.map(function (place) {
+	        return {
+	          name: place.description,
+	          id: place.place_id
+	        };
+	      });
+	      _UIController2.default.displaySearchResults(results);
+	    });
+	  }
+	}
+
+	function getPlaceDetails(place) {
+	  _jquery2.default.ajax('https://api.foursquare.com/v2/venues/explore', {
+	    data: {
+	      client_id: 'HIRHIF3ESK5TAJTKTU0HQDMY3KABRJSFN3EA1SSOE2ULSCWH',
+	      client_secret: 'GACVTXG4OQ5KKICSQBNNHM5DPBGZGCLR0D0JG5LEX5TWMIOL',
+	      near: place,
+	      m: 'foursquare',
+	      v: 20170101
+	    }
+	  }).done(function () {
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return console.log(args);
+	  });
+	}
+
+	function placeClicked(place) {
+	  var $place = (0, _jquery2.default)(place);
+	  var name = $place.text().trim();
+	  var placeId = $place.data('place-id').trim();
+	  _UIController2.default.placeClicked({
+	    name: name, placeId: placeId
+	  });
+	  getPlaceDetails(name);
+	  _googleAPI.service.getDetails({
+	    placeId: placeId
+	  }, function () {
+	    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	      args[_key2] = arguments[_key2];
+	    }
+
+	    console.log(args);
+	  });
+	  // navigator.geolocation.getCurrentPosition((...args) => {
+	  //   console.log(args);
+	  // }, (...args) => {
+	  //   console.log(args);
+	  // });
+	}
+
+	$placeSearch.on('keyup', function () {
+	  var placeSearchValue = $placeSearch.val();
+	  placeSearchChanged(placeSearchValue);
+	});
+
+	(0, _jquery2.default)(document).on('click', _UIController.DOM.searchResult, function (e) {
+	  placeClicked(e.target);
+	});
+
+/***/ },
+/* 3 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
-	/* global google */
-
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/* global google document */
 	var autocomplete = new google.maps.places.AutocompleteService();
+	var service = new google.maps.places.PlacesService(document.createElement('div'));
 
-	// autocomplete.getQueryPredictions({
-	//   input: 'lond',
-	// }, (...args) => console.log(args));
+	exports.autocomplete = autocomplete;
+	exports.service = service;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.DOM = undefined;
+
+	var _jquery = __webpack_require__(1);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DOM = {
+	  screens: '.screen',
+	  homeScreen: '.screen.home',
+	  placeSearch: '.place-search',
+	  searchResults: '.results',
+	  searchResult: '.results__item',
+	  placeScreen: '.screen.place',
+	  placeName: '.place__name'
+	};
+
+	exports.DOM = DOM;
+	exports.default = {
+	  hideSearchResults: function hideSearchResults() {
+	    (0, _jquery2.default)(DOM.searchResults).hide();
+	  },
+	  displaySearchResults: function displaySearchResults(results) {
+	    var $searchResults = (0, _jquery2.default)(DOM.searchResults);
+	    $searchResults.empty();
+
+	    results.forEach(function (result) {
+	      $searchResults.append('<li class="' + DOM.searchResult.slice(1) + '" data-place-id="' + result.id + '">\n          ' + result.name + '\n        </li>');
+	    });
+
+	    $searchResults.show();
+	  },
+	  placeClicked: function placeClicked(place) {
+	    (0, _jquery2.default)(DOM.screens).hide();
+	    (0, _jquery2.default)(DOM.placeScreen).show();
+	    (0, _jquery2.default)(DOM.placeName).text(place.name);
+	  }
+	};
 
 /***/ }
 /******/ ]);

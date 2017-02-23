@@ -1,4 +1,6 @@
 /*Main css file to import modules and packages*/
 @import 'normalize.css';
 @import './base/_globals';
-@import './modules/_module1';
+@import './modules/_screen';
+@import './modules/_place-search';
+@import './modules/_results';
