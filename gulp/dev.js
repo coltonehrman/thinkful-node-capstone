@@ -6,8 +6,8 @@ gulp.task('dev', ['styles', 'scripts'], () => {
   browserSync.init({
     notify: false,
     server: {
-      baseDir: './app'
-    }
+      baseDir: './app',
+    },
   });
 
   watch('./app/index.html', () => {
@@ -23,10 +23,10 @@ gulp.task('dev', ['styles', 'scripts'], () => {
   });
 });
 
-gulp.task('injectCss', ['styles'], () =>
+gulp.task('injectCss', ['styles'], () => {
   gulp.src('./app/temp/styles.css')
-    .pipe(browserSync.stream())
-);
+    .pipe(browserSync.stream());
+});
 
 gulp.task('refreshJs', ['scripts'], () => {
   browserSync.reload();

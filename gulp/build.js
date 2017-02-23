@@ -6,11 +6,11 @@ const rev = require('gulp-rev');
 const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
 
-gulp.task('deleteDocsFolder', () =>
-  del('./docs/')
-);
+gulp.task('deleteDocsFolder', () => {
+  del('./docs/');
+});
 
-gulp.task('copyGeneralFiles', ['deleteDocsFolder'], () =>
+gulp.task('copyGeneralFiles', ['deleteDocsFolder'], () => {
   gulp.src([
     './app/**/*',
     '!./app/index.html',
@@ -21,32 +21,32 @@ gulp.task('copyGeneralFiles', ['deleteDocsFolder'], () =>
     '!./app/js/',
     '!./app/js/**/*',
     '!./app/temp/',
-    '!./app/temp/**/*'
+    '!./app/temp/**/*',
   ])
-  .pipe(gulp.dest('./docs/'))
-);
+  .pipe(gulp.dest('./docs/'));
+});
 
-gulp.task('optimizeImages', ['deleteDocsFolder'], () =>
+gulp.task('optimizeImages', ['deleteDocsFolder'], () => {
   gulp.src(['./app/assets/images/**/*'])
     .pipe(imagemin({
       progressive: true,
       interlaced: true,
-      multipass: true
+      multipass: true,
     }))
-    .pipe(gulp.dest('./docs/assets/images'))
-);
+    .pipe(gulp.dest('./docs/assets/images'));
+});
 
 gulp.task('useminTrigger', ['deleteDocsFolder'], () => {
   gulp.start('usemin');
 });
 
-gulp.task('usemin', ['styles', 'scripts'], () =>
+gulp.task('usemin', ['styles', 'scripts'], () => {
   gulp.src('./app/index.html')
     .pipe(usemin({
       css: [() => rev(), () => cssnano()],
-      js: [() => rev(), () => uglify()]
+      js: [() => rev(), () => uglify()],
     }))
-    .pipe(gulp.dest('./docs/'))
-);
+    .pipe(gulp.dest('./docs/'));
+});
 
 gulp.task('build', ['deleteDocsFolder', 'optimizeImages', 'useminTrigger', 'copyGeneralFiles']);
