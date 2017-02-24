@@ -8,6 +8,7 @@ const DOM = {
   searchResult: '.results__item',
   placeScreen: '.screen.place',
   placeName: '.place__name',
+  attractionsBtn: '.place__attractions',
 };
 
 export {
@@ -15,22 +16,27 @@ export {
 };
 
 export default {
-  hideSearchResults() {
-    $(DOM.searchResults).hide();
-  },
-  displaySearchResults(results) {
-    const $searchResults = $(DOM.searchResults);
-    $searchResults.empty();
+  Search: {
+    hideResults() {
+      $(DOM.searchResults).hide();
+    },
+    clearResults() {
+      $(DOM.searchResults).empty();
+    },
+    displayResults(results) {
+      const $searchResults = $(DOM.searchResults);
+      $searchResults.empty();
 
-    results.forEach((result) => {
-      $searchResults.append(
-        `<li class="${DOM.searchResult.slice(1)}" data-place-id="${result.id}">
-          ${result.name}
-        </li>`,
-      );
-    });
+      results.forEach((result) => {
+        $searchResults.append(
+          `<li class="${DOM.searchResult.slice(1)}" data-place-id="${result.id}">
+            ${result.name}
+          </li>`,
+        );
+      });
 
-    $searchResults.show();
+      $searchResults.show();
+    },
   },
   placeClicked(place) {
     $(DOM.screens).hide();
