@@ -1,33 +1,27 @@
 const gulp = require('gulp');
-const watch = require('gulp-watch');
 const browserSync = require('browser-sync').create();
 
-gulp.task('dev', ['styles', 'scripts'], () => {
+gulp.task('dev', ['sass', 'scripts'], () => {
   browserSync.init({
-    notify: false,
+    notify: true,
     server: {
       baseDir: './app',
     },
   });
 
-  watch('./app/index.html', () => {
+  gulp.watch('./app/index.html', () => {
     browserSync.reload();
   });
 
-  watch('./app/css/**/*.css', () => {
-    gulp.start('injectCss');
-  });
-
-  watch('./app/js/**/*.js', () => {
-    gulp.start('refreshJs');
-  });
+  gulp.watch('./app/sass/**/*.scss', ['injectCss']);
+  gulp.watch('./app/js/**/*.js', ['reloadScripts']);
 });
 
-gulp.task('injectCss', ['styles'], () => {
+gulp.task('injectCss', ['sass'], () => {
   gulp.src('./app/temp/styles.css')
     .pipe(browserSync.stream());
 });
 
-gulp.task('refreshJs', ['scripts'], () => {
+gulp.task('reloadScripts', ['scripts'], () => {
   browserSync.reload();
 });

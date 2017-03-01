@@ -1,19 +1,13 @@
 const gulp = require('gulp');
-const postcss = require('gulp-postcss');
+const sass = require('gulp-sass');
+const autoprefixer = require('gulp-autoprefixer');
 
-gulp.task('styles', () =>
-  gulp.src('./app/css/styles.css')
-    .pipe(postcss([
-      require('postcss-import'),
-      require('postcss-mixins'),
-      require('postcss-simple-vars'),
-      require('postcss-nested'),
-      require('postcss-hexrgba'),
-      require('autoprefixer')
-    ]))
-    .on('error', function (err) {
-      console.log(err.toString());
-      this.emit('end');
+gulp.task('sass', () => (
+  gulp.src('./app/sass/**/*.scss')
+    .pipe(sass({
+      includePaths: ['node_modules/normalize-scss/sass'],
     })
-    .pipe(gulp.dest('./app/temp/'))
-);
+    .on('error', sass.logError))
+    .pipe(autoprefixer())
+    .pipe(gulp.dest('./app/temp'))
+));

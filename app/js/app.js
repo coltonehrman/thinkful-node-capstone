@@ -1,23 +1,21 @@
-/* global google document */
-import $ from 'jquery';
+/* global $ document */
 import state from './modules/state';
-import UIController, { DOM } from './modules/UIController';
-import SearchController from './modules/SearchController';
-import AttractionsController from './modules/AttractionsController';
+import { autocomplete, getLatLong } from './lib/google';
+import UIController, { DOM, Search, Place } from './controllers/UIController';
+import AttractionsController from './controllers/AttractionsController';
 
 function setupEventListeners() {
   const $placeSearch = $(DOM.placeSearch);
 
   $placeSearch.on('keyup', () => {
-    const text = $placeSearch.val().trim();
-    if (text === '') {
-      UIController.Search.hideResults();
+    const search = $placeSearch.val().trim();
+    if (search === '') {
+      Search.hideResults();
     } else {
-      UIController.Search.clearResults();
-      SearchController.query(text)
-        .then(results =>
-          UIController.Search.displayResults(results),
-        );
+      Search.clearResults();
+      autocomplete(search).then(results =>
+        Search.displayResults(results),
+      );
     }
   });
 
@@ -30,13 +28,12 @@ function setupEventListeners() {
     UIController.placeClicked({
       name, placeId,
     });
-  });
 
-  $(DOM.attractionsBtn).on('click', () => {
-    SearchController.getLatLong(state.placeId)
-      .then((loc) => {
-        AttractionsController.getAttractions(loc);
+    getLatLong(state.placeId).then((loc) => {
+      AttractionsController.findAttractions(loc).then((attractions) => {
+        Place.displayPlaces(attractions);
       });
+    });
   });
 }
 
@@ -46,16 +43,3 @@ function init() {
 }
 
 $(init);
-
-// function getPlaceDetails(place) {
-
-// }
-
-// function placeClicked(place) {
-//
-//   navigator.geolocation.getCurrentPosition((...args) => {
-//     console.log(args);
-//   }, (...args) => {
-//     console.log(args);
-//   });
-// }

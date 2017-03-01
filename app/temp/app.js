@@ -46,45 +46,40 @@
 
 	'use strict';
 
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	var _state = __webpack_require__(2);
+	var _state = __webpack_require__(1);
 
 	var _state2 = _interopRequireDefault(_state);
 
-	var _UIController = __webpack_require__(3);
+	var _google = __webpack_require__(2);
+
+	var _UIController = __webpack_require__(6);
 
 	var _UIController2 = _interopRequireDefault(_UIController);
 
-	var _SearchController = __webpack_require__(4);
-
-	var _SearchController2 = _interopRequireDefault(_SearchController);
-
-	var _AttractionsController = __webpack_require__(6);
+	var _AttractionsController = __webpack_require__(10);
 
 	var _AttractionsController2 = _interopRequireDefault(_AttractionsController);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	/* global $ document */
 	function setupEventListeners() {
-	  var $placeSearch = (0, _jquery2.default)(_UIController.DOM.placeSearch);
+	  var $placeSearch = $(_UIController.DOM.placeSearch);
 
 	  $placeSearch.on('keyup', function () {
-	    var text = $placeSearch.val().trim();
-	    if (text === '') {
-	      _UIController2.default.Search.hideResults();
+	    var search = $placeSearch.val().trim();
+	    if (search === '') {
+	      _UIController.Search.hideResults();
 	    } else {
-	      _UIController2.default.Search.clearResults();
-	      _SearchController2.default.query(text).then(function (results) {
-	        return _UIController2.default.Search.displayResults(results);
+	      _UIController.Search.clearResults();
+	      (0, _google.autocomplete)(search).then(function (results) {
+	        return _UIController.Search.displayResults(results);
 	      });
 	    }
 	  });
 
-	  (0, _jquery2.default)(document).on('click', _UIController.DOM.searchResult, function (e) {
-	    var $place = (0, _jquery2.default)(e.target);
+	  $(document).on('click', _UIController.DOM.searchResult, function (e) {
+	    var $place = $(e.target);
 	    var name = $place.text().trim();
 	    var placeId = $place.data('place-id').trim();
 	    _state2.default.placeId = placeId;
@@ -92,38 +87,415 @@
 	    _UIController2.default.placeClicked({
 	      name: name, placeId: placeId
 	    });
-	  });
 
-	  (0, _jquery2.default)(_UIController.DOM.attractionsBtn).on('click', function () {
-	    _SearchController2.default.getLatLong(_state2.default.placeId).then(function (loc) {
-	      _AttractionsController2.default.getAttractions(loc);
+	    (0, _google.getLatLong)(_state2.default.placeId).then(function (loc) {
+	      _AttractionsController2.default.findAttractions(loc).then(function (attractions) {
+	        _UIController.Place.displayPlaces(attractions);
+	      });
 	    });
 	  });
-	} /* global google document */
-
+	}
 
 	function init() {
-	  (0, _jquery2.default)(_UIController.DOM.homeScreen).show();
+	  $(_UIController.DOM.homeScreen).show();
 	  setupEventListeners();
 	}
 
-	(0, _jquery2.default)(init);
-
-	// function getPlaceDetails(place) {
-
-	// }
-
-	// function placeClicked(place) {
-	//
-	//   navigator.geolocation.getCurrentPosition((...args) => {
-	//     console.log(args);
-	//   }, (...args) => {
-	//     console.log(args);
-	//   });
-	// }
+	$(init);
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  placeId: ''
+	};
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _autocomplete = __webpack_require__(3);
+
+	Object.defineProperty(exports, 'autocomplete', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_autocomplete).default;
+	  }
+	});
+
+	var _getLatLong = __webpack_require__(5);
+
+	Object.defineProperty(exports, 'getLatLong', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getLatLong).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _apis = __webpack_require__(4);
+
+	exports.default = function (text) {
+	  return new Promise(function (resolve) {
+	    _apis.autocomplete.getPlacePredictions({
+	      input: text,
+	      types: ['(cities)']
+	    }, function (data) {
+	      var results = data.map(function (place) {
+	        return {
+	          name: place.description,
+	          id: place.place_id
+	        };
+	      });
+	      resolve(results);
+	    });
+	  });
+	};
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/* global google document */
+	var autocomplete = new google.maps.places.AutocompleteService();
+	var service = new google.maps.places.PlacesService(document.createElement('div'));
+
+	exports.autocomplete = autocomplete;
+	exports.service = service;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _apis = __webpack_require__(4);
+
+	exports.default = function (placeId) {
+	  return new Promise(function (resolve) {
+	    _apis.service.getDetails({
+	      placeId: placeId
+	    }, function (place) {
+	      var _place$geometry$locat = place.geometry.location,
+	          lat = _place$geometry$locat.lat,
+	          lng = _place$geometry$locat.lng;
+
+	      resolve({
+	        lat: lat(),
+	        lng: lng()
+	      });
+	    });
+	  });
+	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.Place = exports.Search = exports.DOM = undefined;
+
+	var _Search = __webpack_require__(7);
+
+	Object.defineProperty(exports, 'Search', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Search).default;
+	  }
+	});
+
+	var _Place = __webpack_require__(9);
+
+	Object.defineProperty(exports, 'Place', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_Place).default;
+	  }
+	});
+
+	var _DOM = __webpack_require__(8);
+
+	var _DOM2 = _interopRequireDefault(_DOM);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.DOM = _DOM2.default; /* global $ */
+
+	exports.default = {
+	  placeClicked: function placeClicked(place) {
+	    $(_DOM2.default.screens).hide();
+	    $(_DOM2.default.placeScreen).show();
+	    $(_DOM2.default.placeName).text(place.name);
+	  },
+	  loadAttractions: function loadAttractions(attractions) {}
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _DOM = __webpack_require__(8);
+
+	var _DOM2 = _interopRequireDefault(_DOM);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = {
+	  hideResults: function hideResults() {
+	    $(_DOM2.default.searchResults).hide();
+	  },
+	  clearResults: function clearResults() {
+	    $(_DOM2.default.searchResults).empty();
+	  },
+	  displayResults: function displayResults(results) {
+	    var $searchResults = $(_DOM2.default.searchResults);
+	    $searchResults.empty();
+
+	    results.forEach(function (result) {
+	      $searchResults.append('<a href="#!" class="collection-item ' + _DOM2.default.searchResult.slice(1) + '" data-place-id="' + result.id + '">\n          ' + result.name + '\n        </a>');
+	    });
+
+	    $searchResults.show();
+	  }
+	}; /* global $ */
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var DOM = {
+	  screens: '.screen',
+	  homeScreen: '.screen.home',
+	  placeSearch: '.place-search',
+	  searchResults: '.results',
+	  searchResult: '.results__item',
+	  placeScreen: '.screen.place',
+	  placeName: '.place__name',
+	  placeResults: '.place__results'
+	};
+
+	exports.default = DOM;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _DOM = __webpack_require__(8);
+
+	var _DOM2 = _interopRequireDefault(_DOM);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = {
+	  displayPlaces: function displayPlaces(places) {
+	    var $placeResults = $(_DOM2.default.placeResults);
+	    console.log($placeResults);
+
+	    places.forEach(function (place) {
+	      console.log(place);
+	      var html = '\n        <div class="col m6">\n          <div class="card indigo lighten-5">\n            <div class="card-content grey-text">\n              <div class="card-title">' + place.name + '</div>\n              <p>' + place.address + '</p>';
+
+	      if (typeof place.hours !== 'undefined') {
+	        html += '<p>' + place.hours + '</p>';
+	      }
+
+	      html += '\n            </div>\n            <div class="card-action">\n              <a href="#">This is a link</a>\n              <a href="#">This is a link</a>\n            </div>\n          </div>\n        </div>';
+
+	      $placeResults.append(html);
+	    });
+	  }
+	}; /* global $ */
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _attractions = __webpack_require__(11);
+
+	function parseIcon(size, icon) {
+	  return icon.prefix + 'bg_' + size + icon.suffix;
+	}
+
+	function parsePlace(place) {
+	  var data = {};
+
+	  data.name = place.venue.name;
+
+	  console.log(place);
+
+	  place.venue.categories.forEach(function (category) {
+	    data.icon = parseIcon(32, category.icon);
+	    data.category = category.name;
+	  });
+
+	  if (typeof place.venue.hours !== 'undefined') {
+	    data.open = place.venue.hours.isOpen;
+	    data.hours = place.venue.hours.status;
+	  }
+
+	  if (typeof place.venue.location !== 'undefined') {
+	    data.address = place.venue.location.formattedAddress.join(', ');
+	    data.coords = {
+	      lat: place.venue.location.lat,
+	      lng: place.venue.location.lng
+	    };
+	  }
+
+	  if (place.venue.photos.count !== 0) {
+	    console.log(place.venue.photos);
+	  }
+
+	  if (typeof place.venue.price !== 'undefined') {
+	    data.price = place.venue.price.currency.repeat(place.venue.price.tier);
+	  }
+
+	  if (typeof place.venue.rating !== 'undefined') {
+	    data.rating = place.venue.rating + ' out of 10';
+	  }
+
+	  return data;
+	}
+
+	exports.default = {
+	  findAttractions: function findAttractions(coords) {
+	    return new Promise(function (resolve) {
+	      (0, _attractions.getAttractions)(coords).then(function (res) {
+	        var places = [];
+	        var location = res.headerFullLocation,
+	            results = res.totalResults,
+	            groups = res.groups;
+
+	        // Inspect venue item
+	        // console.log(groups[0].items[0]);
+
+	        groups.forEach(function (group) {
+	          group.items.forEach(function (place) {
+	            places.push(parsePlace(place));
+	          });
+	        });
+
+	        resolve(places);
+	      });
+	    });
+	  }
+	};
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _getAttractions = __webpack_require__(12);
+
+	Object.defineProperty(exports, 'getAttractions', {
+	  enumerable: true,
+	  get: function get() {
+	    return _interopRequireDefault(_getAttractions).default;
+	  }
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _jquery = __webpack_require__(13);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (_ref) {
+	  var lat = _ref.lat,
+	      lng = _ref.lng;
+	  return new Promise(function (resolve) {
+	    _jquery2.default.ajax('https://api.foursquare.com/v2/venues/explore', {
+	      data: {
+	        client_id: 'HIRHIF3ESK5TAJTKTU0HQDMY3KABRJSFN3EA1SSOE2ULSCWH',
+	        client_secret: 'GACVTXG4OQ5KKICSQBNNHM5DPBGZGCLR0D0JG5LEX5TWMIOL',
+	        ll: lat + ',' + lng,
+	        m: 'foursquare',
+	        v: 20170101
+	      }
+	    }).done(function (data) {
+	      resolve(data.response);
+	    });
+	  });
+	};
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10347,180 +10719,6 @@
 	return jQuery;
 	} );
 
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  placeId: ''
-	};
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.DOM = undefined;
-
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var DOM = {
-	  screens: '.screen',
-	  homeScreen: '.screen.home',
-	  placeSearch: '.place-search',
-	  searchResults: '.results',
-	  searchResult: '.results__item',
-	  placeScreen: '.screen.place',
-	  placeName: '.place__name',
-	  attractionsBtn: '.place__attractions'
-	};
-
-	exports.DOM = DOM;
-	exports.default = {
-	  Search: {
-	    hideResults: function hideResults() {
-	      (0, _jquery2.default)(DOM.searchResults).hide();
-	    },
-	    clearResults: function clearResults() {
-	      (0, _jquery2.default)(DOM.searchResults).empty();
-	    },
-	    displayResults: function displayResults(results) {
-	      var $searchResults = (0, _jquery2.default)(DOM.searchResults);
-	      $searchResults.empty();
-
-	      results.forEach(function (result) {
-	        $searchResults.append('<li class="' + DOM.searchResult.slice(1) + '" data-place-id="' + result.id + '">\n            ' + result.name + '\n          </li>');
-	      });
-
-	      $searchResults.show();
-	    }
-	  },
-	  placeClicked: function placeClicked(place) {
-	    (0, _jquery2.default)(DOM.screens).hide();
-	    (0, _jquery2.default)(DOM.placeScreen).show();
-	    (0, _jquery2.default)(DOM.placeName).text(place.name);
-	  }
-	};
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _googleAPIs = __webpack_require__(5);
-
-	exports.default = {
-	  query: function query(text) {
-	    return new Promise(function (resolve) {
-	      _googleAPIs.autocomplete.getQueryPredictions({
-	        input: text,
-	        types: ['geocode']
-	      }, function (data) {
-	        var results = data.map(function (place) {
-	          return {
-	            name: place.description,
-	            id: place.place_id
-	          };
-	        });
-	        resolve(results);
-	      });
-	    });
-	  },
-	  getLatLong: function getLatLong(placeId) {
-	    return new Promise(function (resolve) {
-	      _googleAPIs.service.getDetails({
-	        placeId: placeId
-	      }, function (place) {
-	        var _place$geometry$locat = place.geometry.location,
-	            lat = _place$geometry$locat.lat,
-	            lng = _place$geometry$locat.lng;
-
-	        resolve({
-	          lat: lat(),
-	          lng: lng()
-	        });
-	      });
-	    });
-	  }
-	}; /* global google */
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	/* global google document */
-	var autocomplete = new google.maps.places.AutocompleteService();
-	var service = new google.maps.places.PlacesService(document.createElement('div'));
-
-	exports.autocomplete = autocomplete;
-	exports.service = service;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _jquery = __webpack_require__(1);
-
-	var _jquery2 = _interopRequireDefault(_jquery);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = {
-	  getAttractions: function getAttractions(_ref) {
-	    var lat = _ref.lat,
-	        lng = _ref.lng;
-
-	    return new Promise(function (resolve) {
-	      _jquery2.default.ajax('https://api.foursquare.com/v2/venues/explore', {
-	        data: {
-	          client_id: 'HIRHIF3ESK5TAJTKTU0HQDMY3KABRJSFN3EA1SSOE2ULSCWH',
-	          client_secret: 'GACVTXG4OQ5KKICSQBNNHM5DPBGZGCLR0D0JG5LEX5TWMIOL',
-	          ll: lat + ',' + lng,
-	          m: 'foursquare',
-	          v: 20170101
-	        }
-	      }).done(function (data) {
-	        var attractions = [];
-	        data.response.groups.forEach(function (group) {
-	          group.items.forEach(function (item) {
-	            console.log(item);
-	          });
-	        });
-	        resolve();
-	      });
-	    });
-	  }
-	};
 
 /***/ }
 /******/ ]);
