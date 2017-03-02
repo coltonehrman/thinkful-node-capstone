@@ -1,0 +1,18 @@
+.place {
+  &__results {
+    & .place .card {
+      background-color: #fff;
+      min-height: 220px;
+
+      & .card-content {
+        height: 170px;
+      }
+
+      & .card-action {
+        & a {
+          color: $main-green !important;
+        }
+      }
+    }
+  }
+}

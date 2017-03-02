@@ -97,23 +97,16 @@
 	  });
 
 	  $(document).on('click', _UIController.DOM.categorySelector, function (e) {
-	    var category = $(e.target).text();
-	    var $places = $(_UIController.DOM.place);
+	    var $categories = $(_UIController.DOM.categorySelector);
+	    var $target = $(e.target);
+	    var category = $target.text();
 
-	    var $placesToShow = $places.filter(function (id, place) {
-	      var placeCategory = $(place).data('category');
-	      return placeCategory === category;
-	    });
+	    $categories.addClass('btn-flat');
+	    $target.removeClass('btn-flat');
+	    _UIController.Place.displayPlacesByFilter(category);
 
-	    var $placesToHide = $places.filter(function (id, place) {
-	      var placeCategory = $(place).data('category');
-	      return placeCategory !== category;
-	    });
-
-	    $placesToShow.show().fadeIn();
-	    $placesToHide.fadeOut(400, function () {
-	      $placesToHide.hide();
-	    });
+	    // placesToShow.forEach(place => place.show());
+	    // placesToHide.forEach(place => place.hide());
 	  });
 	}
 
@@ -134,7 +127,8 @@
 	  value: true
 	});
 	exports.default = {
-	  placeId: ''
+	  placeId: '',
+	  places: []
 	};
 
 /***/ },
@@ -356,6 +350,10 @@
 	  value: true
 	});
 
+	var _state = __webpack_require__(1);
+
+	var _state2 = _interopRequireDefault(_state);
+
 	var _DOM = __webpack_require__(8);
 
 	var _DOM2 = _interopRequireDefault(_DOM);
@@ -366,7 +364,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/* global $ */
 	exports.default = {
 	  displayPlaces: function displayPlaces(places) {
 	    var $placeResults = $(_DOM2.default.placeResults);
@@ -379,14 +376,40 @@
 	    });
 
 	    categories.forEach(function (cat) {
-	      return $placeResults.before('<a class="category-selector waves-effect waves-teal btn-flat">' + cat + '</a>');
+	      return $placeResults.before('<a class="category-selector waves-effect waves-teal btn-flat btn">' + cat + '</a>');
 	    });
 
-	    places.forEach(function (place) {
-	      $placeResults.append(new _Place2.default(place).render());
+	    _state2.default.places = places.map(function (place) {
+	      return new _Place2.default(place);
+	    });
+	    _state2.default.places.forEach(function (place, i) {
+	      if (i % 2 === 0) {
+	        $placeResults.append($('<div class="row"><div class="place col m6">' + place.$element.html() + '</div></div>'));
+	      } else {
+	        $placeResults.find('.row').last().append(place.$element);
+	      }
+	    });
+	    // $placeResults.append(state.places.map(place => place.$element));
+	  },
+	  displayPlacesByFilter: function displayPlacesByFilter(category) {
+	    var $placeResults = $(_DOM2.default.placeResults);
+	    var placesToShow = _state2.default.places.filter(function (place) {
+	      return place.category === category;
+	    });
+
+	    if ($placeResults.children().length >= 1) {
+	      $placeResults.empty();
+	    }
+
+	    placesToShow.forEach(function (place, i) {
+	      if (i % 2 === 0) {
+	        $placeResults.append($('<div class="row"><div class="place col m6">' + place.$element.html() + '</div></div>'));
+	      } else {
+	        $placeResults.find('.row').last().append(place.$element);
+	      }
 	    });
 	  }
-	};
+	}; /* global $ */
 
 /***/ },
 /* 10 */
@@ -402,6 +425,8 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	/* global $ */
+
 	var Place = function () {
 	  function Place(place) {
 	    _classCallCheck(this, Place);
@@ -410,12 +435,30 @@
 	    this.name = place.name;
 	    this.address = place.address;
 	    this.hours = place.hours;
+	    this.hidden = false;
+	    this.$element = this.createElement();
 	  }
 
 	  _createClass(Place, [{
-	    key: 'render',
-	    value: function render() {
-	      var html = '\n      <div class="place col m6" data-category="' + this.category + '">\n        <div class="card indigo lighten-5">\n          <div class="card-content grey-text">\n            <div class="card-title">' + this.name + '</div>\n            <p>' + this.address + '</p>';
+	    key: 'hide',
+	    value: function hide() {
+	      if (!this.hidden) {
+	        this.$element.fadeOut();
+	        this.hidden = true;
+	      }
+	    }
+	  }, {
+	    key: 'show',
+	    value: function show() {
+	      if (this.hidden) {
+	        this.$element.fadeIn();
+	        this.hidden = false;
+	      }
+	    }
+	  }, {
+	    key: 'createElement',
+	    value: function createElement() {
+	      var html = '\n      <div class="place col m6">\n        <div class="card">\n          <div class="card-content grey-text">\n            <div class="card-title">' + this.name + '</div>\n            <p>' + this.address + '</p>';
 
 	      if (typeof this.hours !== 'undefined') {
 	        html += '<p>' + this.hours + '</p>';
@@ -423,7 +466,7 @@
 
 	      html += '\n          </div>\n          <div class="card-action">\n            <a href="#">This is a link</a>\n            <a href="#">This is a link</a>\n          </div>\n        </div>\n      </div>';
 
-	      return html;
+	      return $(html);
 	    }
 	  }]);
 

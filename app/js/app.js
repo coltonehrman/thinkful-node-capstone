@@ -38,23 +38,16 @@ function setupEventListeners() {
   });
 
   $(document).on('click', DOM.categorySelector, (e) => {
-    const category = $(e.target).text();
-    const $places = $(DOM.place);
+    const $categories = $(DOM.categorySelector);
+    const $target = $(e.target);
+    const category = $target.text();
 
-    const $placesToShow = $places.filter((id, place) => {
-      const placeCategory = $(place).data('category');
-      return placeCategory === category;
-    });
+    $categories.addClass('btn-flat');
+    $target.removeClass('btn-flat');
+    Place.displayPlacesByFilter(category);
 
-    const $placesToHide = $places.filter((id, place) => {
-      const placeCategory = $(place).data('category');
-      return placeCategory !== category;
-    });
-
-    $placesToShow.show().fadeIn();
-    $placesToHide.fadeOut(400, (...args) => {
-      $placesToHide.hide();
-    });
+    // placesToShow.forEach(place => place.show());
+    // placesToHide.forEach(place => place.hide());
   });
 }
 

@@ -419,11 +419,19 @@ template {
 * {
   box-sizing: border-box; }
 
-.col.m6:nth-of-type(2n+1) {
-  clear: both; }
+body {
+  background-color: #eaeaea; }
 
 .screen {
   display: none; }
 
 .results {
   display: none; }
+
+.place__results .place .card {
+  background-color: #fff;
+  min-height: 220px; }
+  .place__results .place .card .card-content {
+    height: 170px; }
+  .place__results .place .card .card-action a {
+    color: #26a69a !important; }

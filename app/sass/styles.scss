@@ -2,7 +2,8 @@
 @import 'normalize';
 @include normalize();
 
+@import './base/_variables';
 @import './base/_globals';
 @import './modules/_screen';
-@import './modules/_place-search';
 @import './modules/_results';
+@import './modules/_place';

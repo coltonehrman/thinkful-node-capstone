@@ -1,15 +1,33 @@
+/* global $ */
+
 export default class Place {
   constructor(place) {
     this.category = place.category;
     this.name = place.name;
     this.address = place.address;
     this.hours = place.hours;
+    this.hidden = false;
+    this.$element = this.createElement();
   }
 
-  render() {
+  hide() {
+    if (!this.hidden) {
+      this.$element.fadeOut();
+      this.hidden = true;
+    }
+  }
+
+  show() {
+    if (this.hidden) {
+      this.$element.fadeIn();
+      this.hidden = false;
+    }
+  }
+
+  createElement() {
     let html = `
-      <div class="place col m6" data-category="${this.category}">
-        <div class="card indigo lighten-5">
+      <div class="place col m6">
+        <div class="card">
           <div class="card-content grey-text">
             <div class="card-title">${this.name}</div>
             <p>${this.address}</p>`;
@@ -27,6 +45,6 @@ export default class Place {
         </div>
       </div>`;
 
-    return html;
+    return $(html);
   }
 }
