@@ -90,6 +90,7 @@
 
 	    (0, _google.getLatLong)(_state2.default.placeId).then(function (loc) {
 	      _AttractionsController2.default.findAttractions(loc).then(function (attractions) {
+	        console.log(attractions);
 	        _UIController.Place.displayPlaces(attractions);
 	      });
 	    });
@@ -342,10 +343,8 @@
 	exports.default = {
 	  displayPlaces: function displayPlaces(places) {
 	    var $placeResults = $(_DOM2.default.placeResults);
-	    console.log($placeResults);
 
 	    places.forEach(function (place) {
-	      console.log(place);
 	      var html = '\n        <div class="col m6">\n          <div class="card indigo lighten-5">\n            <div class="card-content grey-text">\n              <div class="card-title">' + place.name + '</div>\n              <p>' + place.address + '</p>';
 
 	      if (typeof place.hours !== 'undefined') {
@@ -380,8 +379,6 @@
 
 	  data.name = place.venue.name;
 
-	  console.log(place);
-
 	  place.venue.categories.forEach(function (category) {
 	    data.icon = parseIcon(32, category.icon);
 	    data.category = category.name;
@@ -401,7 +398,7 @@
 	  }
 
 	  if (place.venue.photos.count !== 0) {
-	    console.log(place.venue.photos);
+	    // console.log(place.venue.photos);
 	  }
 
 	  if (typeof place.venue.price !== 'undefined') {
@@ -486,7 +483,9 @@
 	        client_secret: 'GACVTXG4OQ5KKICSQBNNHM5DPBGZGCLR0D0JG5LEX5TWMIOL',
 	        ll: lat + ',' + lng,
 	        m: 'foursquare',
-	        v: 20170101
+	        v: 20170101,
+	        limit: 50,
+	        venuePhotos: 1
 	      }
 	    }).done(function (data) {
 	      resolve(data.response);

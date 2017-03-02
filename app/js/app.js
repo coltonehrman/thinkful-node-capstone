@@ -31,6 +31,7 @@ function setupEventListeners() {
 
     getLatLong(state.placeId).then((loc) => {
       AttractionsController.findAttractions(loc).then((attractions) => {
+        console.log(attractions);
         Place.displayPlaces(attractions);
       });
     });

@@ -4,10 +4,8 @@ import DOM from './DOM';
 export default {
   displayPlaces(places) {
     const $placeResults = $(DOM.placeResults);
-    console.log($placeResults);
 
     places.forEach((place) => {
-      console.log(place);
       let html = `
         <div class="col m6">
           <div class="card indigo lighten-5">
@@ -18,7 +16,6 @@ export default {
       if (typeof place.hours !== 'undefined') {
         html += `<p>${place.hours}</p>`;
       }
-
 
       html += `
             </div>

@@ -9,8 +9,6 @@ function parsePlace(place) {
 
   data.name = place.venue.name;
 
-  console.log(place);
-
   place.venue.categories.forEach((category) => {
     data.icon = parseIcon(32, category.icon);
     data.category = category.name;
@@ -30,7 +28,7 @@ function parsePlace(place) {
   }
 
   if (place.venue.photos.count !== 0) {
-    console.log(place.venue.photos);
+    // console.log(place.venue.photos);
   }
 
   if (typeof place.venue.price !== 'undefined') {

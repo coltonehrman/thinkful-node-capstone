@@ -9,6 +9,8 @@ export default ({ lat, lng }) => (
         ll: `${lat},${lng}`,
         m: 'foursquare',
         v: 20170101,
+        limit: 50,
+        venuePhotos: 1,
       },
     }).done((data) => {
       resolve(data.response);
