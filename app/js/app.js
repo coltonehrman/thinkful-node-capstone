@@ -36,6 +36,26 @@ function setupEventListeners() {
       });
     });
   });
+
+  $(document).on('click', DOM.categorySelector, (e) => {
+    const category = $(e.target).text();
+    const $places = $(DOM.place);
+
+    const $placesToShow = $places.filter((id, place) => {
+      const placeCategory = $(place).data('category');
+      return placeCategory === category;
+    });
+
+    const $placesToHide = $places.filter((id, place) => {
+      const placeCategory = $(place).data('category');
+      return placeCategory !== category;
+    });
+
+    $placesToShow.show().fadeIn();
+    $placesToHide.fadeOut(400, (...args) => {
+      $placesToHide.hide();
+    });
+  });
 }
 
 function init() {

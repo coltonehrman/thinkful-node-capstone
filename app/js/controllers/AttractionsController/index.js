@@ -4,6 +4,11 @@ function parseIcon(size, icon) {
   return `${icon.prefix}bg_${size}${icon.suffix}`;
 }
 
+function parseCategory(iconUrl) {
+  const category = iconUrl.split('/').slice(-2, -1)[0];
+  return category.split('_').map(cat => `${cat[0].toUpperCase()}${cat.slice(1)}`).join(' ');
+}
+
 function parsePlace(place) {
   const data = {};
 
@@ -11,7 +16,7 @@ function parsePlace(place) {
 
   place.venue.categories.forEach((category) => {
     data.icon = parseIcon(32, category.icon);
-    data.category = category.name;
+    data.category = parseCategory(data.icon);
   });
 
   if (typeof place.venue.hours !== 'undefined') {
@@ -47,16 +52,8 @@ export default {
     return new Promise((resolve) => {
       getAttractions(coords).then((res) => {
         const places = [];
-        const {
-          headerFullLocation: location,
-          totalResults: results,
-          groups,
-        } = res;
 
-        // Inspect venue item
-        // console.log(groups[0].items[0]);
-
-        groups.forEach((group) => {
+        res.groups.forEach((group) => {
           group.items.forEach((place) => {
             places.push(parsePlace(place));
           });

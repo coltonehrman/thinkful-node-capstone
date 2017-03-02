@@ -4,9 +4,11 @@ const DOM = {
   placeSearch: '.place-search',
   searchResults: '.results',
   searchResult: '.results__item',
-  placeScreen: '.screen.place',
+  placeScreen: '.screen__place',
   placeName: '.place__name',
+  categorySelector: '.category-selector',
   placeResults: '.place__results',
+  place: '.place',
 };
 
 export default DOM;

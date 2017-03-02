@@ -56,7 +56,7 @@
 
 	var _UIController2 = _interopRequireDefault(_UIController);
 
-	var _AttractionsController = __webpack_require__(10);
+	var _AttractionsController = __webpack_require__(11);
 
 	var _AttractionsController2 = _interopRequireDefault(_AttractionsController);
 
@@ -93,6 +93,26 @@
 	        console.log(attractions);
 	        _UIController.Place.displayPlaces(attractions);
 	      });
+	    });
+	  });
+
+	  $(document).on('click', _UIController.DOM.categorySelector, function (e) {
+	    var category = $(e.target).text();
+	    var $places = $(_UIController.DOM.place);
+
+	    var $placesToShow = $places.filter(function (id, place) {
+	      var placeCategory = $(place).data('category');
+	      return placeCategory === category;
+	    });
+
+	    var $placesToHide = $places.filter(function (id, place) {
+	      var placeCategory = $(place).data('category');
+	      return placeCategory !== category;
+	    });
+
+	    $placesToShow.show().fadeIn();
+	    $placesToHide.fadeOut(400, function () {
+	      $placesToHide.hide();
 	    });
 	  });
 	}
@@ -317,9 +337,11 @@
 	  placeSearch: '.place-search',
 	  searchResults: '.results',
 	  searchResult: '.results__item',
-	  placeScreen: '.screen.place',
+	  placeScreen: '.screen__place',
 	  placeName: '.place__name',
-	  placeResults: '.place__results'
+	  categorySelector: '.category-selector',
+	  placeResults: '.place__results',
+	  place: '.place'
 	};
 
 	exports.default = DOM;
@@ -338,28 +360,80 @@
 
 	var _DOM2 = _interopRequireDefault(_DOM);
 
+	var _Place = __webpack_require__(10);
+
+	var _Place2 = _interopRequireDefault(_Place);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	/* global $ */
 	exports.default = {
 	  displayPlaces: function displayPlaces(places) {
 	    var $placeResults = $(_DOM2.default.placeResults);
 
+	    var categories = places.map(function (place) {
+	      return place.category;
+	    });
+	    categories = categories.filter(function (cat, i) {
+	      return categories.indexOf(cat) === i;
+	    });
+
+	    categories.forEach(function (cat) {
+	      return $placeResults.before('<a class="category-selector waves-effect waves-teal btn-flat">' + cat + '</a>');
+	    });
+
 	    places.forEach(function (place) {
-	      var html = '\n        <div class="col m6">\n          <div class="card indigo lighten-5">\n            <div class="card-content grey-text">\n              <div class="card-title">' + place.name + '</div>\n              <p>' + place.address + '</p>';
-
-	      if (typeof place.hours !== 'undefined') {
-	        html += '<p>' + place.hours + '</p>';
-	      }
-
-	      html += '\n            </div>\n            <div class="card-action">\n              <a href="#">This is a link</a>\n              <a href="#">This is a link</a>\n            </div>\n          </div>\n        </div>';
-
-	      $placeResults.append(html);
+	      $placeResults.append(new _Place2.default(place).render());
 	    });
 	  }
-	}; /* global $ */
+	};
 
 /***/ },
 /* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Place = function () {
+	  function Place(place) {
+	    _classCallCheck(this, Place);
+
+	    this.category = place.category;
+	    this.name = place.name;
+	    this.address = place.address;
+	    this.hours = place.hours;
+	  }
+
+	  _createClass(Place, [{
+	    key: 'render',
+	    value: function render() {
+	      var html = '\n      <div class="place col m6" data-category="' + this.category + '">\n        <div class="card indigo lighten-5">\n          <div class="card-content grey-text">\n            <div class="card-title">' + this.name + '</div>\n            <p>' + this.address + '</p>';
+
+	      if (typeof this.hours !== 'undefined') {
+	        html += '<p>' + this.hours + '</p>';
+	      }
+
+	      html += '\n          </div>\n          <div class="card-action">\n            <a href="#">This is a link</a>\n            <a href="#">This is a link</a>\n          </div>\n        </div>\n      </div>';
+
+	      return html;
+	    }
+	  }]);
+
+	  return Place;
+	}();
+
+	exports.default = Place;
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -368,10 +442,17 @@
 	  value: true
 	});
 
-	var _attractions = __webpack_require__(11);
+	var _attractions = __webpack_require__(12);
 
 	function parseIcon(size, icon) {
 	  return icon.prefix + 'bg_' + size + icon.suffix;
+	}
+
+	function parseCategory(iconUrl) {
+	  var category = iconUrl.split('/').slice(-2, -1)[0];
+	  return category.split('_').map(function (cat) {
+	    return '' + cat[0].toUpperCase() + cat.slice(1);
+	  }).join(' ');
 	}
 
 	function parsePlace(place) {
@@ -381,7 +462,7 @@
 
 	  place.venue.categories.forEach(function (category) {
 	    data.icon = parseIcon(32, category.icon);
-	    data.category = category.name;
+	    data.category = parseCategory(data.icon);
 	  });
 
 	  if (typeof place.venue.hours !== 'undefined') {
@@ -417,14 +498,8 @@
 	    return new Promise(function (resolve) {
 	      (0, _attractions.getAttractions)(coords).then(function (res) {
 	        var places = [];
-	        var location = res.headerFullLocation,
-	            results = res.totalResults,
-	            groups = res.groups;
 
-	        // Inspect venue item
-	        // console.log(groups[0].items[0]);
-
-	        groups.forEach(function (group) {
+	        res.groups.forEach(function (group) {
 	          group.items.forEach(function (place) {
 	            places.push(parsePlace(place));
 	          });
@@ -437,7 +512,7 @@
 	};
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -446,7 +521,7 @@
 	  value: true
 	});
 
-	var _getAttractions = __webpack_require__(12);
+	var _getAttractions = __webpack_require__(13);
 
 	Object.defineProperty(exports, 'getAttractions', {
 	  enumerable: true,
@@ -458,7 +533,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -467,7 +542,7 @@
 	  value: true
 	});
 
-	var _jquery = __webpack_require__(13);
+	var _jquery = __webpack_require__(14);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -494,7 +569,7 @@
 	};
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
