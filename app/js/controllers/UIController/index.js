@@ -1,18 +1,12 @@
 /* global $ */
 import DOM from './DOM';
+import Screen from './Screen';
+import Search from './Search';
+import Place from './Place';
 
 export { DOM };
 export default {
-  goBack() {
-    $(DOM.screens).hide();
-    $(DOM.homeScreen).show();
-    $(DOM.placeResults).empty();
-  },
-  placeClicked(place) {
-    $(DOM.screens).hide();
-    $(DOM.placeScreen).show();
-    $(DOM.placeName).text(place.name);
-  },
+  Screen,
+  Search,
+  Place,
 };
-export { default as Search } from './Search';
-export { default as Place } from './Place';

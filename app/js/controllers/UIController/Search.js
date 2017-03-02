@@ -1,12 +1,19 @@
 /* global $ */
 import DOM from './DOM';
 
+function hideResults() {
+  $(DOM.searchResults).hide();
+}
+
+function clearResults() {
+  $(DOM.searchResults).empty();
+}
+
 export default {
-  hideResults() {
-    $(DOM.searchResults).hide();
-  },
-  clearResults() {
-    $(DOM.searchResults).empty();
+  hideResults,
+  clearResults,
+  focus() {
+    $(DOM.placeSearch).focus();
   },
   displayResults(results) {
     const $searchResults = $(DOM.searchResults);
@@ -14,12 +21,17 @@ export default {
 
     results.forEach((result) => {
       $searchResults.append(
-        `<a href="#!" class="collection-item ${DOM.searchResult.slice(1)}" data-place-id="${result.id}">
-          ${result.name}
-        </a>`,
+        `<li class="${DOM.searchResult.slice(1)}" data-place-id="${result.id}">
+          <span>${result.name}</span>
+        </li>`,
       );
     });
 
     $searchResults.show();
+  },
+  clear() {
+    $(DOM.placeSearch).val('');
+    clearResults();
+    hideResults();
   },
 };

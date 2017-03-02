@@ -3,18 +3,45 @@ import state from '../../modules/state';
 import DOM from './DOM';
 import Place from '../../components/Place';
 
-export default {
-  hideProgress() {
+let progressVisible = true;
+
+function toggleProgress() {
+  console.log(progressVisible);
+  if (progressVisible) {
+    progressVisible = false;
     $(DOM.progressBar).hide();
-  },
+  } else {
+    progressVisible = true;
+    $(DOM.progressBar).show();
+  }
+}
+
+function setPlaceName(name) {
+  $(DOM.placeName).text(name);
+}
+
+function clearCategories() {
+  $(DOM.categories).remove();
+}
+
+function clearPlaces() {
+  $(DOM.placeResults).empty();
+}
+
+export default {
+  setPlaceName,
+  toggleProgress,
   displayPlaces(places) {
     const $placeResults = $(DOM.placeResults);
+    const placeCategories = places.map(place => place.category);
+    const categories = placeCategories.filter((cat, i) =>
+      placeCategories.indexOf(cat) === i,
+    );
 
-    let categories = places.map(place => place.category);
-    categories = categories.filter((cat, i) => categories.indexOf(cat) === i);
+    clearCategories();
 
     categories.forEach(cat => $placeResults.before(
-      `<a class="category-selector waves-effect waves-teal btn-flat btn">${cat}</a>`,
+      `<a class="category waves-effect waves-teal btn-flat btn">${cat}</a>`,
     ));
 
     state.places = places.map(place => new Place(place)).sort((a, b) => {
@@ -51,5 +78,10 @@ export default {
         $placeResults.find('.row').last().append(place.$element);
       }
     });
+  },
+  reset() {
+    toggleProgress();
+    clearCategories();
+    clearPlaces();
   },
 };

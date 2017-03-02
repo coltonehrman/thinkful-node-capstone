@@ -6,45 +6,56 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
 
-    <!--Import Google Icon Font-->
+    <!-- Import Google Icon Font -->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
+    <!-- Import materialize.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
 
-    <link rel="stylesheet" href="css/styles-63f473e27e.css"/>
+    <link rel="stylesheet" href="css/styles-aa87154ada.css"/>
   </head>
 
   <body>
 
-    <div class="container screen home">
-      <div class="row">
-        <div class="input-field col s12">
-          <input class="place-search autocomplete" type="text" placeholder="London, UK">
-          <label for="autocomplete-input">Search for place...</label>
-        </div>
+    <div class="home screen">
+      <div class="container">
+        <nav>
+          <div class="nav-wrapper">
+            <div class="input-field">
+              <input class="place-search" type="search" placeholder="Search for a place...">
+              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
+            </div>
+          </div>
+        </nav>
+        <ul class="results__list autocomplete-content dropdown-content"></ul>
       </div>
-      <div class="results collection"></div>
     </div>
 
-    <div class="container screen screen__place">
+    <div class="place screen">
       <nav>
-        <div class="nav-wrapper">
+        <div class="nav-wrapper container">
           <p class="place__name brand-logo left"></p>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a class="back-btn" href="#!">Back</a></li>
+            <li><a class="back-btn" href="#!"><i class="large material-icons">replay</i></a></li>
           </ul>
         </div>
       </nav>
-      <div class="place__results row">
+      
+      <div class="container">
+        <div class="place__results row"></div>
         <div class="progress">
           <div class="indeterminate"></div>
         </div>
+      </div>
     </div>
 
+    <!-- Import Google Places API -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
+    <!-- Import jQuery -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <!-- Import materialize.css -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 
-    <script src="js/app-b8c7d3bda3.js"></script>
+    <script src="js/app-d56005aca6.js"></script>
   </body>
 </html>

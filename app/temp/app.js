@@ -46,75 +46,73 @@
 
 	'use strict';
 
-	var _state = __webpack_require__(1);
+	var _google = __webpack_require__(1);
 
-	var _state2 = _interopRequireDefault(_state);
-
-	var _google = __webpack_require__(2);
-
-	var _UIController = __webpack_require__(6);
+	var _UIController = __webpack_require__(5);
 
 	var _UIController2 = _interopRequireDefault(_UIController);
 
-	var _AttractionsController = __webpack_require__(11);
+	var _AttractionsController = __webpack_require__(12);
 
 	var _AttractionsController2 = _interopRequireDefault(_AttractionsController);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/* global $ document */
 	function setupEventListeners() {
 	  var $placeSearch = $(_UIController.DOM.placeSearch);
 
 	  $placeSearch.on('keyup', function () {
 	    var search = $placeSearch.val().trim();
 	    if (search === '') {
-	      _UIController.Search.hideResults();
+	      _UIController2.default.Search.hideResults();
 	    } else {
-	      _UIController.Search.clearResults();
+	      _UIController2.default.Search.clearResults();
 	      (0, _google.autocomplete)(search).then(function (results) {
-	        return _UIController.Search.displayResults(results);
+	        return _UIController2.default.Search.displayResults(results);
 	      }).catch(function () {
-	        return _UIController.Search.hideResults();
+	        return _UIController2.default.Search.hideResults();
 	      });
 	    }
 	  });
 
 	  $(document).on('click', _UIController.DOM.searchResult, function (e) {
-	    var $place = $(e.target);
+	    var $place = $(e.target).parents(_UIController.DOM.searchResult);
 	    var name = $place.text().trim();
 	    var placeId = $place.data('place-id').trim();
-	    _state2.default.placeId = placeId;
 
-	    _UIController2.default.placeClicked({
-	      name: name, placeId: placeId
-	    });
+	    _UIController2.default.Search.clear();
+	    _UIController2.default.Place.setPlaceName(name);
+	    _UIController2.default.Screen.goTo(_UIController.DOM.placeScreen);
 
-	    (0, _google.getLatLong)(_state2.default.placeId).then(function (loc) {
+	    (0, _google.getLatLong)(placeId).then(function (loc) {
 	      _AttractionsController2.default.findAttractions(loc).then(function (attractions) {
-	        _UIController.Place.hideProgress();
-	        _UIController.Place.displayPlaces(attractions);
+	        _UIController2.default.Place.toggleProgress();
+	        _UIController2.default.Place.displayPlaces(attractions);
 	      });
 	    });
 	  });
 
-	  $(document).on('click', _UIController.DOM.categorySelector, function (e) {
-	    var $categories = $(_UIController.DOM.categorySelector);
+	  $(document).on('click', _UIController.DOM.categories, function (e) {
+	    var $categories = $(_UIController.DOM.categories);
 	    var $target = $(e.target);
 	    var category = $target.text();
 
 	    $categories.addClass('btn-flat');
 	    $target.removeClass('btn-flat');
-	    _UIController.Place.displayPlacesByFilter(category);
+	    _UIController2.default.Place.displayPlacesByFilter(category);
 	  });
 
 	  $(_UIController.DOM.backButton).on('click', function () {
-	    _UIController2.default.goBack();
+	    _UIController2.default.Screen.goTo(_UIController.DOM.homeScreen);
+	    _UIController2.default.Search.focus();
+	    _UIController2.default.Place.reset();
 	  });
-	}
+	} /* global $ document */
+
 
 	function init() {
-	  $(_UIController.DOM.homeScreen).show();
+	  _UIController2.default.Screen.goTo(_UIController.DOM.homeScreen);
+	  _UIController2.default.Search.focus();
 	  setupEventListeners();
 	}
 
@@ -122,20 +120,6 @@
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = {
-	  placeId: '',
-	  places: []
-	};
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -144,7 +128,7 @@
 	  value: true
 	});
 
-	var _autocomplete = __webpack_require__(3);
+	var _autocomplete = __webpack_require__(2);
 
 	Object.defineProperty(exports, 'autocomplete', {
 	  enumerable: true,
@@ -153,7 +137,7 @@
 	  }
 	});
 
-	var _getLatLong = __webpack_require__(5);
+	var _getLatLong = __webpack_require__(4);
 
 	Object.defineProperty(exports, 'getLatLong', {
 	  enumerable: true,
@@ -165,7 +149,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -174,7 +158,7 @@
 	  value: true
 	});
 
-	var _apis = __webpack_require__(4);
+	var _apis = __webpack_require__(3);
 
 	exports.default = function (text) {
 	  return new Promise(function (resolve, reject) {
@@ -198,7 +182,7 @@
 	};
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -214,7 +198,7 @@
 	exports.service = service;
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -223,7 +207,7 @@
 	  value: true
 	});
 
-	var _apis = __webpack_require__(4);
+	var _apis = __webpack_require__(3);
 
 	exports.default = function (placeId) {
 	  return new Promise(function (resolve) {
@@ -243,7 +227,7 @@
 	};
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -251,46 +235,58 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.Place = exports.Search = exports.DOM = undefined;
+	exports.DOM = undefined;
 
-	var _Search = __webpack_require__(7);
-
-	Object.defineProperty(exports, 'Search', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_Search).default;
-	  }
-	});
-
-	var _Place = __webpack_require__(9);
-
-	Object.defineProperty(exports, 'Place', {
-	  enumerable: true,
-	  get: function get() {
-	    return _interopRequireDefault(_Place).default;
-	  }
-	});
-
-	var _DOM = __webpack_require__(8);
+	var _DOM = __webpack_require__(6);
 
 	var _DOM2 = _interopRequireDefault(_DOM);
 
+	var _Screen = __webpack_require__(7);
+
+	var _Screen2 = _interopRequireDefault(_Screen);
+
+	var _Search = __webpack_require__(8);
+
+	var _Search2 = _interopRequireDefault(_Search);
+
+	var _Place = __webpack_require__(9);
+
+	var _Place2 = _interopRequireDefault(_Place);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.DOM = _DOM2.default; /* global $ */
-
+	/* global $ */
+	exports.DOM = _DOM2.default;
 	exports.default = {
-	  goBack: function goBack() {
-	    $(_DOM2.default.screens).hide();
-	    $(_DOM2.default.homeScreen).show();
-	    $(_DOM2.default.placeResults).empty();
-	  },
-	  placeClicked: function placeClicked(place) {
-	    $(_DOM2.default.screens).hide();
-	    $(_DOM2.default.placeScreen).show();
-	    $(_DOM2.default.placeName).text(place.name);
-	  }
+	  Screen: _Screen2.default,
+	  Search: _Search2.default,
+	  Place: _Place2.default
 	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var DOM = {
+	  screens: '.screen',
+	  homeScreen: '.home.screen',
+	  placeScreen: '.place.screen',
+	  placeSearch: '.place-search',
+	  backButton: '.back-btn',
+	  searchResults: '.results__list',
+	  searchResult: '.results__item',
+	  progressBar: '.progress',
+	  categories: '.category',
+	  placeName: '.place__name',
+	  placeResults: '.place__results'
+	};
+
+	exports.default = DOM;
 
 /***/ },
 /* 7 */
@@ -302,56 +298,69 @@
 	  value: true
 	});
 
-	var _DOM = __webpack_require__(8);
+	var _DOM = __webpack_require__(6);
 
 	var _DOM2 = _interopRequireDefault(_DOM);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function showScreen(selector) {
+	  $(_DOM2.default.screens).hide();
+	  $(selector).show();
+	} /* global $ */
 	exports.default = {
-	  hideResults: function hideResults() {
-	    $(_DOM2.default.searchResults).hide();
-	  },
-	  clearResults: function clearResults() {
-	    $(_DOM2.default.searchResults).empty();
-	  },
-	  displayResults: function displayResults(results) {
-	    var $searchResults = $(_DOM2.default.searchResults);
-	    $searchResults.empty();
-
-	    results.forEach(function (result) {
-	      $searchResults.append('<a href="#!" class="collection-item ' + _DOM2.default.searchResult.slice(1) + '" data-place-id="' + result.id + '">\n          ' + result.name + '\n        </a>');
-	    });
-
-	    $searchResults.show();
+	  goTo: function goTo(screen) {
+	    showScreen(screen);
 	  }
-	}; /* global $ */
+	};
 
 /***/ },
 /* 8 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var DOM = {
-	  screens: '.screen',
-	  homeScreen: '.screen.home',
-	  placeSearch: '.place-search',
-	  backButton: '.back-btn',
-	  searchResults: '.results',
-	  searchResult: '.results__item',
-	  placeScreen: '.screen__place',
-	  placeName: '.place__name',
-	  progressBar: '.progress',
-	  categorySelector: '.category-selector',
-	  placeResults: '.place__results',
-	  place: '.place'
-	};
 
-	exports.default = DOM;
+	var _DOM = __webpack_require__(6);
+
+	var _DOM2 = _interopRequireDefault(_DOM);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function hideResults() {
+	  $(_DOM2.default.searchResults).hide();
+	} /* global $ */
+
+
+	function clearResults() {
+	  $(_DOM2.default.searchResults).empty();
+	}
+
+	exports.default = {
+	  hideResults: hideResults,
+	  clearResults: clearResults,
+	  focus: function focus() {
+	    $(_DOM2.default.placeSearch).focus();
+	  },
+	  displayResults: function displayResults(results) {
+	    var $searchResults = $(_DOM2.default.searchResults);
+	    $searchResults.empty();
+
+	    results.forEach(function (result) {
+	      $searchResults.append('<li class="' + _DOM2.default.searchResult.slice(1) + '" data-place-id="' + result.id + '">\n          <span>' + result.name + '</span>\n        </li>');
+	    });
+
+	    $searchResults.show();
+	  },
+	  clear: function clear() {
+	    $(_DOM2.default.placeSearch).val('');
+	    clearResults();
+	    hideResults();
+	  }
+	};
 
 /***/ },
 /* 9 */
@@ -363,36 +372,62 @@
 	  value: true
 	});
 
-	var _state = __webpack_require__(1);
+	var _state = __webpack_require__(10);
 
 	var _state2 = _interopRequireDefault(_state);
 
-	var _DOM = __webpack_require__(8);
+	var _DOM = __webpack_require__(6);
 
 	var _DOM2 = _interopRequireDefault(_DOM);
 
-	var _Place = __webpack_require__(10);
+	var _Place = __webpack_require__(11);
 
 	var _Place2 = _interopRequireDefault(_Place);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = {
-	  hideProgress: function hideProgress() {
+	var progressVisible = true; /* global $ */
+
+
+	function toggleProgress() {
+	  console.log(progressVisible);
+	  if (progressVisible) {
+	    progressVisible = false;
 	    $(_DOM2.default.progressBar).hide();
-	  },
+	  } else {
+	    progressVisible = true;
+	    $(_DOM2.default.progressBar).show();
+	  }
+	}
+
+	function setPlaceName(name) {
+	  $(_DOM2.default.placeName).text(name);
+	}
+
+	function clearCategories() {
+	  $(_DOM2.default.categories).remove();
+	}
+
+	function clearPlaces() {
+	  $(_DOM2.default.placeResults).empty();
+	}
+
+	exports.default = {
+	  setPlaceName: setPlaceName,
+	  toggleProgress: toggleProgress,
 	  displayPlaces: function displayPlaces(places) {
 	    var $placeResults = $(_DOM2.default.placeResults);
-
-	    var categories = places.map(function (place) {
+	    var placeCategories = places.map(function (place) {
 	      return place.category;
 	    });
-	    categories = categories.filter(function (cat, i) {
-	      return categories.indexOf(cat) === i;
+	    var categories = placeCategories.filter(function (cat, i) {
+	      return placeCategories.indexOf(cat) === i;
 	    });
 
+	    clearCategories();
+
 	    categories.forEach(function (cat) {
-	      return $placeResults.before('<a class="category-selector waves-effect waves-teal btn-flat btn">' + cat + '</a>');
+	      return $placeResults.before('<a class="category waves-effect waves-teal btn-flat btn">' + cat + '</a>');
 	    });
 
 	    _state2.default.places = places.map(function (place) {
@@ -431,11 +466,29 @@
 	        $placeResults.find('.row').last().append(place.$element);
 	      }
 	    });
+	  },
+	  reset: function reset() {
+	    toggleProgress();
+	    clearCategories();
+	    clearPlaces();
 	  }
-	}; /* global $ */
+	};
 
 /***/ },
 /* 10 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  places: []
+	};
+
+/***/ },
+/* 11 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -494,7 +547,7 @@
 	exports.default = Place;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -503,7 +556,7 @@
 	  value: true
 	});
 
-	var _attractions = __webpack_require__(12);
+	var _attractions = __webpack_require__(13);
 
 	function parseIcon(size, icon) {
 	  return icon.prefix + 'bg_' + size + icon.suffix;
@@ -577,7 +630,7 @@
 	};
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -586,7 +639,7 @@
 	  value: true
 	});
 
-	var _getAttractions = __webpack_require__(13);
+	var _getAttractions = __webpack_require__(14);
 
 	Object.defineProperty(exports, 'getAttractions', {
 	  enumerable: true,
@@ -598,7 +651,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -607,7 +660,7 @@
 	  value: true
 	});
 
-	var _jquery = __webpack_require__(14);
+	var _jquery = __webpack_require__(15);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
@@ -634,7 +687,7 @@
 	};
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!

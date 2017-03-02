@@ -1,16 +1,15 @@
 const DOM = {
   screens: '.screen',
-  homeScreen: '.screen.home',
+  homeScreen: '.home.screen',
+  placeScreen: '.place.screen',
   placeSearch: '.place-search',
   backButton: '.back-btn',
-  searchResults: '.results',
+  searchResults: '.results__list',
   searchResult: '.results__item',
-  placeScreen: '.screen__place',
-  placeName: '.place__name',
   progressBar: '.progress',
-  categorySelector: '.category-selector',
+  categories: '.category',
+  placeName: '.place__name',
   placeResults: '.place__results',
-  place: '.place',
 };
 
 export default DOM;

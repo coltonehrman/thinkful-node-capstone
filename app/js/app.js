@@ -1,7 +1,6 @@
 /* global $ document */
-import state from './modules/state';
 import { autocomplete, getLatLong } from './lib/google';
-import UIController, { DOM, Search, Place } from './controllers/UIController';
+import UIController, { DOM } from './controllers/UIController';
 import AttractionsController from './controllers/AttractionsController';
 
 function setupEventListeners() {
@@ -10,52 +9,54 @@ function setupEventListeners() {
   $placeSearch.on('keyup', () => {
     const search = $placeSearch.val().trim();
     if (search === '') {
-      Search.hideResults();
+      UIController.Search.hideResults();
     } else {
-      Search.clearResults();
+      UIController.Search.clearResults();
       autocomplete(search).then(results =>
-        Search.displayResults(results),
+        UIController.Search.displayResults(results),
       ).catch(() =>
-        Search.hideResults(),
+        UIController.Search.hideResults(),
       );
     }
   });
 
   $(document).on('click', DOM.searchResult, (e) => {
-    const $place = $(e.target);
+    const $place = $(e.target).parents(DOM.searchResult);
     const name = $place.text().trim();
     const placeId = $place.data('place-id').trim();
-    state.placeId = placeId;
 
-    UIController.placeClicked({
-      name, placeId,
-    });
+    UIController.Search.clear();
+    UIController.Place.setPlaceName(name);
+    UIController.Screen.goTo(DOM.placeScreen);
 
-    getLatLong(state.placeId).then((loc) => {
+    getLatLong(placeId).then((loc) => {
       AttractionsController.findAttractions(loc).then((attractions) => {
-        Place.hideProgress();
-        Place.displayPlaces(attractions);
+        UIController.Place.toggleProgress();
+        UIController.Place.displayPlaces(attractions);
       });
     });
   });
 
-  $(document).on('click', DOM.categorySelector, (e) => {
-    const $categories = $(DOM.categorySelector);
+  $(document).on('click', DOM.categories, (e) => {
+    const $categories = $(DOM.categories);
     const $target = $(e.target);
     const category = $target.text();
 
     $categories.addClass('btn-flat');
     $target.removeClass('btn-flat');
-    Place.displayPlacesByFilter(category);
+    UIController.Place.displayPlacesByFilter(category);
   });
 
   $(DOM.backButton).on('click', () => {
-    UIController.goBack();
+    UIController.Screen.goTo(DOM.homeScreen);
+    UIController.Search.focus();
+    UIController.Place.reset();
   });
 }
 
 function init() {
-  $(DOM.homeScreen).show();
+  UIController.Screen.goTo(DOM.homeScreen);
+  UIController.Search.focus();
   setupEventListeners();
 }
 

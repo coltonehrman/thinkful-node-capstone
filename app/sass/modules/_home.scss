@@ -1,0 +1,9 @@
+.home {
+  & .container {
+    height: 100%;
+
+    & nav {
+      margin-top: 25px;
+    }
+  }
+}

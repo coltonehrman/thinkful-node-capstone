@@ -419,14 +419,26 @@ template {
 * {
   box-sizing: border-box; }
 
+html, body {
+  height: 100%; }
+
 body {
   background-color: #eaeaea; }
 
 .screen {
-  display: none; }
+  display: none;
+  height: 100%; }
+  .screen .valign {
+    width: 100%; }
 
-.results {
-  display: none; }
+.home .container {
+  height: 100%; }
+  .home .container nav {
+    margin-top: 25px; }
+
+.results__list {
+  display: none;
+  margin-top: 10px; }
 
 .place__name {
   margin: 0;
