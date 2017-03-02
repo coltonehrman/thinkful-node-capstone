@@ -15,6 +15,8 @@ function setupEventListeners() {
       Search.clearResults();
       autocomplete(search).then(results =>
         Search.displayResults(results),
+      ).catch(() =>
+        Search.hideResults(),
       );
     }
   });
@@ -31,7 +33,7 @@ function setupEventListeners() {
 
     getLatLong(state.placeId).then((loc) => {
       AttractionsController.findAttractions(loc).then((attractions) => {
-        console.log(attractions);
+        Place.hideProgress();
         Place.displayPlaces(attractions);
       });
     });
@@ -45,9 +47,10 @@ function setupEventListeners() {
     $categories.addClass('btn-flat');
     $target.removeClass('btn-flat');
     Place.displayPlacesByFilter(category);
+  });
 
-    // placesToShow.forEach(place => place.show());
-    // placesToHide.forEach(place => place.hide());
+  $(DOM.backButton).on('click', () => {
+    UIController.goBack();
   });
 }
 

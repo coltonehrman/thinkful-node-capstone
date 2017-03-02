@@ -29,8 +29,18 @@
     </div>
 
     <div class="container screen screen__place">
-      <h2 class="place__name"></h2>
-      <div class="place__results row"></div>
+      <nav>
+        <div class="nav-wrapper">
+          <p class="place__name brand-logo left"></p>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a class="back-btn" href="#!">Back</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="place__results row">
+        <div class="progress">
+          <div class="indeterminate"></div>
+        </div>
     </div>
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>

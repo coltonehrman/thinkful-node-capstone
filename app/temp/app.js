@@ -74,6 +74,8 @@
 	      _UIController.Search.clearResults();
 	      (0, _google.autocomplete)(search).then(function (results) {
 	        return _UIController.Search.displayResults(results);
+	      }).catch(function () {
+	        return _UIController.Search.hideResults();
 	      });
 	    }
 	  });
@@ -90,7 +92,7 @@
 
 	    (0, _google.getLatLong)(_state2.default.placeId).then(function (loc) {
 	      _AttractionsController2.default.findAttractions(loc).then(function (attractions) {
-	        console.log(attractions);
+	        _UIController.Place.hideProgress();
 	        _UIController.Place.displayPlaces(attractions);
 	      });
 	    });
@@ -104,9 +106,10 @@
 	    $categories.addClass('btn-flat');
 	    $target.removeClass('btn-flat');
 	    _UIController.Place.displayPlacesByFilter(category);
+	  });
 
-	    // placesToShow.forEach(place => place.show());
-	    // placesToHide.forEach(place => place.hide());
+	  $(_UIController.DOM.backButton).on('click', function () {
+	    _UIController2.default.goBack();
 	  });
 	}
 
@@ -174,18 +177,22 @@
 	var _apis = __webpack_require__(4);
 
 	exports.default = function (text) {
-	  return new Promise(function (resolve) {
+	  return new Promise(function (resolve, reject) {
 	    _apis.autocomplete.getPlacePredictions({
 	      input: text,
 	      types: ['(cities)']
 	    }, function (data) {
-	      var results = data.map(function (place) {
-	        return {
-	          name: place.description,
-	          id: place.place_id
-	        };
-	      });
-	      resolve(results);
+	      if (data !== null) {
+	        var results = data.map(function (place) {
+	          return {
+	            name: place.description,
+	            id: place.place_id
+	          };
+	        });
+	        resolve(results);
+	      } else {
+	        reject();
+	      }
 	    });
 	  });
 	};
@@ -273,12 +280,16 @@
 	exports.DOM = _DOM2.default; /* global $ */
 
 	exports.default = {
+	  goBack: function goBack() {
+	    $(_DOM2.default.screens).hide();
+	    $(_DOM2.default.homeScreen).show();
+	    $(_DOM2.default.placeResults).empty();
+	  },
 	  placeClicked: function placeClicked(place) {
 	    $(_DOM2.default.screens).hide();
 	    $(_DOM2.default.placeScreen).show();
 	    $(_DOM2.default.placeName).text(place.name);
-	  },
-	  loadAttractions: function loadAttractions(attractions) {}
+	  }
 	};
 
 /***/ },
@@ -329,10 +340,12 @@
 	  screens: '.screen',
 	  homeScreen: '.screen.home',
 	  placeSearch: '.place-search',
+	  backButton: '.back-btn',
 	  searchResults: '.results',
 	  searchResult: '.results__item',
 	  placeScreen: '.screen__place',
 	  placeName: '.place__name',
+	  progressBar: '.progress',
 	  categorySelector: '.category-selector',
 	  placeResults: '.place__results',
 	  place: '.place'
@@ -365,6 +378,9 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = {
+	  hideProgress: function hideProgress() {
+	    $(_DOM2.default.progressBar).hide();
+	  },
 	  displayPlaces: function displayPlaces(places) {
 	    var $placeResults = $(_DOM2.default.placeResults);
 
@@ -381,6 +397,14 @@
 
 	    _state2.default.places = places.map(function (place) {
 	      return new _Place2.default(place);
+	    }).sort(function (a, b) {
+	      if (typeof a.place.photo !== 'undefined') {
+	        if (typeof b.place.photo !== 'undefined') {
+	          return 0;
+	        }
+	        return -1;
+	      }
+	      return 1;
 	    });
 	    _state2.default.places.forEach(function (place, i) {
 	      if (i % 2 === 0) {
@@ -389,12 +413,11 @@
 	        $placeResults.find('.row').last().append(place.$element);
 	      }
 	    });
-	    // $placeResults.append(state.places.map(place => place.$element));
 	  },
 	  displayPlacesByFilter: function displayPlacesByFilter(category) {
 	    var $placeResults = $(_DOM2.default.placeResults);
 	    var placesToShow = _state2.default.places.filter(function (place) {
-	      return place.category === category;
+	      return place.place.category === category;
 	    });
 
 	    if ($placeResults.children().length >= 1) {
@@ -431,40 +454,35 @@
 	  function Place(place) {
 	    _classCallCheck(this, Place);
 
-	    this.category = place.category;
-	    this.name = place.name;
-	    this.address = place.address;
-	    this.hours = place.hours;
-	    this.hidden = false;
+	    this.place = place;
 	    this.$element = this.createElement();
 	  }
 
 	  _createClass(Place, [{
-	    key: 'hide',
-	    value: function hide() {
-	      if (!this.hidden) {
-	        this.$element.fadeOut();
-	        this.hidden = true;
-	      }
-	    }
-	  }, {
-	    key: 'show',
-	    value: function show() {
-	      if (this.hidden) {
-	        this.$element.fadeIn();
-	        this.hidden = false;
-	      }
-	    }
-	  }, {
 	    key: 'createElement',
 	    value: function createElement() {
-	      var html = '\n      <div class="place col m6">\n        <div class="card">\n          <div class="card-content grey-text">\n            <div class="card-title">' + this.name + '</div>\n            <p>' + this.address + '</p>';
-
-	      if (typeof this.hours !== 'undefined') {
-	        html += '<p>' + this.hours + '</p>';
+	      var html = '\n      <div class="place col m6">\n        <div class="card">';
+	      if (typeof this.place.photo !== 'undefined') {
+	        html += '\n          <div class="card-image waves-effect waves-block waves-light">\n            <img class="activator" src="' + this.place.photo + '">\n          </div>';
 	      }
+	      html += '\n          <div class="card-content grey-text">\n            <div class="card-title">\n              <div class="chip right">\n                <img src="' + this.place.icon + '" alt="Contact Person">\n                ' + this.place.category + '\n              </div>\n              ' + this.place.name;
+	      if (typeof this.place.hours !== 'undefined') {
+	        html += '\n              <p class="place__hours">' + this.place.hours + '</p>';
+	      }
+	      html += '\n            </div>\n            <blockquote>' + this.place.address.split(', ').join('<br>') + '</blockquote>';
 
-	      html += '\n          </div>\n          <div class="card-action">\n            <a href="#">This is a link</a>\n            <a href="#">This is a link</a>\n          </div>\n        </div>\n      </div>';
+	      html += '\n            </div>';
+	      if (typeof this.place.price !== 'undefined' || typeof this.place.rating !== 'undefined') {
+	        html += '\n          <div class="card-action">';
+	        if (typeof this.place.price !== 'undefined') {
+	          html += '\n              <p class="place__price place__price--' + this.place.price.length + ' right btn-floating red">' + this.place.price + '</p>';
+	        }
+	        if (typeof this.place.rating !== 'undefined') {
+	          html += '\n              <p class="place__rating">' + this.place.rating + '</p>';
+	        }
+	        html += '\n          </div>';
+	      }
+	      html += '\n        </div>\n      </div>';
 
 	      return $(html);
 	    }
@@ -489,6 +507,10 @@
 
 	function parseIcon(size, icon) {
 	  return icon.prefix + 'bg_' + size + icon.suffix;
+	}
+
+	function parsePhoto(size, photo) {
+	  return '' + photo.prefix + size + photo.suffix;
 	}
 
 	function parseCategory(iconUrl) {
@@ -522,7 +544,7 @@
 	  }
 
 	  if (place.venue.photos.count !== 0) {
-	    // console.log(place.venue.photos);
+	    data.photo = parsePhoto('500x300', place.venue.photos.groups[0].items[0]);
 	  }
 
 	  if (typeof place.venue.price !== 'undefined') {

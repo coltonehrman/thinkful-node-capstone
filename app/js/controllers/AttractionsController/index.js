@@ -4,6 +4,10 @@ function parseIcon(size, icon) {
   return `${icon.prefix}bg_${size}${icon.suffix}`;
 }
 
+function parsePhoto(size, photo) {
+  return `${photo.prefix}${size}${photo.suffix}`;
+}
+
 function parseCategory(iconUrl) {
   const category = iconUrl.split('/').slice(-2, -1)[0];
   return category.split('_').map(cat => `${cat[0].toUpperCase()}${cat.slice(1)}`).join(' ');
@@ -33,7 +37,7 @@ function parsePlace(place) {
   }
 
   if (place.venue.photos.count !== 0) {
-    // console.log(place.venue.photos);
+    data.photo = parsePhoto('500x300', place.venue.photos.groups[0].items[0]);
   }
 
   if (typeof place.venue.price !== 'undefined') {

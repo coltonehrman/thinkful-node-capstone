@@ -3,12 +3,15 @@ import DOM from './DOM';
 
 export { DOM };
 export default {
+  goBack() {
+    $(DOM.screens).hide();
+    $(DOM.homeScreen).show();
+    $(DOM.placeResults).empty();
+  },
   placeClicked(place) {
     $(DOM.screens).hide();
     $(DOM.placeScreen).show();
     $(DOM.placeName).text(place.name);
-  },
-  loadAttractions(attractions) {
   },
 };
 export { default as Search } from './Search';

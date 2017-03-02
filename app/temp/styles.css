@@ -428,10 +428,31 @@ body {
 .results {
   display: none; }
 
+.place__name {
+  margin: 0;
+  margin-left: 15px; }
+
 .place__results .place .card {
-  background-color: #fff;
-  min-height: 220px; }
-  .place__results .place .card .card-content {
-    height: 170px; }
-  .place__results .place .card .card-action a {
-    color: #26a69a !important; }
+  background-color: #fff; }
+  .place__results .place .card .card-action {
+    overflow: auto; }
+    .place__results .place .card .card-action a {
+      color: #26a69a !important; }
+
+.place__hours {
+  font-size: 1rem;
+  font-style: italic; }
+
+.place__rating {
+  font-style: italic; }
+
+.place__price {
+  margin: 0; }
+  .place__price--1 {
+    padding-left: 16px; }
+  .place__price--2 {
+    padding-left: 12px; }
+  .place__price--3 {
+    padding-left: 8px; }
+  .place__price--4 {
+    padding-left: 4px; }
