@@ -2,6 +2,14 @@
   &__name {
     margin: 0;
     margin-left: 15px;
+
+    @media only screen and (max-width: 540px) {
+      font-size: 1.5rem !important;
+    }
+
+    @media only screen and (max-width: 390px) {
+      font-size: 1rem !important;
+    }
   }
 
   &__results {

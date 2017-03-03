@@ -443,6 +443,12 @@ body {
 .place__name {
   margin: 0;
   margin-left: 15px; }
+  @media only screen and (max-width: 540px) {
+    .place__name {
+      font-size: 1.5rem !important; } }
+  @media only screen and (max-width: 390px) {
+    .place__name {
+      font-size: 1rem !important; } }
 
 .place__results .place .card {
   background-color: #fff; }
