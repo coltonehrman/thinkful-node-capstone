@@ -425,6 +425,9 @@ html, body {
 body {
   background-color: #eaeaea; }
 
+.map {
+  height: 100%; }
+
 .screen {
   display: none;
   height: 100%; }
@@ -440,6 +443,9 @@ body {
   display: none;
   margin-top: 10px; }
 
+.place > nav {
+  border-bottom: 3px solid #26a69a; }
+
 .place__name {
   margin: 0;
   margin-left: 15px; }
@@ -450,11 +456,11 @@ body {
     .place__name {
       font-size: 1rem !important; } }
 
-.place__results .place .card {
+.place__item .card {
   background-color: #fff; }
-  .place__results .place .card .card-action {
+  .place__item .card .card-action {
     overflow: auto; }
-    .place__results .place .card .card-action a {
+    .place__item .card .card-action a {
       color: #26a69a !important; }
 
 .place__hours {

@@ -1,4 +1,7 @@
 .place {
+  & > nav {
+    border-bottom: 3px solid $main-green;
+  }
   &__name {
     margin: 0;
     margin-left: 15px;
@@ -12,8 +15,8 @@
     }
   }
 
-  &__results {
-    & .place .card {
+  &__item {
+    & .card {
       background-color: #fff;
 
       & .card-action {

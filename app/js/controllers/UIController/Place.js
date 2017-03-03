@@ -6,7 +6,6 @@ import Place from '../../components/Place';
 let progressVisible = true;
 
 function toggleProgress() {
-  console.log(progressVisible);
   if (progressVisible) {
     progressVisible = false;
     $(DOM.progressBar).hide();
@@ -18,6 +17,19 @@ function toggleProgress() {
 
 function setPlaceName(name) {
   $(DOM.placeName).text(name);
+}
+
+function appendPlaces(places) {
+  const $placeResults = $(DOM.placeResults);
+  places.forEach((place, i) => {
+    if (i % 2 === 0) {
+      const $row = $('<div class="row"></div>');
+      $row.append(place.$element);
+      $placeResults.append($row);
+    } else {
+      $placeResults.find('.row').last().append(place.$element);
+    }
+  });
 }
 
 function clearCategories() {
@@ -53,13 +65,8 @@ export default {
       }
       return 1;
     });
-    state.places.forEach((place, i) => {
-      if (i % 2 === 0) {
-        $placeResults.append($(`<div class="row"><div class="place col m6">${place.$element.html()}</div></div>`));
-      } else {
-        $placeResults.find('.row').last().append(place.$element);
-      }
-    });
+
+    appendPlaces(state.places);
   },
   displayPlacesByFilter(category) {
     const $placeResults = $(DOM.placeResults);
@@ -71,13 +78,10 @@ export default {
       $placeResults.empty();
     }
 
-    placesToShow.forEach((place, i) => {
-      if (i % 2 === 0) {
-        $placeResults.append($(`<div class="row"><div class="place col m6">${place.$element.html()}</div></div>`));
-      } else {
-        $placeResults.find('.row').last().append(place.$element);
-      }
-    });
+    appendPlaces(placesToShow);
+  },
+  showMap($place) {
+    state.places.find(place => place.$element.is($place)).createMap();
   },
   reset() {
     toggleProgress();

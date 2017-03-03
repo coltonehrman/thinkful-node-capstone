@@ -107,7 +107,12 @@
 	    _UIController2.default.Search.focus();
 	    _UIController2.default.Place.reset();
 	  });
-	} /* global $ document */
+
+	  $(document).on('click', _UIController.DOM.googleMapActivator, function (e) {
+	    var $place = $(e.target).parents(_UIController.DOM.place);
+	    _UIController2.default.Place.showMap($place);
+	  });
+	} /* global google $ document */
 
 
 	function init() {
@@ -282,6 +287,8 @@
 	  searchResult: '.results__item',
 	  progressBar: '.progress',
 	  categories: '.category',
+	  googleMapActivator: '.activator',
+	  place: '.place__item',
 	  placeName: '.place__name',
 	  placeResults: '.place__results'
 	};
@@ -390,7 +397,6 @@
 
 
 	function toggleProgress() {
-	  console.log(progressVisible);
 	  if (progressVisible) {
 	    progressVisible = false;
 	    $(_DOM2.default.progressBar).hide();
@@ -402,6 +408,19 @@
 
 	function setPlaceName(name) {
 	  $(_DOM2.default.placeName).text(name);
+	}
+
+	function appendPlaces(places) {
+	  var $placeResults = $(_DOM2.default.placeResults);
+	  places.forEach(function (place, i) {
+	    if (i % 2 === 0) {
+	      var $row = $('<div class="row"></div>');
+	      $row.append(place.$element);
+	      $placeResults.append($row);
+	    } else {
+	      $placeResults.find('.row').last().append(place.$element);
+	    }
+	  });
 	}
 
 	function clearCategories() {
@@ -441,13 +460,8 @@
 	      }
 	      return 1;
 	    });
-	    _state2.default.places.forEach(function (place, i) {
-	      if (i % 2 === 0) {
-	        $placeResults.append($('<div class="row"><div class="place col m6">' + place.$element.html() + '</div></div>'));
-	      } else {
-	        $placeResults.find('.row').last().append(place.$element);
-	      }
-	    });
+
+	    appendPlaces(_state2.default.places);
 	  },
 	  displayPlacesByFilter: function displayPlacesByFilter(category) {
 	    var $placeResults = $(_DOM2.default.placeResults);
@@ -459,13 +473,12 @@
 	      $placeResults.empty();
 	    }
 
-	    placesToShow.forEach(function (place, i) {
-	      if (i % 2 === 0) {
-	        $placeResults.append($('<div class="row"><div class="place col m6">' + place.$element.html() + '</div></div>'));
-	      } else {
-	        $placeResults.find('.row').last().append(place.$element);
-	      }
-	    });
+	    appendPlaces(placesToShow);
+	  },
+	  showMap: function showMap($place) {
+	    _state2.default.places.find(function (place) {
+	      return place.$element.is($place);
+	    }).createMap();
 	  },
 	  reset: function reset() {
 	    toggleProgress();
@@ -501,7 +514,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	/* global $ */
+	/* global google $ */
 
 	var Place = function () {
 	  function Place(place) {
@@ -509,12 +522,33 @@
 
 	    this.place = place;
 	    this.$element = this.createElement();
+	    this.map = null;
 	  }
 
 	  _createClass(Place, [{
+	    key: 'createMap',
+	    value: function createMap() {
+	      if (!this.map) {
+	        var coords = {
+	          lat: this.place.coords.lat,
+	          lng: this.place.coords.lng
+	        };
+	        var map = new google.maps.Map(this.$element.find('.map').get(0), {
+	          zoom: 15,
+	          center: coords
+	        });
+	        var marker = new google.maps.Marker({
+	          position: coords,
+	          map: map
+	        });
+	        this.map = map;
+	        this.marker = marker;
+	      }
+	    }
+	  }, {
 	    key: 'createElement',
 	    value: function createElement() {
-	      var html = '\n      <div class="place col m6">\n        <div class="card">';
+	      var html = '\n      <div class="place__item col m6">\n        <div class="card">';
 	      if (typeof this.place.photo !== 'undefined') {
 	        html += '\n          <div class="card-image waves-effect waves-block waves-light">\n            <img class="activator" src="' + this.place.photo + '">\n          </div>';
 	      }
@@ -524,7 +558,7 @@
 	      }
 	      html += '\n            </div>\n            <blockquote>' + this.place.address.split(', ').join('<br>') + '</blockquote>';
 
-	      html += '\n            </div>';
+	      html += '\n            </div>\n            <div class="card-reveal">\n              <span class="card-title grey-text">' + this.place.name + '<i class="material-icons right">close</i></span>\n              <div class="map"></div>\n            </div>';
 	      if (typeof this.place.price !== 'undefined' || typeof this.place.rating !== 'undefined') {
 	        html += '\n          <div class="card-action">';
 	        if (typeof this.place.price !== 'undefined') {

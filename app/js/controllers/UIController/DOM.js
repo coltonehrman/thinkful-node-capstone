@@ -8,6 +8,8 @@ const DOM = {
   searchResult: '.results__item',
   progressBar: '.progress',
   categories: '.category',
+  googleMapActivator: '.activator',
+  place: '.place__item',
   placeName: '.place__name',
   placeResults: '.place__results',
 };

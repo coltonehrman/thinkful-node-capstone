@@ -1,4 +1,4 @@
-/* global $ document */
+/* global google $ document */
 import { autocomplete, getLatLong } from './lib/google';
 import UIController, { DOM } from './controllers/UIController';
 import AttractionsController from './controllers/AttractionsController';
@@ -51,6 +51,11 @@ function setupEventListeners() {
     UIController.Screen.goTo(DOM.homeScreen);
     UIController.Search.focus();
     UIController.Place.reset();
+  });
+
+  $(document).on('click', DOM.googleMapActivator, (e) => {
+    const $place = $(e.target).parents(DOM.place);
+    UIController.Place.showMap($place);
   });
 }
 
