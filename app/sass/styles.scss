@@ -1,7 +1,7 @@
 /*Main css file to import modules and packages*/
 @import 'normalize';
 @include normalize();
-
+@import './lib/fontawesome-stars-o';
 @import './base/_variables';
 @import './base/_globals';
 @import './modules/_screen';

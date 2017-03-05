@@ -1,18 +1,21 @@
 /* global google $ */
+import { DOM } from '../controllers/UIController';
 
 export default class Place {
   constructor(place) {
     this.place = place;
     this.$element = this.createElement();
+    this.createRating();
     this.map = null;
+    this.marker = null;
   }
 
   createMap() {
     if (!this.map) {
-      const coords = {
-        lat: this.place.coords.lat,
-        lng: this.place.coords.lng,
-      };
+      const coords = new google.maps.LatLng(
+        this.place.coords.lat,
+        this.place.coords.lng,
+      );
       const map = new google.maps.Map(this.$element.find('.map').get(0), {
         zoom: 15,
         center: coords,
@@ -23,12 +26,26 @@ export default class Place {
       });
       this.map = map;
       this.marker = marker;
+
+      google.maps.event.addListener(map, 'idle', () => {
+        map.setCenter(coords);
+      });
     }
+  }
+
+  createRating() {
+    const currentRating = this.$element.find(DOM.placeRating).data('current-rating');
+    this.$element.find(DOM.placeRating).barrating('show', {
+      theme: 'fontawesome-stars-o',
+      showSelectedRating: false,
+      initialRating: currentRating / 2,
+      readonly: true,
+    });
   }
 
   createElement() {
     let html = `
-      <div class="place__item col m6">
+      <div class="place__item col s12 m6">
         <div class="card">`;
     if (typeof this.place.photo !== 'undefined') {
       html += `
@@ -38,7 +55,8 @@ export default class Place {
     }
     html += `
           <div class="card-content grey-text">
-            <div class="card-title">
+            <div class="card-title activator">
+              <i class="material-icons right">more_vert</i></span>
               <div class="chip right">
                 <img src="${this.place.icon}" alt="Contact Person">
                 ${this.place.category}
@@ -56,7 +74,7 @@ export default class Place {
             </div>
             <div class="card-reveal">
               <span class="card-title grey-text">${this.place.name}<i class="material-icons right">close</i></span>
-              <div class="map"></div>
+              <div id="${this.id}" class="map"></div>
             </div>`;
     if (typeof this.place.price !== 'undefined' || typeof this.place.rating !== 'undefined') {
       html += `
@@ -67,7 +85,13 @@ export default class Place {
       }
       if (typeof this.place.rating !== 'undefined') {
         html += `
-              <p class="place__rating">${this.place.rating}</p>`;
+              <select class="place__rating" name="rating" data-current-rating="${this.place.rating}">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>`;
       }
       html += `
           </div>`;

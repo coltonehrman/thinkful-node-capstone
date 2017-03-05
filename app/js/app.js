@@ -1,4 +1,4 @@
-/* global google $ document */
+/* global window google $ document */
 import { autocomplete, getLatLong } from './lib/google';
 import UIController, { DOM } from './controllers/UIController';
 import AttractionsController from './controllers/AttractionsController';
@@ -56,6 +56,7 @@ function setupEventListeners() {
   $(document).on('click', DOM.googleMapActivator, (e) => {
     const $place = $(e.target).parents(DOM.place);
     UIController.Place.showMap($place);
+    window.currentMap = UIController.Place.getMap($place);
   });
 }
 

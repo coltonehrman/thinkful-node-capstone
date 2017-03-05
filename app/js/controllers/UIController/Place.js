@@ -44,7 +44,6 @@ export default {
   setPlaceName,
   toggleProgress,
   displayPlaces(places) {
-    const $placeResults = $(DOM.placeResults);
     const placeCategories = places.map(place => place.category);
     const categories = placeCategories.filter((cat, i) =>
       placeCategories.indexOf(cat) === i,
@@ -52,8 +51,8 @@ export default {
 
     clearCategories();
 
-    categories.forEach(cat => $placeResults.before(
-      `<a class="category waves-effect waves-teal btn-flat btn">${cat}</a>`,
+    categories.forEach(cat => $(DOM.categoryContainer).append(
+      `<a class="${DOM.categories.slice(1)} waves-effect waves-teal btn-flat btn">${cat}</a>`,
     ));
 
     state.places = places.map(place => new Place(place)).sort((a, b) => {
@@ -79,6 +78,9 @@ export default {
     }
 
     appendPlaces(placesToShow);
+  },
+  getMap($place) {
+    return state.places.find(place => place.$element.is($place)).map;
   },
   showMap($place) {
     state.places.find(place => place.$element.is($place)).createMap();

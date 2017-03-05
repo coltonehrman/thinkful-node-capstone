@@ -45,7 +45,7 @@ function parsePlace(place) {
   }
 
   if (typeof place.venue.rating !== 'undefined') {
-    data.rating = `${place.venue.rating} out of 10`;
+    data.rating = place.venue.rating;
   }
 
   return data;

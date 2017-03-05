@@ -1,10 +1,10 @@
 module.exports = {
   entry: {
-    app: './app/js/app.js'
+    app: './app/js/app.js',
   },
   output: {
     path: './app/temp/',
-    filename: '[name].js'
+    filename: '[name].js',
   },
   module: {
     loaders: [
@@ -12,8 +12,8 @@ module.exports = {
         loader: 'babel',
         query: { presets: ['es2015'] },
         test: /\.js$/,
-        exclude: /node_modules/
-      }
-    ]
-  }
+        exclude: /node_modules/,
+      },
+    ],
+  },
 };

@@ -18,6 +18,15 @@
   &__item {
     & .card {
       background-color: #fff;
+      min-height: 500px;
+
+      & .card-image {
+        overflow: visible;
+      }
+
+      & .card-content {
+        position: relative;
+      }
 
       & .card-action {
         overflow: auto;
@@ -27,6 +36,15 @@
         }
       }
     }
+  }
+
+  &__categories {
+    padding: 10px;
+    padding-bottom: 0;
+  }
+
+  &__category {
+    margin: 5px 10px;
   }
 
   &__hours {
@@ -39,6 +57,7 @@
   }
 
   &__price {
+    cursor: default;
     margin: 0;
     &--1 {
       padding-left: 16px;

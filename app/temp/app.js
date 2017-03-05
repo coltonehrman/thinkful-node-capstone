@@ -111,8 +111,9 @@
 	  $(document).on('click', _UIController.DOM.googleMapActivator, function (e) {
 	    var $place = $(e.target).parents(_UIController.DOM.place);
 	    _UIController2.default.Place.showMap($place);
+	    window.currentMap = _UIController2.default.Place.getMap($place);
 	  });
-	} /* global google $ document */
+	} /* global window google $ document */
 
 
 	function init() {
@@ -286,11 +287,13 @@
 	  searchResults: '.results__list',
 	  searchResult: '.results__item',
 	  progressBar: '.progress',
-	  categories: '.category',
+	  categoryContainer: '.place__categories',
+	  categories: '.place__category',
 	  googleMapActivator: '.activator',
 	  place: '.place__item',
 	  placeName: '.place__name',
-	  placeResults: '.place__results'
+	  placeResults: '.place__results',
+	  placeRating: '.place__rating'
 	};
 
 	exports.default = DOM;
@@ -435,7 +438,6 @@
 	  setPlaceName: setPlaceName,
 	  toggleProgress: toggleProgress,
 	  displayPlaces: function displayPlaces(places) {
-	    var $placeResults = $(_DOM2.default.placeResults);
 	    var placeCategories = places.map(function (place) {
 	      return place.category;
 	    });
@@ -446,7 +448,7 @@
 	    clearCategories();
 
 	    categories.forEach(function (cat) {
-	      return $placeResults.before('<a class="category waves-effect waves-teal btn-flat btn">' + cat + '</a>');
+	      return $(_DOM2.default.categoryContainer).append('<a class="' + _DOM2.default.categories.slice(1) + ' waves-effect waves-teal btn-flat btn">' + cat + '</a>');
 	    });
 
 	    _state2.default.places = places.map(function (place) {
@@ -475,6 +477,11 @@
 
 	    appendPlaces(placesToShow);
 	  },
+	  getMap: function getMap($place) {
+	    return _state2.default.places.find(function (place) {
+	      return place.$element.is($place);
+	    }).map;
+	  },
 	  showMap: function showMap($place) {
 	    _state2.default.places.find(function (place) {
 	      return place.$element.is($place);
@@ -502,7 +509,7 @@
 
 /***/ },
 /* 11 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -510,11 +517,12 @@
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* global google $ */
+
+
+	var _UIController = __webpack_require__(5);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	/* global google $ */
 
 	var Place = function () {
 	  function Place(place) {
@@ -522,17 +530,16 @@
 
 	    this.place = place;
 	    this.$element = this.createElement();
+	    this.createRating();
 	    this.map = null;
+	    this.marker = null;
 	  }
 
 	  _createClass(Place, [{
 	    key: 'createMap',
 	    value: function createMap() {
 	      if (!this.map) {
-	        var coords = {
-	          lat: this.place.coords.lat,
-	          lng: this.place.coords.lng
-	        };
+	        var coords = new google.maps.LatLng(this.place.coords.lat, this.place.coords.lng);
 	        var map = new google.maps.Map(this.$element.find('.map').get(0), {
 	          zoom: 15,
 	          center: coords
@@ -543,29 +550,44 @@
 	        });
 	        this.map = map;
 	        this.marker = marker;
+
+	        google.maps.event.addListener(map, 'idle', function () {
+	          map.setCenter(coords);
+	        });
 	      }
+	    }
+	  }, {
+	    key: 'createRating',
+	    value: function createRating() {
+	      var currentRating = this.$element.find(_UIController.DOM.placeRating).data('current-rating');
+	      this.$element.find(_UIController.DOM.placeRating).barrating('show', {
+	        theme: 'fontawesome-stars-o',
+	        showSelectedRating: false,
+	        initialRating: currentRating / 2,
+	        readonly: true
+	      });
 	    }
 	  }, {
 	    key: 'createElement',
 	    value: function createElement() {
-	      var html = '\n      <div class="place__item col m6">\n        <div class="card">';
+	      var html = '\n      <div class="place__item col s12 m6">\n        <div class="card">';
 	      if (typeof this.place.photo !== 'undefined') {
 	        html += '\n          <div class="card-image waves-effect waves-block waves-light">\n            <img class="activator" src="' + this.place.photo + '">\n          </div>';
 	      }
-	      html += '\n          <div class="card-content grey-text">\n            <div class="card-title">\n              <div class="chip right">\n                <img src="' + this.place.icon + '" alt="Contact Person">\n                ' + this.place.category + '\n              </div>\n              ' + this.place.name;
+	      html += '\n          <div class="card-content grey-text">\n            <div class="card-title activator">\n              <i class="material-icons right">more_vert</i></span>\n              <div class="chip right">\n                <img src="' + this.place.icon + '" alt="Contact Person">\n                ' + this.place.category + '\n              </div>\n              ' + this.place.name;
 	      if (typeof this.place.hours !== 'undefined') {
 	        html += '\n              <p class="place__hours">' + this.place.hours + '</p>';
 	      }
 	      html += '\n            </div>\n            <blockquote>' + this.place.address.split(', ').join('<br>') + '</blockquote>';
 
-	      html += '\n            </div>\n            <div class="card-reveal">\n              <span class="card-title grey-text">' + this.place.name + '<i class="material-icons right">close</i></span>\n              <div class="map"></div>\n            </div>';
+	      html += '\n            </div>\n            <div class="card-reveal">\n              <span class="card-title grey-text">' + this.place.name + '<i class="material-icons right">close</i></span>\n              <div id="' + this.id + '" class="map"></div>\n            </div>';
 	      if (typeof this.place.price !== 'undefined' || typeof this.place.rating !== 'undefined') {
 	        html += '\n          <div class="card-action">';
 	        if (typeof this.place.price !== 'undefined') {
 	          html += '\n              <p class="place__price place__price--' + this.place.price.length + ' right btn-floating red">' + this.place.price + '</p>';
 	        }
 	        if (typeof this.place.rating !== 'undefined') {
-	          html += '\n              <p class="place__rating">' + this.place.rating + '</p>';
+	          html += '\n              <select class="place__rating" name="rating" data-current-rating="' + this.place.rating + '">\n                <option value="1">1</option>\n                <option value="2">2</option>\n                <option value="3">3</option>\n                <option value="4">4</option>\n                <option value="5">5</option>\n              </select>';
 	        }
 	        html += '\n          </div>';
 	      }
@@ -639,7 +661,7 @@
 	  }
 
 	  if (typeof place.venue.rating !== 'undefined') {
-	    data.rating = place.venue.rating + ' out of 10';
+	    data.rating = place.venue.rating;
 	  }
 
 	  return data;
