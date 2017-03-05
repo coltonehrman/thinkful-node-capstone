@@ -6,7 +6,7 @@ const cssnano = require('gulp-cssnano');
 const uglify = require('gulp-uglify');
 
 gulp.task('deleteDocsFolder', () => {
-  del('./docs/');
+  del('./docs/**');
 });
 
 gulp.task('copyGeneralFiles', ['deleteDocsFolder'], () => {
