@@ -1,5 +1,7 @@
 .place {
   & > nav {
+    background: #67B26F;
+    background: linear-gradient(to left, #67B26F , #4ca2cd);
     border-bottom: 3px solid $main-green;
   }
   &__name {
@@ -18,7 +20,7 @@
   &__item {
     & .card {
       background-color: #fff;
-      min-height: 500px;
+      min-height: 610px;
 
       & .card-image {
         overflow: visible;
@@ -26,13 +28,27 @@
 
       & .card-content {
         position: relative;
+        min-height: 80%;
+      }
+
+      & .card-reveal {
+        overflow: hidden;
       }
 
       & .card-action {
+        bottom: 0;
+        min-height: 73px;
         overflow: auto;
+        position: absolute;
+        width: 100%;
+
+        & .br-wrapper {
+          margin-top: 10px;
+        }
 
         & a {
           color: $main-green !important;
+          margin-right: 15px !important;
         }
       }
     }

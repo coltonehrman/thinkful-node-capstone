@@ -74,7 +74,7 @@ export default class Place {
             </div>
             <div class="card-reveal">
               <span class="card-title grey-text">${this.place.name}<i class="material-icons right">close</i></span>
-              <div id="${this.id}" class="map"></div>
+              <div class="map"></div>
             </div>`;
     if (typeof this.place.price !== 'undefined' || typeof this.place.rating !== 'undefined') {
       html += `

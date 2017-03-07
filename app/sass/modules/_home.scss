@@ -3,7 +3,20 @@
     height: 100%;
 
     & nav {
+      background: #67B26F;
+      background: linear-gradient(to left, #67B26F , #4ca2cd);
       margin-top: 25px;
+
+      & .input-field input {
+        &:focus {
+          &::placeholder {
+            color: #444;
+          }
+        }
+        &::placeholder {
+          color: #fff;
+        }
+      }
     }
   }
 }

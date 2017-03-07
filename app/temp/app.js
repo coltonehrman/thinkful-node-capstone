@@ -580,7 +580,7 @@
 	      }
 	      html += '\n            </div>\n            <blockquote>' + this.place.address.split(', ').join('<br>') + '</blockquote>';
 
-	      html += '\n            </div>\n            <div class="card-reveal">\n              <span class="card-title grey-text">' + this.place.name + '<i class="material-icons right">close</i></span>\n              <div id="' + this.id + '" class="map"></div>\n            </div>';
+	      html += '\n            </div>\n            <div class="card-reveal">\n              <span class="card-title grey-text">' + this.place.name + '<i class="material-icons right">close</i></span>\n              <div class="map"></div>\n            </div>';
 	      if (typeof this.place.price !== 'undefined' || typeof this.place.rating !== 'undefined') {
 	        html += '\n          <div class="card-action">';
 	        if (typeof this.place.price !== 'undefined') {
