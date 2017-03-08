@@ -483,6 +483,9 @@ body {
   height: 100%;
   width: 100%; }
 
+.activator {
+  cursor: pointer; }
+
 .screen {
   display: none;
   height: 100%; }

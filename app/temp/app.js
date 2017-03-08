@@ -574,7 +574,7 @@
 	      if (typeof this.place.photo !== 'undefined') {
 	        html += '\n          <div class="card-image waves-effect waves-block waves-light">\n            <img class="activator" src="' + this.place.photo + '">\n          </div>';
 	      }
-	      html += '\n          <div class="card-content grey-text">\n            <div class="card-title activator">\n              <i class="material-icons right">more_vert</i></span>\n              <div class="chip right">\n                <img src="' + this.place.icon + '" alt="Contact Person">\n                ' + this.place.category + '\n              </div>\n              ' + this.place.name;
+	      html += '\n          <div class="card-content grey-text">\n            <div class="card-title">\n              <i class="activator material-icons small right">location_on</i></span>\n              <div class="chip right">\n                <img src="' + this.place.icon + '" alt="Contact Person">\n                ' + this.place.category + '\n              </div>\n              ' + this.place.name;
 	      if (typeof this.place.hours !== 'undefined') {
 	        html += '\n              <p class="place__hours">' + this.place.hours + '</p>';
 	      }

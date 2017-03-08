@@ -55,8 +55,8 @@ export default class Place {
     }
     html += `
           <div class="card-content grey-text">
-            <div class="card-title activator">
-              <i class="material-icons right">more_vert</i></span>
+            <div class="card-title">
+              <i class="activator material-icons small right">location_on</i></span>
               <div class="chip right">
                 <img src="${this.place.icon}" alt="Contact Person">
                 ${this.place.category}
