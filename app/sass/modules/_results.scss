@@ -1,4 +1,12 @@
-.results__list {
-  display: none;
-  margin-top: 10px;
+.results {
+  &__list {
+    display: none;
+    margin-top: 10px;
+  }
+
+  &__item {
+    & span {
+      color: $light-blue !important;
+    }
+  }
 }

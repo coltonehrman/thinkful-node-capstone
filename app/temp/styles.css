@@ -477,7 +477,7 @@ html, body {
   height: 100%; }
 
 body {
-  background-color: #eaeaea; }
+  background-color: #73A3CD; }
 
 .map {
   height: 100%;
@@ -485,6 +485,24 @@ body {
 
 .activator {
   cursor: pointer; }
+
+.progress {
+  background-color: #73A3CD; }
+  .progress .indeterminate {
+    background-color: #031989; }
+
+.btn, .btn-large {
+  background-color: #031989; }
+
+.btn-flat {
+  background-color: transparent; }
+
+.btn:hover, .btn-large:hover {
+  background-color: #73A3CD; }
+
+.br-theme-fontawesome-stars-o .br-widget a.br-selected::after,
+.br-theme-fontawesome-stars-o .br-widget a.br-fractional:after {
+  color: #031989; }
 
 .screen {
   display: none;
@@ -494,13 +512,13 @@ body {
 
 .home {
   height: 100%;
-  background: url("../assets/world.jpg") center center no-repeat/cover !important; }
+  background: url("../assets/airplane-bgrd.jpg") center center no-repeat/cover !important; }
   .home .container {
     padding-top: 25px; }
     .home .container nav {
-      background: #67B26F;
-      background: -webkit-linear-gradient(right, #67B26F, #4ca2cd);
-      background: linear-gradient(to left, #67B26F, #4ca2cd);
+      background: #031989;
+      background: -webkit-linear-gradient(right, #73A3CD, #031989);
+      background: linear-gradient(to left, #73A3CD, #031989);
       margin-top: 25px; }
       .home .container nav .input-field input:focus::-webkit-input-placeholder {
         color: #444; }
@@ -523,11 +541,14 @@ body {
   display: none;
   margin-top: 10px; }
 
+.results__item span {
+  color: #73A3CD !important; }
+
 .place > nav {
   background: #67B26F;
-  background: -webkit-linear-gradient(right, #67B26F, #4ca2cd);
-  background: linear-gradient(to left, #67B26F, #4ca2cd);
-  border-bottom: 3px solid #fff; }
+  background: -webkit-linear-gradient(right, #73A3CD, #031989);
+  background: linear-gradient(to left, #73A3CD, #031989);
+  border-bottom: 3px solid #73A3CD; }
 
 .place__name {
   margin: 0;
@@ -558,7 +579,7 @@ body {
     .place__item .card .card-action .br-wrapper {
       margin-top: 10px; }
     .place__item .card .card-action a {
-      color: #26a69a !important;
+      color: #73A3CD !important;
       margin-right: 15px !important; }
 
 .place__categories {
@@ -576,6 +597,7 @@ body {
   font-style: italic; }
 
 .place__price {
+  background-color: #031989 !important;
   cursor: default;
   margin: 0; }
   .place__price--1 {

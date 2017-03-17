@@ -7,7 +7,7 @@ html, body {
 }
 
 body {
-  background-color: $main-background;
+  background-color: $light-blue;
 }
 
 .map {
@@ -17,4 +17,29 @@ body {
 
 .activator {
   cursor: pointer;
+}
+
+.progress {
+  background-color: $light-blue;
+
+  & .indeterminate {
+    background-color: $dark-blue;
+  }
+}
+
+.btn, .btn-large {
+  background-color: $dark-blue;
+}
+
+.btn-flat {
+  background-color: transparent;
+}
+
+.btn:hover, .btn-large:hover {
+  background-color: $light-blue;
+}
+
+.br-theme-fontawesome-stars-o .br-widget a.br-selected::after,
+.br-theme-fontawesome-stars-o .br-widget a.br-fractional:after {
+  color: $dark-blue;
 }

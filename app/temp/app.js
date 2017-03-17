@@ -448,7 +448,7 @@
 	    clearCategories();
 
 	    categories.forEach(function (cat) {
-	      return $(_DOM2.default.categoryContainer).append('<a class="' + _DOM2.default.categories.slice(1) + ' waves-effect waves-teal btn-flat btn">' + cat + '</a>');
+	      return $(_DOM2.default.categoryContainer).append('<a class="' + _DOM2.default.categories.slice(1) + ' waves-effect btn-flat btn">' + cat + '</a>');
 	    });
 
 	    _state2.default.places = places.map(function (place) {

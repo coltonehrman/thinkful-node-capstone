@@ -1,19 +1,19 @@
 .home {
   height: 100%;
-  background: url('../assets/world.jpg') center center no-repeat / cover !important;
+  background: url('../assets/airplane-bgrd.jpg') center center no-repeat / cover !important;
 
   & .container {
     padding-top: 25px;
 
     & nav {
-      background: #67B26F;
-      background: linear-gradient(to left, #67B26F , #4ca2cd);
+      background: $dark-blue;
+      background: linear-gradient(to left, $light-blue, $dark-blue);
       margin-top: 25px;
 
       & .input-field input {
         &:focus {
           &::placeholder {
-            color: #444;
+            color: $grey;
           }
         }
         &::placeholder {

@@ -1,8 +1,8 @@
 .place {
   & > nav {
     background: #67B26F;
-    background: linear-gradient(to left, #67B26F , #4ca2cd);
-    border-bottom: 3px solid #fff;
+    background: linear-gradient(to left, $light-blue, $dark-blue);
+    border-bottom: 3px solid $light-blue;
   }
   &__name {
     margin: 0;
@@ -47,7 +47,7 @@
         }
 
         & a {
-          color: $main-green !important;
+          color: $light-blue !important;
           margin-right: 15px !important;
         }
       }
@@ -73,6 +73,7 @@
   }
 
   &__price {
+    background-color: $dark-blue !important;
     cursor: default;
     margin: 0;
     &--1 {

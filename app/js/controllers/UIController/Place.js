@@ -52,7 +52,7 @@ export default {
     clearCategories();
 
     categories.forEach(cat => $(DOM.categoryContainer).append(
-      `<a class="${DOM.categories.slice(1)} waves-effect waves-teal btn-flat btn">${cat}</a>`,
+      `<a class="${DOM.categories.slice(1)} waves-effect btn-flat btn">${cat}</a>`,
     ));
 
     state.places = places.map(place => new Place(place)).sort((a, b) => {
