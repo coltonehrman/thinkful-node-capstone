@@ -492,29 +492,32 @@ body {
   .screen .valign {
     width: 100%; }
 
-.home .container {
-  height: 100%; }
-  .home .container nav {
-    background: #67B26F;
-    background: -webkit-linear-gradient(right, #67B26F, #4ca2cd);
-    background: linear-gradient(to left, #67B26F, #4ca2cd);
-    margin-top: 25px; }
-    .home .container nav .input-field input:focus::-webkit-input-placeholder {
-      color: #444; }
-    .home .container nav .input-field input:focus::-moz-placeholder {
-      color: #444; }
-    .home .container nav .input-field input:focus:-ms-input-placeholder {
-      color: #444; }
-    .home .container nav .input-field input:focus::placeholder {
-      color: #444; }
-    .home .container nav .input-field input::-webkit-input-placeholder {
-      color: #fff; }
-    .home .container nav .input-field input::-moz-placeholder {
-      color: #fff; }
-    .home .container nav .input-field input:-ms-input-placeholder {
-      color: #fff; }
-    .home .container nav .input-field input::placeholder {
-      color: #fff; }
+.home {
+  height: 100%;
+  background: url("/assets/world.jpg") center center no-repeat/cover !important; }
+  .home .container {
+    padding-top: 25px; }
+    .home .container nav {
+      background: #67B26F;
+      background: -webkit-linear-gradient(right, #67B26F, #4ca2cd);
+      background: linear-gradient(to left, #67B26F, #4ca2cd);
+      margin-top: 25px; }
+      .home .container nav .input-field input:focus::-webkit-input-placeholder {
+        color: #444; }
+      .home .container nav .input-field input:focus::-moz-placeholder {
+        color: #444; }
+      .home .container nav .input-field input:focus:-ms-input-placeholder {
+        color: #444; }
+      .home .container nav .input-field input:focus::placeholder {
+        color: #444; }
+      .home .container nav .input-field input::-webkit-input-placeholder {
+        color: #fff; }
+      .home .container nav .input-field input::-moz-placeholder {
+        color: #fff; }
+      .home .container nav .input-field input:-ms-input-placeholder {
+        color: #fff; }
+      .home .container nav .input-field input::placeholder {
+        color: #fff; }
 
 .results__list {
   display: none;
@@ -524,7 +527,7 @@ body {
   background: #67B26F;
   background: -webkit-linear-gradient(right, #67B26F, #4ca2cd);
   background: linear-gradient(to left, #67B26F, #4ca2cd);
-  border-bottom: 3px solid #26a69a; }
+  border-bottom: 3px solid #fff; }
 
 .place__name {
   margin: 0;
