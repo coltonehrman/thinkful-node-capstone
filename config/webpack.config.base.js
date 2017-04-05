@@ -22,7 +22,7 @@ module.exports = {
       {
         test: /\.js$/,
         include: path.resolve(__dirname, '../src/client/js'),
-        use: 'babel-loader',
+        use: ['imports-loader?jQuery=jquery,$=jquery,this=>window', 'babel-loader'],
       },
       {
         test: /\.sass$/,
@@ -31,6 +31,10 @@ module.exports = {
           { loader: 'css-loader' },
           { loader: 'sass-loader' },
         ],
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        use: 'file-loader?name=fonts/[name].[ext]',
       },
       {
         use: [

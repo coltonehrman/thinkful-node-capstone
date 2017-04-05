@@ -11,12 +11,13 @@ const GLOBALS = {
 };
 
 module.exports = merge(baseConfig, {
+  devtool: 'source-map',
   entry: {
     app: path.resolve(__dirname, '../src/client/js/app.js'),
     vendor: ['jquery', 'jquery-bar-rating'],
   },
   output: {
-    publicPath: '../client',
+    publicPath: '../client/',
   },
   module: {
     rules: [
@@ -24,8 +25,14 @@ module.exports = merge(baseConfig, {
         test: /\.scss$/,
         use: [
           { loader: 'style-loader' },
-          { loader: 'css-loader!autoprefixer-loader?browsers=last 2 versions' },
-          { loader: 'sass-loader' },
+          {
+            loader: 'css-loader!autoprefixer-loader?browsers=last 2 versions',
+            options: { sourceMap: true },
+          },
+          {
+            loader: 'sass-loader',
+            options: { sourceMap: true },
+          },
         ],
       },
     ],

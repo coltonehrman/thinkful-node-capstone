@@ -1,4 +1,5 @@
-/* global google $ */
+/* global $ google */
+import 'jquery-bar-rating';
 import { DOM } from '../controllers/UIController';
 
 export default class Place {
