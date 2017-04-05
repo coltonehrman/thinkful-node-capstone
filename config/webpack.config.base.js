@@ -15,10 +15,7 @@ module.exports = {
       path.join(__dirname, '../src/client/js'),
       'node_modules',
     ],
-    alias: {
-      models: path.join(__dirname, '../src/client/js/models'),
-    },
-    extensions: ['.js', '.json', '.scss'],
+    extensions: ['.js', '.json', '.sass'],
   },
   module: {
     rules: [
@@ -28,10 +25,10 @@ module.exports = {
         use: 'babel-loader',
       },
       {
-        test: /\.scss$/,
+        test: /\.sass$/,
         use: [
           { loader: 'style-loader' },
-          { loader: 'css-loader!autoprefixer-loader?browsers=last 2 versions' },
+          { loader: 'css-loader' },
           { loader: 'sass-loader' },
         ],
       },

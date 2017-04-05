@@ -1,6 +1,7 @@
 const baseConfig = require('./webpack.config.base');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const path = require('path');
 
 const GLOBALS = {
   'process.env': {
@@ -11,13 +12,25 @@ const GLOBALS = {
 
 module.exports = merge(baseConfig, {
   entry: {
-    application: [
-      'webpack-hot-middleware/client',
-    ],
+    app: path.resolve(__dirname, '../src/client/js/app.js'),
     vendor: ['jquery', 'jquery-bar-rating'],
   },
+  output: {
+    publicPath: '../client',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader!autoprefixer-loader?browsers=last 2 versions' },
+          { loader: 'sass-loader' },
+        ],
+      },
+    ],
+  },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin(GLOBALS),
   ],
 });
