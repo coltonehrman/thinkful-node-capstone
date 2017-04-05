@@ -1,4 +1,6 @@
-/* global $ google */
+/* global google */
+import $ from 'jquery';
+import 'jquery-bar-rating';
 import { DOM } from '../controllers/UIController';
 
 console.log($.fn);

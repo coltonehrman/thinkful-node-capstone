@@ -1,5 +1,6 @@
-/* global window $ google document */
+/* global window google document */
 import 'styles';
+import $ from 'jquery';
 import { autocomplete, getLatLong } from './lib/google';
 import UIController, { DOM } from './controllers/UIController';
 import AttractionsController from './controllers/AttractionsController';

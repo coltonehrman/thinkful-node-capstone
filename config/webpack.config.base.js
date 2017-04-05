@@ -23,9 +23,12 @@ module.exports = {
         test: /\.js$/,
         include: [
           path.resolve(__dirname, '../src/client/js'),
-          path.resolve(__dirname, '../node_modules/jquery-bar-rating'),
         ],
-        use: ['imports-loader?jQuery=jquery,$=jquery,this=>window', 'babel-loader'],
+        use: ['babel-loader'],
+      },
+      {
+        test: /jquery-bar-rating/,
+        use: ['imports-loader?jQuery=jquery,$=jquery,define=>false'],
       },
       {
         test: /\.sass$/,

@@ -1,4 +1,4 @@
-/* global $ */
+import $ from 'jquery';
 import DOM from './DOM';
 
 function showScreen(selector) {
