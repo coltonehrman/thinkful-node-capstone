@@ -14,10 +14,7 @@ module.exports = merge(baseConfig, {
   devtool: 'source-map',
   entry: {
     app: path.resolve(__dirname, '../src/client/js/app.js'),
-    vendor: ['jquery', 'jquery-bar-rating'],
-  },
-  output: {
-    publicPath: '../client/',
+    vendor: ['jquery-bar-rating', 'jquery'],
   },
   module: {
     rules: [

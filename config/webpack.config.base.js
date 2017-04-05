@@ -6,7 +6,7 @@ module.exports = {
   output: {
     filename: 'js/[name].[chunkhash].js',
     path: path.resolve(__dirname, '../build/client'),
-    publicPath: '/',
+    publicPath: '../client/',
   },
   resolve: {
     modules: [
@@ -21,7 +21,10 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        include: path.resolve(__dirname, '../src/client/js'),
+        include: [
+          path.resolve(__dirname, '../src/client/js'),
+          path.resolve(__dirname, '../node_modules/jquery-bar-rating'),
+        ],
         use: ['imports-loader?jQuery=jquery,$=jquery,this=>window', 'babel-loader'],
       },
       {
@@ -57,8 +60,7 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'js/vendor.bundle.js',
-      minChunks: Infinity,
+      filename: 'js/vendor.[chunkhash].js',
     }),
     new HtmlWebpackPlugin({
       template: './src/client/index.html',
