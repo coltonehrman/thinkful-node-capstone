@@ -1,4 +1,6 @@
 /* global window google $ document */
+import '../sass/styles';
+
 import { autocomplete, getLatLong } from './lib/google';
 import UIController, { DOM } from './controllers/UIController';
 import AttractionsController from './controllers/AttractionsController';
