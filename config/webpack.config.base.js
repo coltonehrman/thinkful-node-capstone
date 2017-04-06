@@ -27,10 +27,6 @@ module.exports = {
         use: ['babel-loader'],
       },
       {
-        test: /jquery-bar-rating/,
-        use: ['imports-loader?jQuery=jquery,$=jquery,define=>false'],
-      },
-      {
         test: /\.sass$/,
         use: [
           { loader: 'style-loader' },

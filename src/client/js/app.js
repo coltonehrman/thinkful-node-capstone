@@ -1,5 +1,5 @@
 /* global window google document */
-import 'styles';
+import 'styles'; // eslint-disable-line
 import $ from 'jquery';
 import { autocomplete, getLatLong } from './lib/google';
 import UIController, { DOM } from './controllers/UIController';

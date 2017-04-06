@@ -1,14 +1,6 @@
 const baseConfig = require('./webpack.config.base');
 const merge = require('webpack-merge');
-const webpack = require('webpack');
 const path = require('path');
-
-const GLOBALS = {
-  'process.env': {
-    NODE_ENV: JSON.stringify('development'),
-  },
-  __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'true')),
-};
 
 module.exports = merge(baseConfig, {
   devtool: 'source-map',
@@ -18,6 +10,10 @@ module.exports = merge(baseConfig, {
   },
   module: {
     rules: [
+      {
+        test: /jquery-bar-rating/,
+        use: ['imports-loader?jQuery=jquery,$=jquery,define=>false'],
+      },
       {
         test: /\.scss$/,
         use: [
@@ -34,7 +30,4 @@ module.exports = merge(baseConfig, {
       },
     ],
   },
-  plugins: [
-    new webpack.DefinePlugin(GLOBALS),
-  ],
 });
