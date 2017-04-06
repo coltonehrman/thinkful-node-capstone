@@ -10,9 +10,9 @@ module.exports = {
   },
   resolve: {
     modules: [
-      path.join(__dirname, '../src/client/sass'),
-      path.join(__dirname, '../src/client/assets'),
-      path.join(__dirname, '../src/client/js'),
+      path.join(__dirname, '../client/sass'),
+      path.join(__dirname, '../client/assets'),
+      path.join(__dirname, '../client/js'),
       'node_modules',
     ],
     extensions: ['.js', '.json', '.sass'],
@@ -22,7 +22,7 @@ module.exports = {
       {
         test: /\.js$/,
         include: [
-          path.resolve(__dirname, '../src/client/js'),
+          path.resolve(__dirname, '../client/js'),
         ],
         use: ['babel-loader'],
       },
@@ -62,7 +62,7 @@ module.exports = {
       filename: 'js/vendor.[chunkhash].js',
     }),
     new HtmlWebpackPlugin({
-      template: './src/client/index.html',
+      template: './client/index.html',
     }),
   ],
 };

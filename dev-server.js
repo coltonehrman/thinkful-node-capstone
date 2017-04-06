@@ -1,8 +1,8 @@
-const app = require('./src/server');
+const app = require('./server');
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpack = require('webpack');
 const webpackConfig = require('./config/webpack.config.devserver');
-const config = require('./src/server/config');
+const config = require('./server/config');
 
 app.use(webpackMiddleware(webpack(webpackConfig)));
 

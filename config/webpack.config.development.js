@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = merge(baseConfig, {
   devtool: 'source-map',
   entry: {
-    app: path.resolve(__dirname, '../src/client/js/app.js'),
+    app: path.resolve(__dirname, '../client/js/app.js'),
     vendor: ['jquery', 'jquery-bar-rating'],
   },
   module: {
