@@ -8,5 +8,5 @@ const app = express();
 app.use(webpackMiddleware(webpack(webpackConfig)));
 
 app.listen(3000, () => {
-  console.log(`App is listening...`);
+  console.log('App is listening...'); // eslint-disable-line
 });
