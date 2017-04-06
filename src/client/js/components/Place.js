@@ -3,8 +3,6 @@ import $ from 'jquery';
 import 'jquery-bar-rating';
 import { DOM } from '../controllers/UIController';
 
-console.log($.fn);
-
 export default class Place {
   constructor(place) {
     this.place = place;
