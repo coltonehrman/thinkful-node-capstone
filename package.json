@@ -4,7 +4,7 @@
   "scripts": {
     "prebuild": "rimraf build",
     "build": "webpack --config ./config/webpack.config.development.js && open ./build/client/index.html",
-    "start": "nodemon dev-server.js"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
