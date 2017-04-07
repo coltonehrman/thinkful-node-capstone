@@ -3,6 +3,7 @@ const config = {
   test: 'testing',
   prod: 'production',
   port: process.env.PORT || 3000,
+  secret: process.env.SECRET || 'keyboard cat',
 };
 
 config.env = process.env.NODE_ENV || config.dev;

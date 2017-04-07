@@ -11,11 +11,14 @@
     "body-parser": "^1.17.1",
     "colors": "^1.1.2",
     "express": "^4.15.2",
+    "express-session": "^1.15.2",
     "jquery": "^3.1.1",
     "jquery-bar-rating": "^1.2.2",
     "materialize-css": "^0.98.1",
     "mongoose": "^4.9.3",
-    "morgan": "^1.8.1"
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
