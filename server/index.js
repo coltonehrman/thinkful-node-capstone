@@ -1,72 +1,52 @@
+const path = require('path');
 const express = require('express');
-const session = require('express-session');
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
 const mongoose = require('mongoose');
 const config = require('./config');
-const webpackMiddleware = require('webpack-dev-middleware');
+const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpack = require('webpack');
-const webpackConfig = require('../config/webpack.config.devserver');
+const webpackConfig = require('../config/webpack.config.development');
 const logger = require('./util/logger');
-
 const userRouter = require('./route/user/userRouter');
-const User = require('./route/user/userModel');
+
+const app = express();
+
+require('./middleware/appMiddleware')(app);
+const passport = require('./middleware/passportMiddleware')(app);
+
+const compiler = webpack(webpackConfig);
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.db.url);
 
-const app = express();
-
-require('colors');
-
-passport.use(new LocalStrategy(
-  {},
-  (username, password, done) => {
-    User.findOne({ username })
-      .exec()
-      .then((user) => {
-        if (!user) {
-          return done('Error!');
-        }
-        // user.authenticate(password)
-        //   .then(())
-        // Check username password
-        return done(null, user);
-      })
-      .catch(err => done(err));
-  } // eslint-disable-line
-));
-
-passport.serializeUser((user, cb) => {
-  cb(null, user._id); // eslint-disable-line
-});
-
-passport.deserializeUser((id, cb) => {
-  User.findById(id)
-    .select('-password')
-    .exec()
-    .then((user) => {
-      if (!user) {
-        return cb(new Error('Deserialization failed!'));
-      }
-      return cb(null, user);
-    });
-});
-
-app.use(session({
-  secret: config.secret,
-  resave: false,
-  saveUninitialized: false,
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-require('./middleware/appMiddleware')(app);
-
-if (config.env === config.dev) {
-  app.use(webpackMiddleware(webpack(webpackConfig)));
+function isLoggedIn(req, res, next) {
+  // if (!req.user) {
+  //   logger.error('User is not logged in!');
+  //   return res.status(401).redirect('/login');
+  // }
+  return next();
 }
+
+app.get('/login', (req, res, next) => {
+  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'login.html'), (err, file) => {
+    if (err) {
+      return next(err);
+    }
+    res.set('content-type', 'text/html');
+    return res.send(file);
+  });
+});
+
+app.get('*', isLoggedIn);
+
+app.get('/', (req, res, next) => {
+  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'index.html'), (err, file) => {
+    if (err) {
+      return next(err);
+    }
+    res.set('content-type', 'text/html');
+    return res.send(file);
+  });
+});
 
 app.use('/users', userRouter);
 
@@ -82,6 +62,10 @@ app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/is-loggedout');
 });
+
+if (config.env === config.dev) {
+  app.use(webpackDevMiddleware(compiler));
+}
 
 app.use((err, req, res, next) => { // eslint-disable-line
   logger.error(err.stack);

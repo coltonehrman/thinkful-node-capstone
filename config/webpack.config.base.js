@@ -63,6 +63,12 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: './client/index.html',
+      chunks: ['app', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'login.html',
+      template: './client/login.html',
+      chunks: [],
     }),
   ],
 };
