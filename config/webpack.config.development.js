@@ -18,11 +18,12 @@ module.exports = merge(baseConfig, {
             'css-loader?sourceMap!autoprefixer-loader?browsers=last 2 versions',
             'sass-loader?sourceMap',
           ],
+          publicPath: '../',
         }),
       },
     ],
   },
   plugins: [
-    new ExtractTextPlugin('styles.css'),
+    new ExtractTextPlugin('./css/styles.css'),
   ],
 });

@@ -21,7 +21,7 @@ module.exports = {
       path.join(__dirname, '../client/js'),
       'node_modules',
     ],
-    extensions: ['.js', '.json', '.sass'],
+    extensions: ['.js', '.json', '.sass', 'jpg'],
   },
   module: {
     rules: [
@@ -32,14 +32,6 @@ module.exports = {
         ],
         use: ['babel-loader'],
       },
-      // {
-      //   test: /\.sass$/,
-      //   use: [
-      //     { loader: 'style-loader' },
-      //     { loader: 'css-loader' },
-      //     { loader: 'sass-loader' },
-      //   ],
-      // },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         use: 'file-loader?name=fonts/[name].[ext]',
