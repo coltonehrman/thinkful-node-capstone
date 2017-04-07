@@ -32,14 +32,14 @@ module.exports = {
         ],
         use: ['babel-loader'],
       },
-      {
-        test: /\.sass$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' },
-        ],
-      },
+      // {
+      //   test: /\.sass$/,
+      //   use: [
+      //     { loader: 'style-loader' },
+      //     { loader: 'css-loader' },
+      //     { loader: 'sass-loader' },
+      //   ],
+      // },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
         use: 'file-loader?name=fonts/[name].[ext]',

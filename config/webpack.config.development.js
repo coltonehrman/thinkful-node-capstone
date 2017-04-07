@@ -1,5 +1,6 @@
 const baseConfig = require('./webpack.config.base');
 const merge = require('webpack-merge');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = merge(baseConfig, {
   devtool: 'source-map',
@@ -10,19 +11,18 @@ module.exports = merge(baseConfig, {
         use: ['imports-loader?jQuery=jquery,$=jquery,define=>false'],
       },
       {
-        test: /\.scss$/,
-        use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader!autoprefixer-loader?browsers=last 2 versions',
-            options: { sourceMap: true },
-          },
-          {
-            loader: 'sass-loader',
-            options: { sourceMap: true },
-          },
-        ],
+        test: /\.sass$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            'css-loader?sourceMap!autoprefixer-loader?browsers=last 2 versions',
+            'sass-loader?sourceMap',
+          ],
+        }),
       },
     ],
   },
+  plugins: [
+    new ExtractTextPlugin('styles.css'),
+  ],
 });

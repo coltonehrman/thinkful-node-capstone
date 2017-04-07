@@ -1,5 +1,6 @@
 const path = require('path');
 const passport = require('passport');
+const logger = require('../../util/logger');
 const { compiler } = require('../../middleware/webpackMiddleware');
 
 exports.getLogin = (req, res, next) => {
@@ -15,19 +16,19 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
-      console.log('bad login');
+      logger.log('err login');
       return next(err);
     }
     if (!user) {
-      console.log('bad login');
-      return res.json({ message: info.message });
+      logger.log('bad login');
+      return res.status(401).json({ message: info.message });
     }
     return req.login(user, (loginErr) => {
       if (loginErr) {
         return next(err);
       }
       // from where user came
-      return res.redirect('/');
+      return res.json({ redirect: '/' });
     });
   })(req, res, next);
 };

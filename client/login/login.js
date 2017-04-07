@@ -1,3 +1,4 @@
+/* global window */
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
 import { DOM } from './controllers/UIController';
@@ -17,9 +18,10 @@ function setupEventListeners() {
       data,
       method: 'POST',
     })
-    .done((res, status, xhr) => {
-      console.log(xhr);
-      console.log(status);
+    .done((res) => {
+      if (res.redirect) {
+        window.location.replace(`http://${window.location.host}${res.redirect}`);
+      }
       console.log(res);
     })
     .fail((xhr) => {
