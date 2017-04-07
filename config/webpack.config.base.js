@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     main: path.resolve(__dirname, '../client/main/main.js'),
     login: path.resolve(__dirname, '../client/login/login.js'),
+    signup: path.resolve(__dirname, '../client/signup/signup.js'),
     vendor: ['jquery', 'jquery-bar-rating'],
   },
   output: {
@@ -75,6 +76,11 @@ module.exports = {
       filename: 'login.html',
       template: './client/login/login.html',
       chunks: ['login', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'signup.html',
+      template: './client/signup/signup.html',
+      chunks: ['signup', 'vendor'],
     }),
   ],
 };

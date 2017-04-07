@@ -13,7 +13,7 @@ function setupEventListeners() {
       data[field.name] = field.value;
     });
 
-    $.ajax('/login', {
+    $.ajax('/users', {
       data,
       method: 'POST',
     })

@@ -52,6 +52,11 @@ exports.post = (req, res, next) => {
     email, username, password,
   });
 
+  if (!email || !username || !password ||
+      email.trim() === '' || username.trim() === '' || password.trim() === '') {
+    return next(new Error('Missing field!'));
+  }
+
   User.encryptPassword(password)
     .then((hash) => {
       newUser.password = hash;
