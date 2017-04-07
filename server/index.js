@@ -21,7 +21,7 @@ mongoose.connect(config.db.url);
 function isLoggedIn(req, res, next) {
   if (!req.user) {
     logger.error('User is not logged in!');
-    return res.status(401).redirect('/login');
+    return res.redirect('/login');
   }
   return next();
 }
@@ -36,10 +36,8 @@ app.get('/login', (req, res, next) => {
   });
 });
 
-app.get('*', isLoggedIn);
-
-app.get('/', (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'index.html'), (err, file) => {
+app.get('/', isLoggedIn, (req, res, next) => {
+  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'main.html'), (err, file) => {
     if (err) {
       return next(err);
     }
@@ -50,15 +48,27 @@ app.get('/', (req, res, next) => {
 
 app.use('/users', userRouter);
 
-app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/fail-login' }),
-  (req, res) => {
-    // You have successfully logged in
-    res.redirect('/is-loggedin');
-  });
+app.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.log('bad login');
+      return next(err);
+    }
+    if (!user) {
+      console.log('bad login');
+      return res.json({ message: info.message });
+    }
+    req.login(user, (loginErr) => {
+      if (loginErr) {
+        return next(err);
+      }
+      // from where user came
+      return res.redirect('/');
+    });
+  })(req, res, next);
+});
 
 app.get('/logout', (req, res) => {
-  // You have successfully logged out
   req.logout();
   res.redirect('/is-loggedout');
 });
@@ -68,6 +78,7 @@ if (config.env === config.dev) {
 }
 
 app.use((err, req, res, next) => { // eslint-disable-line
+  logger.log('error handler');
   logger.error(err.stack);
   res.status(500).send('Server error!');
 });

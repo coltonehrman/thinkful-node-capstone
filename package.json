@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "prebuild": "rimraf build",
-    "build": "webpack --config ./config/webpack.config.development.js && open ./build/client/index.html",
+    "build": "webpack --config ./config/webpack.config.development.js && open ./build/client/main.html",
     "start": "nodemon index.js"
   },
   "dependencies": {

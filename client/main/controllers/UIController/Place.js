@@ -1,3 +1,4 @@
+/* eslint comma-dangle: ["error", "ignore"] */
 import $ from 'jquery';
 import 'jquery-bar-rating';
 import state from '../../modules/state';
@@ -47,13 +48,13 @@ export default {
   displayPlaces(places) {
     const placeCategories = places.map(place => place.category);
     const categories = placeCategories.filter((cat, i) =>
-      placeCategories.indexOf(cat) === i,
+      placeCategories.indexOf(cat) === i
     );
 
     clearCategories();
 
     categories.forEach(cat => $(DOM.categoryContainer).append(
-      `<a class="${DOM.categories.slice(1)} waves-effect btn-flat btn">${cat}</a>`,
+      `<a class="${DOM.categories.slice(1)} waves-effect btn-flat btn">${cat}</a>`
     ));
 
     state.places = places.map(place => new Place(place)).sort((a, b) => {
@@ -71,7 +72,7 @@ export default {
   displayPlacesByFilter(category) {
     const $placeResults = $(DOM.placeResults);
     const placesToShow = state.places.filter(place =>
-      place.place.category === category,
+      place.place.category === category
     );
 
     if ($placeResults.children().length >= 1) {

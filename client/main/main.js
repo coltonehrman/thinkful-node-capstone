@@ -1,4 +1,5 @@
 /* global window google document */
+/* eslint comma-dangle: ["error", "ignore"] */
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
 import { autocomplete, getLatLong } from './lib/google';
@@ -15,9 +16,10 @@ function setupEventListeners() {
     } else {
       UIController.Search.clearResults();
       autocomplete(search).then(results =>
-        UIController.Search.displayResults(results),
-      ).catch(() =>
-        UIController.Search.hideResults(),
+        UIController.Search.displayResults(results)
+      )
+      .catch(() =>
+        UIController.Search.hideResults()
       );
     }
   });

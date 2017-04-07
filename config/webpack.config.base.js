@@ -3,10 +3,15 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  entry: {
+    main: path.resolve(__dirname, '../client/main/main.js'),
+    login: path.resolve(__dirname, '../client/login/login.js'),
+    vendor: ['jquery', 'jquery-bar-rating'],
+  },
   output: {
     filename: 'js/[name].[chunkhash].js',
     path: path.resolve(__dirname, '../build/client'),
-    publicPath: '../client/',
+    publicPath: './',
   },
   resolve: {
     modules: [
@@ -62,13 +67,14 @@ module.exports = {
       filename: 'js/vendor.[chunkhash].js',
     }),
     new HtmlWebpackPlugin({
-      template: './client/index.html',
-      chunks: ['app', 'vendor'],
+      filename: 'main.html',
+      template: './client/main/main.html',
+      chunks: ['main', 'vendor'],
     }),
     new HtmlWebpackPlugin({
       filename: 'login.html',
-      template: './client/login.html',
-      chunks: [],
+      template: './client/login/login.html',
+      chunks: ['login', 'vendor'],
     }),
   ],
 };

@@ -27,19 +27,11 @@ body {
   }
 }
 
-.btn, .btn-large {
-  background-color: $dark-blue;
-}
-
-.btn-flat {
-  background-color: transparent;
-}
-
-.btn:hover, .btn-large:hover {
-  background-color: $light-blue;
-}
-
 .br-theme-fontawesome-stars-o .br-widget a.br-selected::after,
 .br-theme-fontawesome-stars-o .br-widget a.br-fractional:after {
   color: $dark-blue;
+}
+
+.no-margin {
+  margin: 0 !important;
 }

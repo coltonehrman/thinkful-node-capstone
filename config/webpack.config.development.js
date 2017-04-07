@@ -1,13 +1,8 @@
 const baseConfig = require('./webpack.config.base');
 const merge = require('webpack-merge');
-const path = require('path');
 
 module.exports = merge(baseConfig, {
   devtool: 'source-map',
-  entry: {
-    app: path.resolve(__dirname, '../client/js/app.js'),
-    vendor: ['jquery', 'jquery-bar-rating'],
-  },
   module: {
     rules: [
       {

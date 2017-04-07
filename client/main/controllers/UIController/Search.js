@@ -1,3 +1,4 @@
+/* eslint comma-dangle: ["error", "ignore"] */
 import $ from 'jquery';
 import DOM from './DOM';
 
@@ -23,7 +24,7 @@ export default {
       $searchResults.append(
         `<li class="${DOM.searchResult.slice(1)}" data-place-id="${result.id}">
           <span>${result.name}</span>
-        </li>`,
+        </li>`
       );
     });
 

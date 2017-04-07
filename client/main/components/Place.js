@@ -16,7 +16,7 @@ export default class Place {
     if (!this.map) {
       const coords = new google.maps.LatLng(
         this.place.coords.lat,
-        this.place.coords.lng,
+        this.place.coords.lng // eslint-disable-line
       );
       const map = new google.maps.Map(this.$element.find('.map').get(0), {
         zoom: 15,

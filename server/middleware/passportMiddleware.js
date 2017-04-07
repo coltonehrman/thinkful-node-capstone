@@ -12,12 +12,12 @@ module.exports = (app) => {
         .exec()
         .then((user) => {
           if (!user) {
-            return done('Incorrect username!!');
+            return done(null, false, { message: 'Incorrect username!!' });
           }
           return user.authenticate(password)
             .then((res) => {
               if (res !== true) {
-                return done('Incorrect password!');
+                return done(null, false, { message: 'Incorrect password!!' });
               }
               return done(null, user.toJson());
             });
