@@ -20,29 +20,30 @@ const UserSchema = new Schema({
   },
 });
 
-UserSchema.methods = {
-  authenticate(plainTextPassword) {
-    return bcrypt.compareSync(plainTextPassword, this.password);
-  },
+UserSchema.statics = {
   encryptPassword(plainTextPassword) {
     return new Promise((resolve, reject) => {
       if (!plainTextPassword) {
         return reject('');
       }
-      return bcrypt.genSaltSync(10)
-        .then((err, salt) => {
-          if (err) {
-            return reject(err);
-          }
-          return bcrypt.hash(plainTextPassword, salt);
-        })
-        .then((err, hash) => {
+      return bcrypt.genSalt(10, (err, salt) => {
+        if (err) {
+          return reject(err);
+        }
+        return bcrypt.hash(plainTextPassword, salt, (err, hash) => { // eslint-disable-line
           if (err) {
             return reject(err);
           }
           return resolve(hash);
         });
+      });
     });
+  },
+};
+
+UserSchema.methods = {
+  authenticate(plainTextPassword) {
+    return bcrypt.compare(plainTextPassword, this.password);
   },
   toJson() {
     const usr = this.toObject();

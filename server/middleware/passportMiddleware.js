@@ -12,12 +12,15 @@ module.exports = (app) => {
         .exec()
         .then((user) => {
           if (!user) {
-            return done('Error!');
+            return done('Incorrect username!!');
           }
-          // user.authenticate(password)
-          //   .then(())
-          // Check username password
-          return done(null, user);
+          return user.authenticate(password)
+            .then((res) => {
+              if (res !== true) {
+                return done('Incorrect password!');
+              }
+              return done(null, user.toJson());
+            });
         })
         .catch(err => done(err));
     } // eslint-disable-line

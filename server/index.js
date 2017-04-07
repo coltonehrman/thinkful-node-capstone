@@ -19,10 +19,10 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.db.url);
 
 function isLoggedIn(req, res, next) {
-  // if (!req.user) {
-  //   logger.error('User is not logged in!');
-  //   return res.status(401).redirect('/login');
-  // }
+  if (!req.user) {
+    logger.error('User is not logged in!');
+    return res.status(401).redirect('/login');
+  }
   return next();
 }
 

@@ -18,9 +18,12 @@ module.exports = {
 
   error(...args) {
     const logs = args.map((arg) => {
-      const err = arg.stack || arg;
-      const name = err.name || '[ ❌ ERROR ❌ ]';
-      return `${name.yellow} ${err.red}`;
+      if (arg) {
+        const err = arg.stack || arg;
+        const name = err.name || '[ ❌ ERROR ❌ ]';
+        return `${name.yellow} ${err.red}`;
+      }
+      return null;
     });
 
     log(...logs);

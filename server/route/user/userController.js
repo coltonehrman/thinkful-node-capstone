@@ -52,13 +52,21 @@ exports.post = (req, res, next) => {
     email, username, password,
   });
 
-  newUser.save((err) => {
-    if (err) {
-      return next(err);
-    }
-    // Redirect from where user came
-    return res.redirect('/');
-  });
+  User.encryptPassword(password)
+    .then((hash) => {
+      newUser.password = hash;
+      return newUser.save();
+    })
+    .then((user) => {
+      req.login(user, (err) => {
+        if (err) {
+          return next(err);
+        }
+        // from where user came
+        return res.redirect('/');
+      });
+    })
+    .catch(err => next(err));
 };
 
 // exports.login = (req, res, next) => {
