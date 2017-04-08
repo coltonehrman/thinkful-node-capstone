@@ -7,10 +7,6 @@ module.exports = merge(baseConfig, {
   module: {
     rules: [
       {
-        test: /jquery-bar-rating/,
-        use: ['imports-loader?jQuery=jquery,$=jquery,define=>false'],
-      },
-      {
         test: /\.sass$/,
         loader: ExtractTextPlugin.extract({
           fallback: 'style-loader',

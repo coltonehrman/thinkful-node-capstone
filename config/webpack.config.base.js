@@ -1,36 +1,52 @@
-const path = require('path');
+const { resolve } = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: {
-    main: path.resolve(__dirname, '../client/main/main.js'),
-    login: path.resolve(__dirname, '../client/login/login.js'),
-    signup: path.resolve(__dirname, '../client/signup/signup.js'),
-    vendor: ['jquery', 'jquery-bar-rating'],
+    main: resolve('client/views/main/main.js'),
+    login: resolve('client/views/login/login.js'),
+    signup: resolve('client/views/signup/signup.js'),
+    vendor: ['jquery', 'jquery-bar-rating', 'hammer', 'velocity', 'materialize'],
   },
   output: {
     filename: 'js/[name].[chunkhash].js',
-    path: path.resolve(__dirname, '../build/client'),
+    path: resolve('build/client'),
     publicPath: './',
   },
   resolve: {
     modules: [
-      path.join(__dirname, '../client/sass'),
-      path.join(__dirname, '../client/assets'),
-      path.join(__dirname, '../client/js'),
+      resolve('client/assets'),
+      resolve('client/sass'),
       'node_modules',
     ],
-    extensions: ['.js', '.json', '.sass', 'jpg'],
+    alias: {
+      hammer: resolve('client/js/hammer.js'),
+      velocity: resolve('client/js/velocity.js'),
+      materialize: resolve('client/js/materialize.js'),
+    },
+    extensions: ['.js', '.sass', 'jpg'],
   },
   module: {
     rules: [
       {
+        test: /\.ejs$/,
+        use: 'ejs-compiled-loader',
+      },
+      {
         test: /\.js$/,
         include: [
-          path.resolve(__dirname, '../client/js'),
+          resolve('client/js'),
         ],
         use: ['babel-loader'],
+      },
+      {
+        test: /jquery-bar-rating/,
+        use: ['imports-loader?jQuery=jquery,$=jquery,define=>false,exports=>false'],
+      },
+      {
+        test: /materialize/,
+        use: ['imports-loader?jQuery=jquery,$=jquery,define=>false,exports=>false'],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
@@ -61,17 +77,17 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       filename: 'main.html',
-      template: './client/main/main.html',
+      template: './client/views/main/main.ejs',
       chunks: ['main', 'vendor'],
     }),
     new HtmlWebpackPlugin({
-      filename: 'login.html',
-      template: './client/login/login.html',
+      filename: 'login.ejs',
+      template: './client/views/login/login.ejs',
       chunks: ['login', 'vendor'],
     }),
     new HtmlWebpackPlugin({
-      filename: 'signup.html',
-      template: './client/signup/signup.html',
+      filename: 'signup.ejs',
+      template: './client/views/signup/signup.ejs',
       chunks: ['signup', 'vendor'],
     }),
   ],

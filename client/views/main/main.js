@@ -2,6 +2,7 @@
 /* eslint comma-dangle: ["error", "ignore"] */
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
+import 'materialize'; // eslint-disable-line
 import { autocomplete, getLatLong } from './lib/google';
 import UIController, { DOM } from './controllers/UIController';
 import AttractionsController from './controllers/AttractionsController';

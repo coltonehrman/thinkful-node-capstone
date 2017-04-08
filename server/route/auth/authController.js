@@ -1,15 +1,16 @@
 const path = require('path');
+const ejs = require('ejs');
 const passport = require('passport');
 const logger = require('../../util/logger');
 const { compiler } = require('../../middleware/webpackMiddleware');
 
 exports.getLogin = (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'login.html'), (err, file) => {
+  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'login.ejs'), (err, file) => {
     if (err) {
       return next(err);
     }
     res.set('content-type', 'text/html');
-    return res.send(file);
+    return res.send(ejs.render(file.toString(), { navItems: [] }));
   });
 };
 
@@ -34,12 +35,12 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.getSignup = (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'signup.html'), (err, file) => {
+  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'signup.ejs'), (err, file) => {
     if (err) {
       return next(err);
     }
     res.set('content-type', 'text/html');
-    return res.send(file);
+    return res.send(ejs.render(file.toString(), { navItems: [] }));
   });
 };
 

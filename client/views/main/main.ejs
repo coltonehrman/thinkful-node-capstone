@@ -1,26 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Home</title>
+<%% var title = 'Home' %>
+<% include client/partials/header %>
 
-    <!-- Import Google Icon Font -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Import Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
-  </head>
-
-  <body>
-
-    <nav>
-      <div class="container nav-wrapper">
-        <a href="#" class="brand-logo">I Need A Vacation</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li><a href="/login">Login</a></li>
-          <li><a href="/signup">Signup</a></li>
-        </ul>
-      </div>
-    </nav>
+  <% include client/partials/nav %>
 
     <div class="home screen">
       <div class="container">
@@ -62,7 +43,5 @@
       </div>
     </div>
 
-    <!-- Import Google Places API -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
-  </body>
-</html>
+<%% var google = true %>
+<% include client/partials/footer %>

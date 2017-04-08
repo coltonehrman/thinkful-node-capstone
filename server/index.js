@@ -1,5 +1,6 @@
 const path = require('path');
 const express = require('express');
+const ejs = require('ejs');
 const mongoose = require('mongoose');
 const config = require('./config');
 const logger = require('./util/logger');
@@ -17,12 +18,12 @@ mongoose.connect(config.db.url);
 app.use('/', require('./route/auth/authRouter'));
 
 app.get('/', auth.isLoggedIn, (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'main.html'), (err, file) => {
+  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'main.ejs'), (err, file) => {
     if (err) {
       return next(err);
     }
     res.set('content-type', 'text/html');
-    return res.send(file);
+    return res.send(ejs.render(file.toString(), { navItems: [] }));
   });
 });
 
