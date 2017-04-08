@@ -7,7 +7,7 @@ module.exports = {
     main: resolve('client/views/main/main.js'),
     login: resolve('client/views/login/login.js'),
     signup: resolve('client/views/signup/signup.js'),
-    vendor: ['jquery', 'jquery-bar-rating', 'hammer', 'velocity', 'materialize'],
+    vendor: ['jquery', 'jquery-bar-rating', 'hammer', 'materialize'],
   },
   output: {
     filename: 'js/[name].[chunkhash].js',
@@ -22,7 +22,6 @@ module.exports = {
     ],
     alias: {
       hammer: resolve('client/js/hammer.js'),
-      velocity: resolve('client/js/velocity.js'),
       materialize: resolve('client/js/materialize.js'),
     },
     extensions: ['.js', '.sass', 'jpg'],
@@ -42,10 +41,6 @@ module.exports = {
       },
       {
         test: /jquery-bar-rating/,
-        use: ['imports-loader?jQuery=jquery,$=jquery,define=>false,exports=>false'],
-      },
-      {
-        test: /materialize/,
         use: ['imports-loader?jQuery=jquery,$=jquery,define=>false,exports=>false'],
       },
       {
@@ -76,7 +71,7 @@ module.exports = {
       filename: 'js/vendor.[chunkhash].js',
     }),
     new HtmlWebpackPlugin({
-      filename: 'main.html',
+      filename: 'main.ejs',
       template: './client/views/main/main.ejs',
       chunks: ['main', 'vendor'],
     }),

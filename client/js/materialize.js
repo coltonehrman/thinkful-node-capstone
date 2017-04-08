@@ -5,6 +5,11 @@
  */
 // Check for jQuery.
 
+window.jQuery = window.$ = require('jquery');
+
+var jQuery = window.jQuery;
+var $ = window.$;
+
 if (typeof(jQuery) === 'undefined') {
   var jQuery;
   // Check if require is a defined function.
