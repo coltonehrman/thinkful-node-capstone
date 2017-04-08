@@ -1,5 +1,9 @@
 .card {
   &--margin {
     margin: 100px;
+
+    &-top {
+      margin-top: 25px;
+    }
   }
 }
