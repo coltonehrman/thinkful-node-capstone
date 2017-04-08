@@ -32,7 +32,7 @@ function setupEventListeners() {
 
       if (xhr.status === 401) {
         $err.html(`${message}<i class="${DOM.errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
-      } else if (xhr.stats === 500) {
+      } else if (xhr.status === 500) {
         // server error
       }
     });

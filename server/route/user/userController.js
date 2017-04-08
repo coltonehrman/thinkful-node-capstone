@@ -1,4 +1,5 @@
 const User = require('./userModel');
+const auth = require('../auth');
 
 exports.params = (req, res, next, id) => {
   User.findById(id)
@@ -45,7 +46,7 @@ exports.get = (req, res, next) => {
 //     }
 //   })
 // };
-//
+
 exports.post = (req, res, next) => {
   const { email, username, password } = req.body;
   const newUser = new User({
@@ -57,19 +58,13 @@ exports.post = (req, res, next) => {
     return next(new Error('Missing field!'));
   }
 
-  User.encryptPassword(password)
+  return User.encryptPassword(password)
     .then((hash) => {
       newUser.password = hash;
       return newUser.save();
     })
     .then((user) => {
-      req.login(user, (err) => {
-        if (err) {
-          return next(err);
-        }
-        // from where user came
-        return res.redirect('/');
-      });
+      auth.login(user, req, res, next);
     })
     .catch(err => next(err));
 };
@@ -96,7 +91,7 @@ exports.post = (req, res, next) => {
 //     }
 //   });
 // };
-//
-// exports.me = function(req, res) {
-//   res.json(req.user.toJson());
-// };
+
+exports.me = (req, res) => {
+  res.json(req.user.toJson());
+};

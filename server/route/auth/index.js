@@ -7,3 +7,20 @@ exports.isLoggedIn = (req, res, next) => {
   }
   return next();
 };
+
+exports.isAdmin = (req, res, next) => {
+  if (!req.user.admin) {
+    logger.error('User is not authorized!');
+    return res.redirect('/');
+  }
+  return next();
+};
+
+exports.login = (user, req, res, next) => {
+  req.login(user, (err) => {
+    if (err) {
+      return next(err);
+    }
+    return res.json({ redirect: '/' });
+  });
+};

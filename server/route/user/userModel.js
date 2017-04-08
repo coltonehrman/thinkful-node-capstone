@@ -18,6 +18,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  admin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 UserSchema.statics = {
@@ -26,13 +30,13 @@ UserSchema.statics = {
       if (!plainTextPassword) {
         return reject('');
       }
-      return bcrypt.genSalt(10, (err, salt) => {
-        if (err) {
-          return reject(err);
+      return bcrypt.genSalt(10, (saltErr, salt) => {
+        if (saltErr) {
+          return reject(saltErr);
         }
-        return bcrypt.hash(plainTextPassword, salt, (err, hash) => { // eslint-disable-line
-          if (err) {
-            return reject(err);
+        return bcrypt.hash(plainTextPassword, salt, (hashErr, hash) => {
+          if (hashErr) {
+            return reject(hashErr);
           }
           return resolve(hash);
         });

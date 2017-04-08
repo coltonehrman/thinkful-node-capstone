@@ -1,9 +1,11 @@
+/* global window */
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
 import { DOM } from './controllers/UIController';
 
 function setupEventListeners() {
   const $form = $(DOM.form);
+  const $errorMessage = $(DOM.errorMessage);
 
   $form.on('submit', (e) => {
     const data = {};
@@ -17,20 +19,27 @@ function setupEventListeners() {
       data,
       method: 'POST',
     })
-    .done((res, status, xhr) => {
-      console.log(xhr);
-      console.log(status);
-      console.log(res);
+    .done((res) => {
+      if (res.redirect) {
+        window.location.replace(`http://${window.location.host}${res.redirect}`);
+      } else {
+        console.log(res);
+      }
     })
     .fail((xhr) => {
+      const $err = $(DOM.errorMessage);
       const message = JSON.parse(xhr.responseText).message;
+
       if (xhr.status === 401) {
-        // invalid credintials
-      } else if (xhr.stats === 500) {
-        // server error
+        $err.html(`${message}<i class="${DOM.errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
+      } else if (xhr.status === 500) {
+        $err.html(`${message}<i class="${DOM.errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
       }
-      console.log(message);
     });
+  });
+
+  $errorMessage.on('click', DOM.errorCloseBtn, () => {
+    $errorMessage.html('').addClass('hide');
   });
 }
 
