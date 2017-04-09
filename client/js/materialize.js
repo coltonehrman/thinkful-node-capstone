@@ -6,7 +6,6 @@
 // Check for jQuery.
 
 window.jQuery = window.$ = require('jquery');
-
 var jQuery = window.jQuery;
 var $ = window.$;
 

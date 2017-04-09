@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const config = require('./config');
 const logger = require('./util/logger');
 
@@ -8,9 +7,6 @@ const app = express();
 const { webpackMiddleware } = require('./middleware/webpackMiddleware');
 require('./middleware/appMiddleware')(app);
 require('./middleware/passportMiddleware')(app);
-
-mongoose.Promise = global.Promise;
-mongoose.connect(config.db.url);
 
 app.use('/', require('./route/auth/authRouter'));
 app.use('/', require('./route/root/rootRouter'));
