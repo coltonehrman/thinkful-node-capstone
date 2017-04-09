@@ -1,14 +1,11 @@
-const path = require('path');
 const express = require('express');
-const ejs = require('ejs');
 const mongoose = require('mongoose');
 const config = require('./config');
 const logger = require('./util/logger');
-const auth = require('./route/auth');
 
 const app = express();
 
-const { webpackMiddleware, compiler } = require('./middleware/webpackMiddleware');
+const { webpackMiddleware } = require('./middleware/webpackMiddleware');
 require('./middleware/appMiddleware')(app);
 require('./middleware/passportMiddleware')(app);
 
@@ -16,17 +13,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.db.url);
 
 app.use('/', require('./route/auth/authRouter'));
-
-app.get('/', auth.isLoggedIn, (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'main.ejs'), (err, file) => {
-    if (err) {
-      return next(err);
-    }
-    res.set('content-type', 'text/html');
-    return res.send(ejs.render(file.toString(), { navItems: [] }));
-  });
-});
-
+app.use('/', require('./route/root/rootRouter'));
 app.use('/users', require('./route/user/userRouter'));
 
 if (config.env === config.dev) {

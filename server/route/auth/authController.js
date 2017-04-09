@@ -2,7 +2,28 @@ const path = require('path');
 const ejs = require('ejs');
 const passport = require('passport');
 const logger = require('../../util/logger');
+const { getMenu } = require('../../util/functions');
 const { compiler } = require('../../middleware/webpackMiddleware');
+
+exports.getLoginMenu = (req, res, next) => {
+  const items = [
+    {
+      text: 'Home',
+      link: '/',
+      onLoggedIn: true,
+      onLoggedOut: false,
+    },
+    {
+      text: 'Signup',
+      link: '/signup',
+      onLoggedIn: false,
+      onLoggedOut: true,
+    },
+  ];
+
+  req.menu = getMenu(items, typeof req.user !== 'undefined');
+  next();
+};
 
 exports.getLogin = (req, res, next) => {
   compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'login.ejs'), (err, file) => {
@@ -10,7 +31,7 @@ exports.getLogin = (req, res, next) => {
       return next(err);
     }
     res.set('content-type', 'text/html');
-    return res.send(ejs.render(file.toString(), { navItems: [] }));
+    return res.send(ejs.render(file.toString(), { menu: req.menu }));
   });
 };
 
@@ -34,13 +55,33 @@ exports.postLogin = (req, res, next) => {
   })(req, res, next);
 };
 
+exports.getSignupMenu = (req, res, next) => {
+  const items = [
+    {
+      text: 'Home',
+      link: '/',
+      onLoggedIn: true,
+      onLoggedOut: false,
+    },
+    {
+      text: 'Login',
+      link: '/login',
+      onLoggedIn: false,
+      onLoggedOut: true,
+    },
+  ];
+
+  req.menu = getMenu(items, typeof req.user !== 'undefined');
+  next();
+};
+
 exports.getSignup = (req, res, next) => {
   compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'signup.ejs'), (err, file) => {
     if (err) {
       return next(err);
     }
     res.set('content-type', 'text/html');
-    return res.send(ejs.render(file.toString(), { navItems: [] }));
+    return res.send(ejs.render(file.toString(), { menu: req.menu }));
   });
 };
 
