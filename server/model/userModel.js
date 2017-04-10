@@ -50,9 +50,9 @@ UserSchema.methods = {
     return bcrypt.compare(plainTextPassword, this.password);
   },
   toJson() {
-    const usr = this.toObject();
-    delete usr.password;
-    return usr;
+    const user = this.toObject();
+    delete user.password;
+    return user;
   },
 };
 

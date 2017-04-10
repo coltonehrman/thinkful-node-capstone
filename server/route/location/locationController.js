@@ -6,14 +6,21 @@ exports.get = (req, res, next) => {
   }
   return Location.find({})
     .exec()
-    .then(locations => res.json(locations))
+    .then(locations => res.json(locations.toJson()))
     .catch(err => next(err));
 };
 
 exports.getOne = (req, res, next) => {
-  const name = req.params.name;
-  Location.find({ name })
+  const { name } = req.query;
+  Location.findOne({ name })
     .exec()
-    .then(location => res.json(location))
+    .then(location => res.json(location.toJson()))
+    .catch(err => next(err));
+};
+
+exports.post = (req, res, next) => {
+  const { name } = req.body;
+  Location.create({ name })
+    .then(location => res.json(location.toJson()))
     .catch(err => next(err));
 };
