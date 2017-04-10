@@ -30,18 +30,16 @@ function setupEventListeners() {
     const name = $place.text().trim();
 
     UIController.Search.clear();
-    UIController.Location.setLocationName(name);
-    UIController.Screen.goTo(DOM.placeScreen);
 
-    APIController.findByName(APIController.locations, name)
+    APIController.findByName(name)
       .then((location) => {
-        if (location.length === 0 || location.places.length === 0) {
-          return UIController.Location.displayPlaces(state.places);
+        if (!location) {
+          return APIController.createLocation(name);
         }
-        return APIController.findByIds(APIController.places, location.places);
+        return location;
       })
-      .then((places) => {
-
+      .then((location) => {
+        console.log(location);
       })
       .catch(err => console.log(err));
   });

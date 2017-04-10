@@ -1,13 +1,18 @@
 <%% var title = 'Home' %>
+<%% var bodyClass = 'home' %>
 <% include client/partials/header %>
 
-  <% include client/partials/nav %>
+    <% include client/partials/nav %>
 
-    <div class="home screen">
+
       <div class="container">
         <div class="card-panel white">
           <h1>I Need a Vacation</h1>
-          <p>Search for a location in the search bar below! Have autocomplete results show up during search. Once you find the place you are looking for click on it in the results. A new screen will display with a list of popular places around the area you searched for. Each item in the list will contain information such as: image, place name, current hours, category, address, rating, price level, and a map showing the location. The map can be accessed be either clicking on the place's image or the marker icon to the right of the category.</p>
+          <p>Search for a location in the search bar below! Have autocomplete results show up during search. Once you find the
+            place you are looking for click on it in the results. A new screen will display with a list of popular places
+            around the area you searched for. Each item in the list will contain information such as: image, place name,
+            current hours, category, address, rating, price level, and a map showing the location. The map can be accessed
+            be either clicking on the place's image or the marker icon to the right of the category.</p>
 
           <p>Want to search another place? Click the back button at the top right of the nav bar, or refresh the page.</p>
         </div>
@@ -22,17 +27,6 @@
         </nav>
         <ul class="results__list autocomplete-content dropdown-content"></ul>
       </div>
-    </div>
-
-    <div class="place screen">
-      <div class="container">
-        <h2 class="place__name"></h2>
-        <div class="place__results row"></div>
-        <div class="progress">
-          <div class="indeterminate"></div>
-        </div>
-      </div>
-    </div>
 
 <%% var google = true %>
 <% include client/partials/footer %>

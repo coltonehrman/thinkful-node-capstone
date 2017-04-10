@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: {
     main: resolve('client/views/main/main.js'),
+    location: resolve('client/views/location/location.js'),
     login: resolve('client/views/login/login.js'),
     signup: resolve('client/views/signup/signup.js'),
     vendor: ['jquery', 'jquery-bar-rating', 'hammer', 'materialize'],
@@ -74,6 +75,11 @@ module.exports = {
       filename: 'main.ejs',
       template: './client/views/main/main.ejs',
       chunks: ['main', 'vendor'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'location.ejs',
+      template: './client/views/location/location.ejs',
+      chunks: ['location', 'vendor'],
     }),
     new HtmlWebpackPlugin({
       filename: 'login.ejs',

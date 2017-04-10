@@ -1,8 +1,28 @@
 import $ from 'jquery';
 
-function findByName(url, name) {
+const API_ENDPOINT = '/locations';
+
+function findByName(name) {
   return new Promise((resolve, reject) => {
-    $.ajax(`${url}?${$.param({ name })}`)
+    $.ajax(`${API_ENDPOINT}`, {
+      data: { name },
+    })
+    .done((res) => {
+      resolve(res);
+    })
+    .fail((xhr) => {
+      const message = JSON.parse(xhr.responseText).message;
+      reject(message);
+    });
+  });
+}
+
+function createLocation(name) {
+  return new Promise((resolve, reject) => {
+    $.ajax(`${API_ENDPOINT}`, {
+      data: { name },
+      method: 'POST',
+    })
     .done((res) => {
       resolve(res);
     })
@@ -14,6 +34,6 @@ function findByName(url, name) {
 }
 
 export default {
-  locations: '/locations',
   findByName,
+  createLocation,
 };
