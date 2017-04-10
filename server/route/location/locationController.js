@@ -18,6 +18,14 @@ exports.getOne = (req, res, next) => {
     .catch(err => next(err));
 };
 
+exports.getById = (req, res, next) => {
+  const { id } = req.params;
+  Location.findById(id)
+    .exec()
+    .then(location => res.json(location.toJson()))
+    .catch(err => next(err));
+};
+
 exports.post = (req, res, next) => {
   const { name } = req.body;
   Location.create({ name })
