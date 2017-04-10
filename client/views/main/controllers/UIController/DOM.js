@@ -3,16 +3,14 @@ const DOM = {
   homeScreen: '.home.screen',
   placeScreen: '.place.screen',
   placeSearch: '.place-search',
-  backButton: '.back-btn',
   searchResults: '.results__list',
   searchResult: '.results__item',
   progressBar: '.progress',
-  categoryContainer: '.place__categories',
-  categories: '.place__category',
   googleMapActivator: '.activator',
-  place: '.place__item',
+  placeAddBtn: '.place__add',
   placeName: '.place__name',
   placeResults: '.place__results',
+  place: '.place__item',
   placeRating: '.place__rating',
 };
 

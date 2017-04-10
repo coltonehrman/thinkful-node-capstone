@@ -2,9 +2,10 @@
 /* eslint comma-dangle: ["error", "ignore"] */
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
-import { autocomplete, getLatLong } from './lib/google';
+import { autocomplete } from './lib/google';
 import UIController, { DOM } from './controllers/UIController';
-import AttractionsController from './controllers/AttractionsController';
+import APIController from './controllers/APIController';
+import state from './state';
 
 function setupEventListeners() {
   const $placeSearch = $(DOM.placeSearch);
@@ -27,40 +28,32 @@ function setupEventListeners() {
   $(document).on('click', DOM.searchResult, (e) => {
     const $place = $(e.target).parents(DOM.searchResult);
     const name = $place.text().trim();
-    const placeId = $place.data('place-id').trim();
 
     UIController.Search.clear();
-    UIController.Place.setPlaceName(name);
+    UIController.Location.setLocationName(name);
     UIController.Screen.goTo(DOM.placeScreen);
 
-    getLatLong(placeId).then((loc) => {
-      AttractionsController.findAttractions(loc).then((attractions) => {
-        UIController.Place.toggleProgress();
-        UIController.Place.displayPlaces(attractions);
-      });
-    });
+    APIController.findByName(APIController.locations, name)
+      .then((location) => {
+        if (location.length === 0 || location.places.length === 0) {
+          return UIController.Location.displayPlaces(state.places);
+        }
+        return APIController.findByIds(APIController.places, location.places);
+      })
+      .then((places) => {
+
+      })
+      .catch(err => console.log(err));
   });
 
-  $(document).on('click', DOM.categories, (e) => {
-    const $categories = $(DOM.categories);
-    const $target = $(e.target);
-    const category = $target.text();
-
-    $categories.addClass('btn-flat');
-    $target.removeClass('btn-flat');
-    UIController.Place.displayPlacesByFilter(category);
-  });
-
-  $(DOM.backButton).on('click', () => {
-    UIController.Screen.goTo(DOM.homeScreen);
-    UIController.Search.focus();
-    UIController.Place.reset();
+  $(DOM.placeResults).on('click', DOM.placeAddBtn, () => {
+    state.places[0].toForm();
   });
 
   $(document).on('click', DOM.googleMapActivator, (e) => {
     const $place = $(e.target).parents(DOM.place);
-    UIController.Place.showMap($place);
-    window.currentMap = UIController.Place.getMap($place);
+    UIController.Location.showMap($place);
+    window.currentMap = UIController.Location.getMap($place);
   });
 }
 

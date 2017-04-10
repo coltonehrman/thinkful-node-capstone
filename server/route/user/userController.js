@@ -1,4 +1,4 @@
-const User = require('./userModel');
+const User = require('../../model/userModel');
 const auth = require('../auth');
 
 exports.params = (req, res, next, id) => {
@@ -26,27 +26,6 @@ exports.get = (req, res, next) => {
     .catch(err => next(err));
 };
 
-// exports.getOne = function(req, res, next) {
-//   var user = req.user.toJson();
-//   res.json(user.toJson());
-// };
-//
-// exports.put = function(req, res, next) {
-//   var user = req.user;
-//
-//   var update = req.body;
-//
-//   _.merge(user, update);
-//
-//   user.save(function(err, saved) {
-//     if (err) {
-//       next(err);
-//     } else {
-//       res.json(saved.toJson());
-//     }
-//   })
-// };
-
 exports.post = (req, res, next) => {
   const { email, username, password } = req.body;
   const newUser = new User({
@@ -69,17 +48,25 @@ exports.post = (req, res, next) => {
     .catch(err => next(err));
 };
 
-// exports.login = (req, res, next) => {
-//   const { username, password } = req.body;
-//   User.find({ username })
-//     .select('-password')
-//     .exec()
-//     .then((user) => {
-//       if (!user) {
-//         return next('Invalid username!');
-//       }
-//       return res.redirect('/dashboard');
-//     });
+// exports.getOne = function(req, res, next) {
+//   var user = req.user.toJson();
+//   res.json(user.toJson());
+// };
+//
+// exports.put = function(req, res, next) {
+//   var user = req.user;
+//
+//   var update = req.body;
+//
+//   _.merge(user, update);
+//
+//   user.save(function(err, saved) {
+//     if (err) {
+//       next(err);
+//     } else {
+//       res.json(saved.toJson());
+//     }
+//   })
 // };
 //
 // exports.delete = function(req, res, next) {

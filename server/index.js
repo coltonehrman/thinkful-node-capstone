@@ -11,6 +11,8 @@ require('./middleware/passportMiddleware')(app);
 app.use('/', require('./route/auth/authRouter'));
 app.use('/', require('./route/root/rootRouter'));
 app.use('/users', require('./route/user/userRouter'));
+app.use('/locations', require('./route/location/locationRouter'));
+app.use('/places', require('./route/place/placeRouter'));
 
 if (config.env === config.dev) {
   app.use(webpackMiddleware);

@@ -17,7 +17,7 @@ function toggleProgress() {
   }
 }
 
-function setPlaceName(name) {
+function setLocationName(name) {
   $(DOM.placeName).text(name);
 }
 
@@ -34,52 +34,22 @@ function appendPlaces(places) {
   });
 }
 
-function clearCategories() {
-  $(DOM.categories).remove();
-}
-
 function clearPlaces() {
   $(DOM.placeResults).empty();
 }
 
 export default {
-  setPlaceName,
+  setLocationName,
   toggleProgress,
   displayPlaces(places) {
-    const placeCategories = places.map(place => place.category);
-    const categories = placeCategories.filter((cat, i) =>
-      placeCategories.indexOf(cat) === i
-    );
+    places.unshift(new Place(null));
+    if (!places) {
+      $(DOM.placeName).append('<h5><em>No Current Places</em></h5>');
+    } else {
 
-    clearCategories();
-
-    categories.forEach(cat => $(DOM.categoryContainer).append(
-      `<a class="${DOM.categories.slice(1)} waves-effect btn-flat btn">${cat}</a>`
-    ));
-
-    state.places = places.map(place => new Place(place)).sort((a, b) => {
-      if (typeof a.place.photo !== 'undefined') {
-        if (typeof b.place.photo !== 'undefined') {
-          return 0;
-        }
-        return -1;
-      }
-      return 1;
-    });
-
-    appendPlaces(state.places);
-  },
-  displayPlacesByFilter(category) {
-    const $placeResults = $(DOM.placeResults);
-    const placesToShow = state.places.filter(place =>
-      place.place.category === category
-    );
-
-    if ($placeResults.children().length >= 1) {
-      $placeResults.empty();
     }
-
-    appendPlaces(placesToShow);
+    appendPlaces(places);
+    toggleProgress();
   },
   getMap($place) {
     return state.places.find(place => place.$element.is($place)).map;
@@ -89,7 +59,6 @@ export default {
   },
   reset() {
     toggleProgress();
-    clearCategories();
     clearPlaces();
   },
 };

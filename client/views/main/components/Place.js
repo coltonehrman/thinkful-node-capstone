@@ -1,15 +1,19 @@
+/* eslint global-require: 0, import/no-extraneous-dependencies: 0, import/no-unresolved: 0 */
 /* global google */
 import $ from 'jquery';
-import 'jquery-bar-rating';
 import { DOM } from '../controllers/UIController';
 
 export default class Place {
   constructor(place) {
-    this.place = place;
-    this.$element = this.createElement();
-    this.createRating();
-    this.map = null;
-    this.marker = null;
+    if (!place) {
+      this.$element = this.createPlaceholder();
+    } else {
+      this.place = place;
+      this.$element = this.createElement();
+      this.createRating();
+      this.map = null;
+      this.marker = null;
+    }
   }
 
   createMap() {
@@ -58,9 +62,9 @@ export default class Place {
     html += `
           <div class="card-content grey-text">
             <div class="card-title">
-              <i class="activator material-icons small right">location_on</i></span>
+              <i class="activator material-icons small right">location_on</i>
               <div class="chip right">
-                <img src="${this.place.icon}" alt="Contact Person">
+                <img src="${this.place.icon}">
                 ${this.place.category}
               </div>
               ${this.place.name}`;
@@ -103,5 +107,56 @@ export default class Place {
       </div>`;
 
     return $(html);
+  }
+
+  createPlaceholder() { // eslint-disable-line
+    const html = `
+      <div class="place__item col s12 m6">
+        <div class="card">
+          <div class="card__overlay">
+            <a class="btn-floating btn-large ${DOM.placeAddBtn.slice(1)}"><i class="material-icons">add</i></a>
+          </div>
+          <div class="card-image">
+            <img src="${require('placeholder-img.png')}">
+          </div>
+
+          <div class="card-content">
+            <div class="card-title">
+              <i class="material-icons small right">location_on</i>
+              Lorem ipsum dolor
+            </div>
+
+            <blockquote>
+              Lorem ipsum dolor sit amet
+              Fusce eu nibh accumsan
+              Integer eget diam tempor
+              Praesent a lacus eu metus
+            </blockquote>
+          </div>
+
+          <div class="card-action"></div>
+        </div>
+      </div>
+    `;
+
+    return $(html);
+  }
+
+  toForm() {
+    this.$element.find('.card-title').replaceWith(`
+      <div class="input-field">
+        <input id="name" type="text">
+        <label for="name">Place Name</label>
+      </div>
+    `);
+
+    this.$element.find('blockquote').replaceWith(`
+      <div class="input-field col s12">
+        <textarea id="description" class="materialize-textarea"></textarea>
+        <label for="description">Description</label>
+      </div>
+    `);
+
+    this.$element.find('.card__overlay').hide();
   }
 }

@@ -2,7 +2,7 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const config = require('../config');
-const User = require('../route/user/userModel');
+const User = require('../model/userModel');
 
 module.exports = (app) => {
   passport.use(new LocalStrategy(

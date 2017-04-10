@@ -4,7 +4,7 @@
   "scripts": {
     "prebuild:dev": "rimraf build",
     "build:dev": "webpack --config ./config/webpack.config.development.js",
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "mocha ./test/unit/test-functions.js"
   },
   "dependencies": {
