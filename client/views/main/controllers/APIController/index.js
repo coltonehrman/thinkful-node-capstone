@@ -2,7 +2,7 @@ import $ from 'jquery';
 
 const API_ENDPOINT = '/locations';
 
-function findByName(name) {
+function findLocation(name) {
   return new Promise((resolve, reject) => {
     $.ajax(`${API_ENDPOINT}`, {
       data: { name },
@@ -34,6 +34,6 @@ function createLocation(name) {
 }
 
 export default {
-  findByName,
+  findLocation,
   createLocation,
 };

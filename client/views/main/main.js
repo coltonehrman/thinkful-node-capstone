@@ -31,7 +31,7 @@ function setupEventListeners() {
 
     UIController.Search.clear();
 
-    APIController.findByName(name)
+    APIController.findLocation(name)
       .then((location) => {
         if (!location) {
           return APIController.createLocation(name);
@@ -40,6 +40,7 @@ function setupEventListeners() {
       })
       .then((location) => {
         console.log(location);
+        window.location.replace(`${window.location.host}/locations/${location.id}`);
       })
       .catch(err => console.log(err));
   });
@@ -48,15 +49,14 @@ function setupEventListeners() {
     state.places[0].toForm();
   });
 
-  $(document).on('click', DOM.googleMapActivator, (e) => {
-    const $place = $(e.target).parents(DOM.place);
-    UIController.Location.showMap($place);
-    window.currentMap = UIController.Location.getMap($place);
-  });
+  // $(document).on('click', DOM.googleMapActivator, (e) => {
+  //   const $place = $(e.target).parents(DOM.place);
+  //   UIController.Location.showMap($place);
+  //   window.currentMap = UIController.Location.getMap($place);
+  // });
 }
 
 function init() {
-  UIController.Screen.goTo(DOM.homeScreen);
   UIController.Search.focus();
   setupEventListeners();
 }

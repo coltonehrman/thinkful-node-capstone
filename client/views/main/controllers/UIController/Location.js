@@ -1,7 +1,6 @@
 /* eslint comma-dangle: ["error", "ignore"] */
 import $ from 'jquery';
-import 'jquery-bar-rating';
-import state from '../../modules/state';
+import state from '../../state';
 import DOM from './DOM';
 import Place from '../../components/Place';
 
