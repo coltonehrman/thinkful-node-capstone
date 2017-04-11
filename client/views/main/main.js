@@ -2,10 +2,9 @@
 /* eslint comma-dangle: ["error", "ignore"] */
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
-import { autocomplete } from './lib/google';
+import { autocomplete } from 'google'; // eslint-disable-line
 import { DOM, Search } from './controllers/UIController';
 import APIController from './controllers/APIController';
-import state from './state';
 
 function setupEventListeners() {
   const $placeSearch = $(DOM.placeSearch);
@@ -16,12 +15,9 @@ function setupEventListeners() {
       Search.hideResults();
     } else {
       Search.clearResults();
-      autocomplete(search).then(results =>
-        Search.displayResults(results)
-      )
-      .catch(() =>
-        Search.hideResults()
-      );
+      autocomplete.cities(search)
+        .then(results => Search.displayResults(results))
+        .catch(() => Search.hideResults());
     }
   });
 
@@ -43,16 +39,6 @@ function setupEventListeners() {
       })
       .catch(err => console.log(err));
   });
-
-  $(DOM.placeResults).on('click', DOM.placeAddBtn, () => {
-    state.places[0].toForm();
-  });
-
-  // $(document).on('click', DOM.googleMapActivator, (e) => {
-  //   const $place = $(e.target).parents(DOM.place);
-  //   UIController.Location.showMap($place);
-  //   window.currentMap = UIController.Location.getMap($place);
-  // });
 }
 
 function init() {

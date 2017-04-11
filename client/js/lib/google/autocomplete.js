@@ -1,10 +1,10 @@
 import { autocomplete } from './apis';
 
-export default text => (
-  new Promise((resolve, reject) => {
+function getPredictions(types, text) {
+  return new Promise((resolve, reject) => {
     autocomplete.getPlacePredictions({
       input: text,
-      types: ['(cities)'],
+      types: types,
     }, (data) => {
       if (data !== null) {
         const results = data.map(place => ({
@@ -16,5 +16,10 @@ export default text => (
         reject();
       }
     });
-  })
-);
+  });
+}
+
+export default {
+  cities: getPredictions.bind(null, ['(cities)']),
+  addresses: getPredictions.bind(null, ['geocode']),
+};

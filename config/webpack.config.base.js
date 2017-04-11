@@ -22,6 +22,7 @@ module.exports = {
       'node_modules',
     ],
     alias: {
+      google: resolve('client/js/lib/google'),
       hammer: resolve('client/js/hammer.js'),
       materialize: resolve('client/js/materialize.js'),
     },

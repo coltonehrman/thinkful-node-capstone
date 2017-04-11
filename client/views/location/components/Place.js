@@ -1,5 +1,6 @@
-/* eslint global-require: 0, import/no-extraneous-dependencies: 0, import/no-unresolved: 0 */
 /* global google */
+/* eslint global-require: 0, import/no-extraneous-dependencies: 0, import/no-unresolved: 0 */
+/* eslint comma-dangle: ["error", "ignore"] */
 import $ from 'jquery';
 import { DOM } from '../controllers/UIController';
 import APIController from '../controllers/APIController';
@@ -104,6 +105,7 @@ export default class Place {
         <input id="name" type="text">
         <label for="name">Name</label>
       </div>
+      <ul class="autocomplete-content dropdown-content"></ul>
     `);
 
     this.$element.find('blockquote').replaceWith(`
@@ -126,6 +128,27 @@ export default class Place {
     `);
 
     this.$element.find('.card__overlay').hide();
+  }
+
+  displayResults(results) {
+    const $searchResults = this.$element.find('.autocomplete-content');
+    $searchResults.empty();
+
+    results.forEach((result) => {
+      $searchResults.append(`
+        <li><span>${result.name}</span></li>`
+      );
+    });
+
+    $searchResults.show();
+  }
+
+  hideResults() {
+    this.$element.find('.autocomplete-content').hide();
+  }
+
+  clearResults() {
+    this.$element.find('.autocomplete-content').empty();
   }
 
   cancelForm() {

@@ -23,7 +23,6 @@ function display(places) {
     // show no places
   }
   state.places = places.map((place, i) => new Place(place, i));
-  console.log(state.places);
   state.places.forEach(appendPlace);
 }
 

@@ -1,6 +1,8 @@
 /* global google document */
+/* eslint func-names: 0 */
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
+import { autocomplete } from 'google'; // eslint-disable-line
 import APIController from './controllers/APIController';
 import { DOM, Places } from './controllers/UIController';
 import state from './state';
@@ -27,6 +29,21 @@ function setupEventListeners() {
         Places.add(place);
       })
       .catch(err => console.log(err));
+  });
+
+  $(DOM.places).on('keyup', '#name', function () {
+    const value = $(this).val();
+    const id = $(this).parents(DOM.place).data('id');
+    const place = state.places[id];
+
+    if (value === '') {
+      place.hideResults();
+    } else {
+      place.clearResults();
+      autocomplete.addresses(value)
+      .then(res => place.displayResults(res))
+      .catch(() => place.hideResults());
+    }
   });
 }
 
