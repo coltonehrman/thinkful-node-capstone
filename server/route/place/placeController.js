@@ -19,3 +19,17 @@ exports.getByLocationId = (req, res, next) => {
     .then(location => res.json(location.places))
     .catch(err => next(err));
 };
+
+exports.post = (req, res, next) => {
+  const { name, description, location } = req.body;
+  let place = null;
+  Place.create({ name, description, location })
+    .then((newPlace) => {
+      place = newPlace;
+      return Location.findByIdAndUpdate(location, {
+        $addToSet: { places: place._id },
+      }).exec();
+    })
+    .then(() => res.json(place))
+    .catch(err => next(err));
+};

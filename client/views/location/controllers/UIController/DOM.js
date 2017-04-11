@@ -1,5 +1,8 @@
 export default {
   progress: '.progress',
-  places: '.place__results',
   placeAddBtn: '.place__add-btn',
+  placeCancelBtn: '.place__cancel-btn',
+  placeCreateBtn: '.place__create-btn',
+  places: '.place__results',
+  place: '.place__item',
 };

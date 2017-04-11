@@ -43,6 +43,21 @@
           margin-right: 15px !important;
         }
       }
+
+      & .input-field {
+        & blockquote {
+          padding-left: 15px;
+          margin-bottom: 75px;
+        }
+
+        & #description {
+          margin-bottom: 0;
+
+          & + label {
+            left: 20px;
+          }
+        }
+      }
     }
   }
 

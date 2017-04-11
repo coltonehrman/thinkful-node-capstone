@@ -2,18 +2,35 @@
 /* global google */
 import $ from 'jquery';
 import { DOM } from '../controllers/UIController';
+import APIController from '../controllers/APIController';
 
 export default class Place {
-  constructor(place) {
+  constructor(place, id) {
+    this.id = id;
     if (!place) {
-      this.$element = this.createPlaceholder();
+      this.place = {
+        name: 'Lorem ipsum dolor',
+        description: `
+        Lorem ipsum dolor sit amet
+        Fusce eu nibh accumsan
+        Integer eget diam tempor
+        Praesent a lacus eu metus`,
+      };
+      this.$element = this.createElement();
+      this.addOverlay();
     } else {
       this.place = place;
       this.$element = this.createElement();
-      this.createRating();
+      // this.createRating();
       this.map = null;
       this.marker = null;
     }
+  }
+
+  createPlace() {
+    const name = this.$element.find('#name').val();
+    const description = this.$element.find('#description').val();
+    return APIController.createPlace({ name, description });
   }
 
   createMap() {
@@ -50,88 +67,17 @@ export default class Place {
   }
 
   createElement() {
-    let html = `
-      <div class="place__item col s12 m6">
-        <div class="card">`;
-    if (typeof this.place.photo !== 'undefined') {
-      html += `
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="${this.place.photo}">
-          </div>`;
-    }
-    html += `
-          <div class="card-content grey-text">
-            <div class="card-title">
-              <i class="activator material-icons small right">location_on</i>
-              <div class="chip right">
-                <img src="${this.place.icon}">
-                ${this.place.category}
-              </div>
-              ${this.place.name}`;
-    if (typeof this.place.hours !== 'undefined') {
-      html += `
-              <p class="place__hours">${this.place.hours}</p>`;
-    }
-    html += `
-            </div>
-            <blockquote>${this.place.address.split(', ').join('<br>')}</blockquote>`;
-
-    html += `
-            </div>
-            <div class="card-reveal">
-              <span class="card-title grey-text">${this.place.name}<i class="material-icons right">close</i></span>
-              <div class="map"></div>
-            </div>`;
-    if (typeof this.place.price !== 'undefined' || typeof this.place.rating !== 'undefined') {
-      html += `
-          <div class="card-action">`;
-      if (typeof this.place.price !== 'undefined') {
-        html += `
-              <p class="place__price place__price--${this.place.price.length} right btn-floating red">${this.place.price}</p>`;
-      }
-      if (typeof this.place.rating !== 'undefined') {
-        html += `
-              <select class="place__rating" name="rating" data-current-rating="${this.place.rating}">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>`;
-      }
-      html += `
-          </div>`;
-    }
-    html += `
-        </div>
-      </div>`;
-
-    return $(html);
-  }
-
-  createPlaceholder() { // eslint-disable-line
     const html = `
-      <div class="place__item col s12 m6">
+      <div class="place__item col s12 m6" data-id="${this.id}">
         <div class="card">
-          <div class="card__overlay">
-            <a class="btn-floating btn-large ${DOM.placeAddBtn.slice(1)}"><i class="material-icons">add</i></a>
-          </div>
           <div class="card-image">
             <img src="${require('placeholder-img.png')}">
           </div>
 
           <div class="card-content">
-            <div class="card-title">
-              <i class="material-icons small right">location_on</i>
-              Lorem ipsum dolor
-            </div>
+            <div class="card-title">${this.place.name}</div>
 
-            <blockquote>
-              Lorem ipsum dolor sit amet
-              Fusce eu nibh accumsan
-              Integer eget diam tempor
-              Praesent a lacus eu metus
-            </blockquote>
+            <blockquote>${this.place.description}</blockquote>
           </div>
 
           <div class="card-action"></div>
@@ -142,21 +88,61 @@ export default class Place {
     return $(html);
   }
 
+  addOverlay() {
+    this.$element.find('.card').append(`
+      <div class="card__overlay">
+        <a class="btn-floating btn-large ${DOM.placeAddBtn.slice(1)}">
+          <i class="material-icons">add</i>
+        </a>
+      </div>
+    `);
+  }
+
   toForm() {
     this.$element.find('.card-title').replaceWith(`
-      <div class="input-field">
+      <div class="input-field card-title">
         <input id="name" type="text">
-        <label for="name">Place Name</label>
+        <label for="name">Name</label>
       </div>
     `);
 
     this.$element.find('blockquote').replaceWith(`
-      <div class="input-field col s12">
-        <textarea id="description" class="materialize-textarea"></textarea>
-        <label for="description">Description</label>
+      <div class="input-field">
+        <blockquote>
+          <textarea id="description" class="materialize-textarea"></textarea>
+          <label for="description">Description</label>
+        </blockquote>
       </div>
     `);
 
+    this.$element.find('.card-action').append(`
+      <a class="${DOM.placeCancelBtn.slice(1)} btn-floating btn-large waves-effect waves-light red">
+        <i class="material-icons">close</i>
+      </a>
+    `, `
+      <a class="${DOM.placeCreateBtn.slice(1)} btn-floating btn-large right waves-effect waves-light green accent-3">
+        <i class="material-icons">check</i>
+      </a>
+    `);
+
     this.$element.find('.card__overlay').hide();
+  }
+
+  cancelForm() {
+    this.$element.find('.card-title').replaceWith(`
+      <div class="card-title">Lorem ipsum dolor</div>
+    `);
+
+    this.$element.find('blockquote').parents('.input-field').replaceWith(`
+      <blockquote>
+        Lorem ipsum dolor sit amet
+        Fusce eu nibh accumsan
+        Integer eget diam tempor
+        Praesent a lacus eu metus
+      </blockquote>
+    `);
+
+    this.$element.find('.card-action').empty();
+    this.$element.find('.card__overlay').show();
   }
 }

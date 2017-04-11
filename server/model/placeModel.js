@@ -7,6 +7,10 @@ const PlaceSchema = new Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    require: true,
+  },
   location: {
     ref: 'location',
     type: Schema.Types.ObjectId,

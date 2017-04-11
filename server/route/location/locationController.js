@@ -36,7 +36,12 @@ exports.getOne = (req, res, next) => {
   const { name } = req.query;
   Location.findOne({ name })
     .exec()
-    .then(location => res.json(location.toJson()))
+    .then((location) => {
+      if (!location) {
+        return res.json(location);
+      }
+      return res.json(location.toJson());
+    })
     .catch(err => next(err));
 };
 
