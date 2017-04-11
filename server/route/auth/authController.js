@@ -1,9 +1,7 @@
-const path = require('path');
 const ejs = require('ejs');
 const passport = require('passport');
 const logger = require('../../util/logger');
-const { getMenu } = require('../../util/functions');
-const { compiler } = require('../../middleware/webpackMiddleware');
+const { getMenu, getFile } = require('../../util/functions');
 
 exports.getLoginMenu = (req, res, next) => {
   const items = [
@@ -24,13 +22,15 @@ exports.getLoginMenu = (req, res, next) => {
 };
 
 exports.getLogin = (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'login.ejs'), (err, file) => {
-    if (err) {
-      return next(err);
-    }
-    res.set('content-type', 'text/html');
-    return res.send(ejs.render(file.toString(), { menu: req.menu }));
-  });
+  getFile('login.ejs')
+    .then((file) => {
+      if (file) {
+        res.set('content-type', 'text/html');
+        return res.send(ejs.render(file.toString(), { menu: req.menu }));
+      }
+      return res.render('login', { menu: req.menu });
+    })
+    .catch(err => next(err));
 };
 
 exports.postLogin = (req, res, next) => {
@@ -74,16 +74,18 @@ exports.getSignupMenu = (req, res, next) => {
 };
 
 exports.getSignup = (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'signup.ejs'), (err, file) => {
-    if (err) {
-      return next(err);
-    }
-    res.set('content-type', 'text/html');
-    return res.send(ejs.render(file.toString(), { menu: req.menu }));
-  });
+  getFile('signup.ejs')
+    .then((file) => {
+      if (file) {
+        res.set('content-type', 'text/html');
+        return res.send(ejs.render(file.toString(), { menu: req.menu }));
+      }
+      return res.render('signup', { menu: req.menu });
+    })
+    .catch(err => next(err));
 };
 
 exports.logout = (req, res) => {
   req.logout();
-  res.redirect('/is-loggedout');
+  res.redirect('/login');
 };

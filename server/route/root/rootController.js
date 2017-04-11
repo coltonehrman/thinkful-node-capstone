@@ -1,7 +1,5 @@
-const path = require('path');
 const ejs = require('ejs');
-const { getMenu } = require('../../util/functions');
-const { compiler } = require('../../middleware/webpackMiddleware');
+const { getMenu, getFile } = require('../../util/functions');
 
 exports.getMenu = (req, res, next) => {
   const items = [
@@ -30,11 +28,13 @@ exports.getMenu = (req, res, next) => {
 };
 
 exports.get = (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'main.ejs'), (err, file) => {
-    if (err) {
-      return next(err);
-    }
-    res.set('content-type', 'text/html');
-    return res.send(ejs.render(file.toString(), { menu: req.menu }));
-  });
+  getFile('main.ejs')
+    .then((file) => {
+      if (file) {
+        res.set('content-type', 'text/html');
+        return res.send(ejs.render(file.toString(), { menu: req.menu }));
+      }
+      return res.render('main', { menu: req.menu });
+    })
+    .catch(err => next(err));
 };

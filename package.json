@@ -2,8 +2,8 @@
   "name": "thinkful-node-capstone",
   "version": "1.0.0",
   "scripts": {
-    "prebuild:dev": "rimraf build",
-    "build:dev": "webpack --config ./config/webpack.config.development.js",
+    "prebuild": "rimraf build",
+    "build": "webpack --config ./config/webpack.config.development.js",
     "start": "node index.js",
     "test": "mocha ./test/unit/test-functions.js"
   },

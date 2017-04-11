@@ -1,0 +1,12 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: YN4BPVBf0Lmc2voYQmWILd5aUHzs60zeKg5W4aHayVhTnVMlrIfJKbbPokHy8xX2L5YDDkfZaftQ+2nRu/F+JQyT7+1OBkwSgOnTEIQcQKCmLTEpoF3GfjoVbUP5tKTdabkfGv+acPXcTzP4/SCm17/2P/0tDyB9lntBWPi5iYdItGFOLiemA8qIrAifyMYyxVafYNwgZgZkIHzsyecVbLsR0Lt7WTo856xp95PiiZ+JN5HhGy2YV7K03Wq22UTgwIS8qKVZrRGPE1QJA+wALVhsb7SFIwuliTvEsDZfbVHysQfxQxiBoo6d0daeiA8YOIhJfrkpiribFDrZ33/8pStWCp59K4qR9UWk4rgKKvgFUUG2RPM1DhpS9cij5/mu9IzXFeBChempOiCPtwiiKvkMHoFicYTBOuegziGCxBUypawqwL5EastSo+rs/OqC94qW8OPTBTzlaXzwv6gEMA7TXC6KbYwfAO5dnN7TZ3925PBm9/6NaT1/E1a8dVUYx5B6Va97iGtvF0rwQyynmHUm8mp3APFUugPe+pLR0X11ZPB3tTVDNrSF57DaER5JlGmN9xit+XjLY2EmBDfUs5doqYDGapsYsi0h0WNmCCfz16W3rGAGnY9T8QmbwuB9lcxuX8E2bZObI1ulXsg2aL1Oa9BwzNhCimprV2WOuCQ=
+  app: agile-brushlands-26553
+  on:
+    repo: coltonehrman/thinkful-node-capstone
+    branch: master

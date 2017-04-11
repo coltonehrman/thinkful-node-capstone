@@ -1,8 +1,6 @@
-const path = require('path');
 const ejs = require('ejs');
 const Location = require('../../model/locationModel');
-const { getMenu } = require('../../util/functions');
-const { compiler } = require('../../middleware/webpackMiddleware');
+const { getMenu, getFile } = require('../../util/functions');
 
 exports.getLocationPageMenu = (req, res, next) => {
   const items = [
@@ -46,13 +44,15 @@ exports.getOne = (req, res, next) => {
 };
 
 exports.getLocationPage = (req, res, next) => {
-  compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, 'location.ejs'), (err, file) => {
-    if (err) {
-      return next(err);
-    }
-    res.set('content-type', 'text/html');
-    return res.send(ejs.render(file.toString(), { menu: req.menu }));
-  });
+  getFile('location.ejs')
+    .then((file) => {
+      if (file) {
+        res.set('content-type', 'text/html');
+        return res.send(ejs.render(file.toString(), { menu: req.menu }));
+      }
+      return res.render('location', { menu: req.menu });
+    })
+    .catch(err => next(err));
 };
 
 exports.post = (req, res, next) => {

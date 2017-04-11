@@ -1,7 +1,4 @@
-const app = require('./server');
-const config = require('./server/config');
+const { runServer } = require('./server');
 const logger = require('./server/util/logger');
 
-app.listen(config.port, () => {
-  logger.log(`listening on http://localhost:${config.port}`);
-});
+runServer().catch(err => logger.error(err));
