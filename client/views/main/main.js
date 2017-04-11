@@ -3,7 +3,7 @@
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
 import { autocomplete } from './lib/google';
-import UIController, { DOM } from './controllers/UIController';
+import { DOM, Search } from './controllers/UIController';
 import APIController from './controllers/APIController';
 import state from './state';
 
@@ -13,14 +13,14 @@ function setupEventListeners() {
   $placeSearch.on('keyup', () => {
     const search = $placeSearch.val().trim();
     if (search === '') {
-      UIController.Search.hideResults();
+      Search.hideResults();
     } else {
-      UIController.Search.clearResults();
+      Search.clearResults();
       autocomplete(search).then(results =>
-        UIController.Search.displayResults(results)
+        Search.displayResults(results)
       )
       .catch(() =>
-        UIController.Search.hideResults()
+        Search.hideResults()
       );
     }
   });
@@ -29,7 +29,7 @@ function setupEventListeners() {
     const $place = $(e.target).parents(DOM.searchResult);
     const name = $place.text().trim();
 
-    UIController.Search.clear();
+    Search.clear();
 
     APIController.findLocation(name)
       .then((location) => {
@@ -39,8 +39,7 @@ function setupEventListeners() {
         return location;
       })
       .then((location) => {
-        console.log(location);
-        window.location.replace(`${window.location.host}/locations/${location.id}`);
+        window.location.replace(`/locations/${location.id}`);
       })
       .catch(err => console.log(err));
   });
@@ -57,7 +56,7 @@ function setupEventListeners() {
 }
 
 function init() {
-  UIController.Search.focus();
+  Search.focus();
   setupEventListeners();
 }
 

@@ -1,7 +1,4 @@
 const DOM = {
-  screens: '.screen',
-  homeScreen: '.home.screen',
-  placeScreen: '.place.screen',
   placeSearch: '.place-search',
   searchResults: '.results__list',
   searchResult: '.results__item',

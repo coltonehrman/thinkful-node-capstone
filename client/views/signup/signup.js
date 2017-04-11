@@ -21,7 +21,7 @@ function setupEventListeners() {
     })
     .done((res) => {
       if (res.redirect) {
-        window.location.replace(`http://${window.location.host}${res.redirect}`);
+        window.location.replace(res.redirect);
       } else {
         console.log(res);
       }

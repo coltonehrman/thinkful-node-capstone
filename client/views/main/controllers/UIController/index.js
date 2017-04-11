@@ -1,9 +1,2 @@
-import DOM from './DOM';
-import Search from './Search';
-import Location from './Location';
-
-export { DOM };
-export default {
-  Search,
-  Location,
-};
+export { default as Search } from './Search';
+export { default as DOM } from './DOM';

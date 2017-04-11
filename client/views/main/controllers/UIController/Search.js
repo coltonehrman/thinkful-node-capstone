@@ -22,7 +22,7 @@ export default {
 
     results.forEach((result) => {
       $searchResults.append(
-        `<li class="${DOM.searchResult.slice(1)}" data-place-id="${result.id}">
+        `<li class="${DOM.searchResult.slice(1)}">
           <span>${result.name}</span>
         </li>`
       );
