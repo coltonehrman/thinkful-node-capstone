@@ -8,10 +8,11 @@ const LocationSchema = new Schema({
     required: true,
     unique: true,
   },
-  places: {
-    type: [Schema.Types.ObjectId],
+  places: [{
+    ref: 'place',
+    type: Schema.Types.ObjectId,
     default: [],
-  },
+  }],
 });
 
 LocationSchema.methods = {

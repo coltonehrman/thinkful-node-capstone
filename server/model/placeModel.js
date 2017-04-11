@@ -7,6 +7,10 @@ const PlaceSchema = new Schema({
     type: String,
     required: true,
   },
+  location: {
+    ref: 'location',
+    type: Schema.Types.ObjectId,
+  },
 });
 
 module.exports = mongoose.model('place', PlaceSchema);

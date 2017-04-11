@@ -1,20 +1,21 @@
+const Location = require('../../model/locationModel');
 const Place = require('../../model/placeModel');
 
 exports.get = (req, res, next) => {
-  Place.find({})
+  if (req.query.location_id) {
+    return next();
+  }
+  return Place.find({})
     .exec()
     .then(places => res.json(places))
     .catch(err => next(err));
 };
 
-exports.getOne = (req, res, next) => {
-  const name = req.params.name;
-  Place.find({ name })
+exports.getByLocationId = (req, res, next) => {
+  const { location_id } = req.query;
+  Location.findById(location_id)
+    .populate('places')
     .exec()
-    .then(place => res.json(place))
+    .then(location => res.json(location.places))
     .catch(err => next(err));
-};
-
-exports.post = (req, res, next) => {
-  
 };
