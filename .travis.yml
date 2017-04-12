@@ -9,4 +9,3 @@ deploy:
   app: agile-brushlands-26553
   on:
     repo: coltonehrman/thinkful-node-capstone
-    branch: master
