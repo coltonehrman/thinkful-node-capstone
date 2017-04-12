@@ -1,0 +1,44 @@
+<% var title = 'Location' %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+
+    <!-- Import Google Icon Font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Import Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <link href="/./css/styles.css" rel="stylesheet"></head>
+
+  <body <% if (typeof bodyClass !== 'undefined') { %>class="<%= bodyClass %>"<% } %>>
+
+
+    <nav>
+  <div class="container nav-wrapper">
+    <a href="/" class="brand-logo">I Need A Vacation</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <% menu.forEach(function(item) { %>
+        <li><a href="<%= item.link %>"><%= item.text %></a></li>
+      <% }) %>
+    </ul>
+  </div>
+</nav>
+
+
+    <div class="container">
+        <h2 class="place__name"></h2>
+        <div class="place__results row"></div>
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
+    </div>
+    
+
+<% var google = true %>
+    <% if (typeof google !== 'undefined' && google) { %>
+    <!-- Import Google Places API -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
+    <% } %>
+  <script type="text/javascript" src="/js/vendor.b4af6521c5576eb215f5.js"></script><script type="text/javascript" src="/js/location.bfa587118dc07ac62571.js"></script></body>
+</html>

@@ -1,0 +1,63 @@
+<% var title = 'Login' %>
+<% var bodyClass = 'white' %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+
+    <!-- Import Google Icon Font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Import Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <link href="/./css/styles.css" rel="stylesheet"></head>
+
+  <body <% if (typeof bodyClass !== 'undefined') { %>class="<%= bodyClass %>"<% } %>>
+
+
+  <nav>
+  <div class="container nav-wrapper">
+    <a href="/" class="brand-logo">I Need A Vacation</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <% menu.forEach(function(item) { %>
+        <li><a href="<%= item.link %>"><%= item.text %></a></li>
+      <% }) %>
+    </ul>
+  </div>
+</nav>
+
+
+    <div class="container">
+      <div class="card-panel card--margin grey lighten-5">
+        <div class="row">
+          <form class="col s12">
+
+            <div class="row row--no-margin">
+              <div class="input-field col s12 m6">
+                <input placeholder="Username" id="username" type="text" name="username">
+                <label for="username"></label>
+              </div>
+
+              <div class="input-field col s12 m6">
+                <input placeholder="Password" id="password" type="password" name="password">
+                <label for="password"></label>
+              </div>
+            </div>
+
+            <button class="btn btn-large btn--full-width btn--margin-top waves-effect waves-light" type="submit">Login</button>
+          </form>
+
+          <div class="col s12">
+            <div class="error-message card-panel card--margin-top red darken-1 white-text hide"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <% if (typeof google !== 'undefined' && google) { %>
+    <!-- Import Google Places API -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
+    <% } %>
+  <script type="text/javascript" src="/js/vendor.b4af6521c5576eb215f5.js"></script><script type="text/javascript" src="/js/login.e1099b431303ee9ca826.js"></script></body>
+</html>
+
