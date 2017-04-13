@@ -7020,6 +7020,10 @@ nav {
       right: 50%;
       top: 50%;
       transform: translate(50%, -50%); }
+  .card-image {
+    height: 375px; }
+    .card-image > img {
+      height: 100%; }
   .card--margin {
     margin: 100px; }
     .card--margin-top {

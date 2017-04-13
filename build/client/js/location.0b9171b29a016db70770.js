@@ -103,11 +103,14 @@ function findPlaces() {
   });
 }
 
-function createPlace({ name, description }) {
+function createPlace(data) {
+  data.set('location', LOCATION_ID);
   return new Promise((resolve, reject) => {
     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.ajax(API_ENDPOINT, {
-      data: { name, description, location: LOCATION_ID },
+      data,
       method: 'POST',
+      contentType: false,
+      processData: false,
     })
     .done(res => resolve(res))
     .fail((xhr) => {
@@ -156,6 +159,7 @@ function createPlace({ name, description }) {
   placeAddBtn: '.place__add-btn',
   placeCancelBtn: '.place__cancel-btn',
   placeCreateBtn: '.place__create-btn',
+  placeAddPhotoBtn: '.place__add-photo-btn',
   places: '.place__results',
   place: '.place__item',
 });
@@ -178,7 +182,7 @@ function createPlace({ name, description }) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__controllers_UIController__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__controllers_APIController__ = __webpack_require__(5);
-/* global google */
+/* global window document FileReader FormData */
 /* eslint global-require: 0, import/no-extraneous-dependencies: 0, import/no-unresolved: 0 */
 /* eslint comma-dangle: ["error", "ignore"] */
 
@@ -188,63 +192,39 @@ function createPlace({ name, description }) {
 class Place {
   constructor(place, id) {
     this.id = id;
+
     if (!place) {
-      this.place = {
-        name: 'Lorem ipsum dolor',
-        description: `
-        Lorem ipsum dolor sit amet
-        Fusce eu nibh accumsan
-        Integer eget diam tempor
-        Praesent a lacus eu metus`,
-      };
+      this.place = this.placeholderData();
+      this.place.photo = __webpack_require__(27);
       this.$element = this.createElement();
       this.addOverlay();
     } else {
       this.place = place;
       this.$element = this.createElement();
-      // this.createRating();
-      this.map = null;
-      this.marker = null;
     }
+  }
+
+  placeholderData() { // eslint-disable-line
+    return {
+      name: 'Lorem ipsum dolor',
+      description: `
+      Lorem ipsum dolor sit amet
+      Fusce eu nibh accumsan
+      Integer eget diam tempor
+      Praesent a lacus eu metus`,
+    };
   }
 
   createPlace() {
     const name = this.$element.find('#name').val();
     const description = this.$element.find('#description').val();
-    return __WEBPACK_IMPORTED_MODULE_2__controllers_APIController__["a" /* default */].createPlace({ name, description });
-  }
-
-  createMap() {
-    if (!this.map) {
-      const coords = new google.maps.LatLng(
-        this.place.coords.lat,
-        this.place.coords.lng // eslint-disable-line
-      );
-      const map = new google.maps.Map(this.$element.find('.map').get(0), {
-        zoom: 15,
-        center: coords,
-      });
-      const marker = new google.maps.Marker({
-        position: coords,
-        map,
-      });
-      this.map = map;
-      this.marker = marker;
-
-      google.maps.event.addListener(map, 'idle', () => {
-        map.setCenter(coords);
-      });
+    const data = new FormData();
+    data.set('name', name);
+    data.set('description', description);
+    if (this.photo) {
+      data.set('photo', this.photo);
     }
-  }
-
-  createRating() {
-    const currentRating = this.$element.find(__WEBPACK_IMPORTED_MODULE_1__controllers_UIController__["a" /* DOM */].placeRating).data('current-rating');
-    this.$element.find(__WEBPACK_IMPORTED_MODULE_1__controllers_UIController__["a" /* DOM */].placeRating).barrating('show', {
-      theme: 'fontawesome-stars-o',
-      showSelectedRating: false,
-      initialRating: currentRating / 2,
-      readonly: true,
-    });
+    return __WEBPACK_IMPORTED_MODULE_2__controllers_APIController__["a" /* default */].createPlace(data);
   }
 
   createElement() {
@@ -252,7 +232,7 @@ class Place {
       <div class="place__item col s12 m6" data-id="${this.id}">
         <div class="card">
           <div class="card-image">
-            <img src="${__webpack_require__(27)}">
+            <img src="${this.place.photo}">
           </div>
 
           <div class="card-content">
@@ -269,6 +249,21 @@ class Place {
     return __WEBPACK_IMPORTED_MODULE_0_jquery___default()(html);
   }
 
+  addPhoto(file) {
+    if (!file) {
+      return;
+    }
+
+    const img = document.createElement('img');
+
+    this.photo = file;
+
+    img.src = window.URL.createObjectURL(file);
+    img.onload = () => window.URL.revokeObjectURL(img.src);
+
+    this.$element.find('.card-image img').replaceWith(img);
+  }
+
   addOverlay() {
     this.$element.find('.card').append(`
       <div class="card__overlay">
@@ -280,12 +275,20 @@ class Place {
   }
 
   toForm() {
+    this.$element.find('.card-image').append(`
+      <div class="${__WEBPACK_IMPORTED_MODULE_1__controllers_UIController__["a" /* DOM */].placeAddPhotoBtn.slice(1)}">
+        <input type="file" class="hide" name="fileInput" />
+        <a class="btn-floating halfway-fab waves-effect waves-light red">
+          <i class="material-icons">add_a_photo</i>
+        </a>
+      </div>
+    `);
+
     this.$element.find('.card-title').replaceWith(`
       <div class="input-field card-title">
         <input id="name" type="text">
         <label for="name">Name</label>
       </div>
-      <ul class="autocomplete-content dropdown-content"></ul>
     `);
 
     this.$element.find('blockquote').replaceWith(`
@@ -310,27 +313,6 @@ class Place {
     this.$element.find('.card__overlay').hide();
   }
 
-  displayResults(results) {
-    const $searchResults = this.$element.find('.autocomplete-content');
-    $searchResults.empty();
-
-    results.forEach((result) => {
-      $searchResults.append(`
-        <li><span>${result.name}</span></li>`
-      );
-    });
-
-    $searchResults.show();
-  }
-
-  hideResults() {
-    this.$element.find('.autocomplete-content').hide();
-  }
-
-  clearResults() {
-    this.$element.find('.autocomplete-content').empty();
-  }
-
   cancelForm() {
     this.$element.find('.card-title').replaceWith(`
       <div class="card-title">Lorem ipsum dolor</div>
@@ -345,6 +327,7 @@ class Place {
       </blockquote>
     `);
 
+    this.$element.find(__WEBPACK_IMPORTED_MODULE_1__controllers_UIController__["a" /* DOM */].placeAddPhotoBtn).remove();
     this.$element.find('.card-action').empty();
     this.$element.find('.card__overlay').show();
   }
@@ -453,19 +436,15 @@ function setupEventListeners() {
       .catch(err => console.log(err));
   });
 
-  __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('keyup', '#name', function () {
-    const value = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).val();
-    const id = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place).data('id');
-    const place = __WEBPACK_IMPORTED_MODULE_5__state__["a" /* default */].places[id];
+  __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', `${__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeAddPhotoBtn} a`, function () {
+    const $fileInput = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).siblings('input');
+    $fileInput.click();
+  });
 
-    if (value === '') {
-      place.hideResults();
-    } else {
-      place.clearResults();
-      __WEBPACK_IMPORTED_MODULE_2_google__["autocomplete"].addresses(value)
-      .then(res => place.displayResults(res))
-      .catch(() => place.hideResults());
-    }
+  __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('change', `${__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeAddPhotoBtn} input`, function () {
+    const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
+    const id = $place.data('id');
+    __WEBPACK_IMPORTED_MODULE_5__state__["a" /* default */].places[id].addPhoto(this.files[0]);
   });
 }
 
@@ -497,4 +476,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvcAAAH0CAMAAACO
 
 /***/ })
 ],[19]);
-//# sourceMappingURL=location.bfa587118dc07ac62571.js.map
+//# sourceMappingURL=location.0b9171b29a016db70770.js.map
