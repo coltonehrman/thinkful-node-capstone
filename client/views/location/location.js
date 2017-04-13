@@ -30,6 +30,17 @@ function setupEventListeners() {
       })
       .catch(err => console.log(err));
   });
+
+  $(DOM.places).on('click', `${DOM.placeAddPhotoBtn} a`, function () {
+    const $fileInput = $(this).siblings('input');
+    $fileInput.click();
+  });
+
+  $(DOM.places).on('change', `${DOM.placeAddPhotoBtn} input`, function () {
+    const $place = $(this).parents(DOM.place);
+    const id = $place.data('id');
+    state.places[id].addPhoto(this.files[0]);
+  });
 }
 
 function init() {

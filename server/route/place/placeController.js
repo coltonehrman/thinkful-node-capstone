@@ -1,6 +1,6 @@
+const path = require('path');
 const Location = require('../../model/locationModel');
 const Place = require('../../model/placeModel');
-const logger = require('../../util/logger');
 
 exports.get = (req, res, next) => {
   if (req.query.location_id) {
@@ -21,15 +21,34 @@ exports.getByLocationId = (req, res, next) => {
     .catch(err => next(err));
 };
 
+exports.savePhoto = (req, res, next) => {
+  if (!req.files || !req.files.photo) {
+    return next();
+  }
+  const photo = req.files.photo;
+  const photoPath = path.resolve('photos', photo.name);
+
+  return photo.mv(photoPath, (err) => {
+    if (err) {
+      return next(err);
+    }
+    req.photo = `/photos/${photo.name}`;
+    return next();
+  });
+};
+
 exports.post = (req, res, next) => {
   const { name, description, location } = req.body;
+  const data = { name, description, location, user: req.user.id };
+  if (req.photo) {
+    data.photo = req.photo;
+  }
   let place = null;
-  logger.log(req.user);
-  Place.create({ name, description, location })
+  Place.create(data)
     .then((newPlace) => {
-      place = newPlace;
+      place = newPlace.toJson();
       return Location.findByIdAndUpdate(location, {
-        $addToSet: { places: place._id },
+        $addToSet: { places: place.id },
       }).exec();
     })
     .then(() => res.json(place))

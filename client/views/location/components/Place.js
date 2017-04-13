@@ -1,4 +1,4 @@
-/* global google */
+/* global window document FileReader FormData */
 /* eslint global-require: 0, import/no-extraneous-dependencies: 0, import/no-unresolved: 0 */
 /* eslint comma-dangle: ["error", "ignore"] */
 import $ from 'jquery';
@@ -11,6 +11,7 @@ export default class Place {
 
     if (!place) {
       this.place = this.placeholderData();
+      this.place.photo = require('placeholder-img.png');
       this.$element = this.createElement();
       this.addOverlay();
     } else {
@@ -33,7 +34,13 @@ export default class Place {
   createPlace() {
     const name = this.$element.find('#name').val();
     const description = this.$element.find('#description').val();
-    return APIController.createPlace({ name, description });
+    const data = new FormData();
+    data.set('name', name);
+    data.set('description', description);
+    if (this.photo) {
+      data.set('photo', this.photo);
+    }
+    return APIController.createPlace(data);
   }
 
   createElement() {
@@ -41,7 +48,7 @@ export default class Place {
       <div class="place__item col s12 m6" data-id="${this.id}">
         <div class="card">
           <div class="card-image">
-            <img src="${require('placeholder-img.png')}">
+            <img src="${this.place.photo}">
           </div>
 
           <div class="card-content">
@@ -58,6 +65,21 @@ export default class Place {
     return $(html);
   }
 
+  addPhoto(file) {
+    if (!file) {
+      return;
+    }
+
+    const img = document.createElement('img');
+
+    this.photo = file;
+
+    img.src = window.URL.createObjectURL(file);
+    img.onload = () => window.URL.revokeObjectURL(img.src);
+
+    this.$element.find('.card-image img').replaceWith(img);
+  }
+
   addOverlay() {
     this.$element.find('.card').append(`
       <div class="card__overlay">
@@ -69,6 +91,15 @@ export default class Place {
   }
 
   toForm() {
+    this.$element.find('.card-image').append(`
+      <div class="${DOM.placeAddPhotoBtn.slice(1)}">
+        <input type="file" class="hide" name="fileInput" />
+        <a class="btn-floating halfway-fab waves-effect waves-light red">
+          <i class="material-icons">add_a_photo</i>
+        </a>
+      </div>
+    `);
+
     this.$element.find('.card-title').replaceWith(`
       <div class="input-field card-title">
         <input id="name" type="text">
@@ -112,6 +143,7 @@ export default class Place {
       </blockquote>
     `);
 
+    this.$element.find(DOM.placeAddPhotoBtn).remove();
     this.$element.find('.card-action').empty();
     this.$element.find('.card__overlay').show();
   }

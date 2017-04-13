@@ -38,7 +38,7 @@ module.exports = (app) => {
         if (!user) {
           return cb(new Error('Deserialization failed!'));
         }
-        return cb(null, user);
+        return cb(null, user.toJson());
       });
   });
 

@@ -18,11 +18,14 @@ function findPlaces() {
   });
 }
 
-function createPlace({ name, description }) {
+function createPlace(data) {
+  data.set('location', LOCATION_ID);
   return new Promise((resolve, reject) => {
     $.ajax(API_ENDPOINT, {
-      data: { name, description, location: LOCATION_ID },
+      data,
       method: 'POST',
+      contentType: false,
+      processData: false,
     })
     .done(res => resolve(res))
     .fail((xhr) => {

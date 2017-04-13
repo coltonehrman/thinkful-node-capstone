@@ -18,6 +18,14 @@
     }
   }
 
+  &-image {
+    height: 375px;
+
+    & > img {
+      height: 100%;
+    }
+  }
+
   &--margin {
     margin: 100px;
 
