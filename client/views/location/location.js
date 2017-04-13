@@ -30,21 +30,6 @@ function setupEventListeners() {
       })
       .catch(err => console.log(err));
   });
-
-  $(DOM.places).on('keyup', '#name', function () {
-    const value = $(this).val();
-    const id = $(this).parents(DOM.place).data('id');
-    const place = state.places[id];
-
-    if (value === '') {
-      place.hideResults();
-    } else {
-      place.clearResults();
-      autocomplete.addresses(value)
-      .then(res => place.displayResults(res))
-      .catch(() => place.hideResults());
-    }
-  });
 }
 
 function init() {

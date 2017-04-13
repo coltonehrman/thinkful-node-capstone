@@ -1,5 +1,6 @@
 const Location = require('../../model/locationModel');
 const Place = require('../../model/placeModel');
+const logger = require('../../util/logger');
 
 exports.get = (req, res, next) => {
   if (req.query.location_id) {
@@ -23,6 +24,7 @@ exports.getByLocationId = (req, res, next) => {
 exports.post = (req, res, next) => {
   const { name, description, location } = req.body;
   let place = null;
+  logger.log(req.user);
   Place.create({ name, description, location })
     .then((newPlace) => {
       place = newPlace;

@@ -8,63 +8,32 @@ import APIController from '../controllers/APIController';
 export default class Place {
   constructor(place, id) {
     this.id = id;
+
     if (!place) {
-      this.place = {
-        name: 'Lorem ipsum dolor',
-        description: `
-        Lorem ipsum dolor sit amet
-        Fusce eu nibh accumsan
-        Integer eget diam tempor
-        Praesent a lacus eu metus`,
-      };
+      this.place = this.placeholderData();
       this.$element = this.createElement();
       this.addOverlay();
     } else {
       this.place = place;
       this.$element = this.createElement();
-      // this.createRating();
-      this.map = null;
-      this.marker = null;
     }
+  }
+
+  placeholderData() { // eslint-disable-line
+    return {
+      name: 'Lorem ipsum dolor',
+      description: `
+      Lorem ipsum dolor sit amet
+      Fusce eu nibh accumsan
+      Integer eget diam tempor
+      Praesent a lacus eu metus`,
+    };
   }
 
   createPlace() {
     const name = this.$element.find('#name').val();
     const description = this.$element.find('#description').val();
     return APIController.createPlace({ name, description });
-  }
-
-  createMap() {
-    if (!this.map) {
-      const coords = new google.maps.LatLng(
-        this.place.coords.lat,
-        this.place.coords.lng // eslint-disable-line
-      );
-      const map = new google.maps.Map(this.$element.find('.map').get(0), {
-        zoom: 15,
-        center: coords,
-      });
-      const marker = new google.maps.Marker({
-        position: coords,
-        map,
-      });
-      this.map = map;
-      this.marker = marker;
-
-      google.maps.event.addListener(map, 'idle', () => {
-        map.setCenter(coords);
-      });
-    }
-  }
-
-  createRating() {
-    const currentRating = this.$element.find(DOM.placeRating).data('current-rating');
-    this.$element.find(DOM.placeRating).barrating('show', {
-      theme: 'fontawesome-stars-o',
-      showSelectedRating: false,
-      initialRating: currentRating / 2,
-      readonly: true,
-    });
   }
 
   createElement() {
@@ -105,7 +74,6 @@ export default class Place {
         <input id="name" type="text">
         <label for="name">Name</label>
       </div>
-      <ul class="autocomplete-content dropdown-content"></ul>
     `);
 
     this.$element.find('blockquote').replaceWith(`
@@ -128,27 +96,6 @@ export default class Place {
     `);
 
     this.$element.find('.card__overlay').hide();
-  }
-
-  displayResults(results) {
-    const $searchResults = this.$element.find('.autocomplete-content');
-    $searchResults.empty();
-
-    results.forEach((result) => {
-      $searchResults.append(`
-        <li><span>${result.name}</span></li>`
-      );
-    });
-
-    $searchResults.show();
-  }
-
-  hideResults() {
-    this.$element.find('.autocomplete-content').hide();
-  }
-
-  clearResults() {
-    this.$element.find('.autocomplete-content').empty();
   }
 
   cancelForm() {
