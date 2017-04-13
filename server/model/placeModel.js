@@ -13,6 +13,12 @@ const PlaceSchema = new Schema({
   },
   location: {
     ref: 'location',
+    require: true,
+    type: Schema.Types.ObjectId,
+  },
+  user: {
+    ref: 'user',
+    require: true,
     type: Schema.Types.ObjectId,
   },
 });

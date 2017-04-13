@@ -27,7 +27,7 @@ module.exports = (app) => {
   ));
 
   passport.serializeUser((user, cb) => {
-    cb(null, user._id); // eslint-disable-line
+    cb(null, user.id); // eslint-disable-line
   });
 
   passport.deserializeUser((id, cb) => {
