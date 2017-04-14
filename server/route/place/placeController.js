@@ -8,7 +8,7 @@ exports.get = (req, res, next) => {
   }
   return Place.find({})
     .exec()
-    .then(places => res.json(places))
+    .then(places => res.json(places.map(place => place.toJson(req.user.id))))
     .catch(err => next(err));
 };
 
@@ -17,7 +17,7 @@ exports.getByLocationId = (req, res, next) => {
   Location.findById(location_id)
     .populate('places')
     .exec()
-    .then(location => res.json(location.places))
+    .then(location => res.json(location.places.map(place => place.toJson(req.user.id))))
     .catch(err => next(err));
 };
 
@@ -46,7 +46,7 @@ exports.post = (req, res, next) => {
   let place = null;
   Place.create(data)
     .then((newPlace) => {
-      place = newPlace.toJson();
+      place = newPlace.toJson(req.user.id);
       return Location.findByIdAndUpdate(location, {
         $addToSet: { places: place.id },
       }).exec();

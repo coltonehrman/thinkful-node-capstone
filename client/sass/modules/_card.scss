@@ -33,4 +33,13 @@
       margin-top: 25px;
     }
   }
+
+  &-action {
+    position: relative !important;
+
+    & .fixed-action-btn {
+      position: absolute !important;
+      top: 13px;
+    }
+  }
 }

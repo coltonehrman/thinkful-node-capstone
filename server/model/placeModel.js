@@ -25,15 +25,14 @@ const PlaceSchema = new Schema({
   },
 });
 
-// FIXME:
-PlaceSchema.virtual('canDelete').get(function (id) {
-  return this.user === id;
-});
-
 PlaceSchema.methods = {
-  toJson() {
+  isOwner(id) {
+    return this.user.toString() === id.toString();
+  },
+  toJson(userId) {
     const place = this.toObject();
     place.id = this._id;
+    place.isOwner = this.isOwner(userId);
     delete place._id;
     return place;
   },

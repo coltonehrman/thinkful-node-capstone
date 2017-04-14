@@ -27,27 +27,9 @@
         overflow: hidden;
       }
 
-      & .card-action {
-        bottom: 0;
-        min-height: 73px;
-        overflow: auto;
-        position: absolute;
-        width: 100%;
-
-        & .br-wrapper {
-          margin-top: 10px;
-        }
-
-        & a {
-          color: $light-blue !important;
-          margin-right: 15px !important;
-        }
-      }
-
       & .input-field {
         & blockquote {
           padding-left: 15px;
-          margin-bottom: 75px;
         }
 
         & #description {

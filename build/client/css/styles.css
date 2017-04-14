@@ -7028,6 +7028,11 @@ nav {
     margin: 100px; }
     .card--margin-top {
       margin-top: 25px; }
+  .card-action {
+    position: relative !important; }
+    .card-action .fixed-action-btn {
+      position: absolute !important;
+      top: 13px; }
 
 .btn--full-width {
   width: 100%; }
@@ -7072,20 +7077,8 @@ nav {
     min-height: 80%; }
   .place__item .card .card-reveal {
     overflow: hidden; }
-  .place__item .card .card-action {
-    bottom: 0;
-    min-height: 73px;
-    overflow: auto;
-    position: absolute;
-    width: 100%; }
-    .place__item .card .card-action .br-wrapper {
-      margin-top: 10px; }
-    .place__item .card .card-action a {
-      color: #73A3CD !important;
-      margin-right: 15px !important; }
   .place__item .card .input-field blockquote {
-    padding-left: 15px;
-    margin-bottom: 75px; }
+    padding-left: 15px; }
   .place__item .card .input-field #description {
     margin-bottom: 0; }
     .place__item .card .input-field #description + label {

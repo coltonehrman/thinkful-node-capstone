@@ -48,6 +48,7 @@ function init() {
   APIController.findPlaces()
     .then((places) => {
       Places.hideProgress();
+      console.log(places);
       Places.display(places || []);
     })
     .catch(err => console.log(err));

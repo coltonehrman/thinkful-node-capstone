@@ -10,8 +10,9 @@ export default class Place {
     this.id = id;
 
     if (!place) {
+      this.isPlaceholder = true;
       this.place = this.placeholderData();
-      this.place.photo = require('placeholder-img.png');
+      this.placeholderPhoto = require('placeholder-img.png');
       this.$element = this.createElement();
       this.addOverlay();
     } else {
@@ -44,11 +45,11 @@ export default class Place {
   }
 
   createElement() {
-    const html = `
+    let html = `
       <div class="place__item col s12 m6" data-id="${this.id}">
         <div class="card">
           <div class="card-image">
-            <img src="${this.place.photo}">
+            <img src="${this.place.photo || this.placeholderPhoto}">
           </div>
 
           <div class="card-content">
@@ -57,7 +58,25 @@ export default class Place {
             <blockquote>${this.place.description}</blockquote>
           </div>
 
-          <div class="card-action"></div>
+          <div class="card-action">`;
+    if (!this.isPlaceholder) {
+      html += `       
+            <div class="fixed-action-btn horizontal click-to-toggle">
+              <a class="btn-floating btn-large red">
+                <i class="material-icons">menu</i>
+              </a>
+              <ul>`;
+      if (this.place.isOwner) {
+        html += `
+                <li><a class="btn-floating amber"><i class="material-icons">mode_edit</i></a></li>
+                <li><a class="btn-floating red"><i class="material-icons">close</i></a></li>`;
+      }
+      html += `
+              </ul>
+            </div>`;
+    }
+    html += `
+          </div>
         </div>
       </div>
     `;
@@ -130,6 +149,10 @@ export default class Place {
   }
 
   cancelForm() {
+    if (this.isPlaceholder) {
+      this.$element.find('.card-image img').attr('src', this.placeholderPhoto);
+    }
+
     this.$element.find('.card-title').replaceWith(`
       <div class="card-title">Lorem ipsum dolor</div>
     `);
