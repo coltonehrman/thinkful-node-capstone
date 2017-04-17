@@ -54,3 +54,15 @@ exports.post = (req, res, next) => {
     .then(() => res.json(place))
     .catch(err => next(err));
 };
+
+exports.delete = (req, res, next) => {
+  const { id } = req.params;
+  Place.findByIdAndRemove(id).exec()
+    .then(place =>
+      Location.findByIdAndUpdate(place.location, {
+        $pull: { places: place.id },
+      }).exec() // eslint-disable-line
+    )
+    .then(() => res.status(204).end())
+    .catch(err => next(err));
+};

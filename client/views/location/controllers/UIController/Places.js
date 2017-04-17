@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import DOM from './DOM';
-import Place from '../../components/Place';
 import state from '../../state';
 
 function hideProgress() {
@@ -17,24 +16,24 @@ function appendPlace(place, id) {
   }
 }
 
+function clear() {
+  $(DOM.places).empty();
+}
+
 function display(places) {
-  places.unshift(null);
   if (places.length === 0) {
     // show no places
   }
-  state.places = places.map((place, i) => new Place(place, i));
   state.places.forEach(appendPlace);
 }
 
 function add(place) {
-  const id = state.places.length;
-  const newPlace = new Place(place, id);
-  state.places.push(newPlace);
-  appendPlace(newPlace, id);
+  appendPlace(place, place.id);
 }
 
 export default {
   hideProgress,
+  clear,
   display,
   add,
 };

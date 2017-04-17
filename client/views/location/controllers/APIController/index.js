@@ -35,7 +35,21 @@ function createPlace(data) {
   });
 }
 
+function deletePlace(id) {
+  return new Promise((resolve, reject) => {
+    $.ajax(`${API_ENDPOINT}/${id}`, {
+      method: 'DELETE',
+    })
+    .done(res => resolve(res))
+    .fail((xhr) => {
+      const message = JSON.parse(xhr.responseText).message;
+      reject(message);
+    });
+  });
+}
+
 export default {
   findPlaces,
   createPlace,
+  deletePlace,
 };

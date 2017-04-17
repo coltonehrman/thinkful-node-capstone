@@ -8,11 +8,11 @@ import APIController from '../controllers/APIController';
 export default class Place {
   constructor(place, id) {
     this.id = id;
+    this.placeholderPhoto = require('placeholder-img.png');
 
     if (!place) {
       this.isPlaceholder = true;
       this.place = this.placeholderData();
-      this.placeholderPhoto = require('placeholder-img.png');
       this.$element = this.createElement();
       this.addOverlay();
     } else {
@@ -69,7 +69,7 @@ export default class Place {
       if (this.place.isOwner) {
         html += `
                 <li><a class="btn-floating amber"><i class="material-icons">mode_edit</i></a></li>
-                <li><a class="btn-floating red"><i class="material-icons">close</i></a></li>`;
+                <li><a class="${DOM.placeDeleteBtn.slice(1)} btn-floating red"><i class="material-icons">close</i></a></li>`;
       }
       html += `
               </ul>
@@ -169,5 +169,9 @@ export default class Place {
     this.$element.find(DOM.placeAddPhotoBtn).remove();
     this.$element.find('.card-action').empty();
     this.$element.find('.card__overlay').show();
+  }
+
+  delete() {
+    return APIController.deletePlace(this.place.id);
   }
 }
