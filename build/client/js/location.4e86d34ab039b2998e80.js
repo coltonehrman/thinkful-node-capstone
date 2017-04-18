@@ -160,7 +160,10 @@ function deletePlace(id) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({});
+/* harmony default export */ __webpack_exports__["a"] = ({
+  places: [],
+  lastIndex: 0,
+});
 
 
 /***/ }),
@@ -198,8 +201,8 @@ function deletePlace(id) {
 
 
 class Place {
-  constructor(place, id) {
-    this.id = id;
+  constructor(place, index) {
+    this.index = index;
     this.placeholderPhoto = __webpack_require__(27);
 
     if (!place) {
@@ -238,7 +241,7 @@ class Place {
 
   createElement() {
     let html = `
-      <div class="place__item col s12 m6" data-id="${this.id}">
+      <div class="place__item col s12 m6" data-index="${this.index}">
         <div class="card">
           <div class="card-image">
             <img src="${this.place.photo || this.placeholderPhoto}">
@@ -395,8 +398,8 @@ function hideProgress() {
   __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].progress).hide();
 }
 
-function appendPlace(place, id) {
-  if (id % 2 === 0) {
+function appendPlace(place, index) {
+  if (index % 2 === 0) {
     const $newRow = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('<div class="row"></div>');
     $newRow.append(place.$element);
     __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].places).append($newRow);
@@ -416,15 +419,11 @@ function display(places) {
   __WEBPACK_IMPORTED_MODULE_2__state__["a" /* default */].places.forEach(appendPlace);
 }
 
-function add(place) {
-  appendPlace(place, place.id);
-}
-
 /* harmony default export */ __webpack_exports__["a"] = ({
   hideProgress,
   clear,
   display,
-  add,
+  appendPlace,
 });
 
 
@@ -454,29 +453,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+function getIndex(el) {
+  const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(el).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
+  return $place.data('index');
+}
+
+function getPlace(el) {
+  const index = getIndex(el);
+  return __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.find(place => place.index === index);
+}
+
 function setupEventListeners() {
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeAddBtn, function () {
-    const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
-    const id = $place.data('id');
-    __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].toForm();
+    getPlace(this).toForm();
   });
 
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeCancelBtn, function () {
-    const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
-    const id = $place.data('id');
-    __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].cancelForm();
+    getPlace(this).cancelForm();
   });
 
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeCreateBtn, function () {
-    const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
-    const id = $place.data('id');
-    __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].createPlace()
-      .then((place) => {
-        const placeId = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.length;
-        const newPlace = new __WEBPACK_IMPORTED_MODULE_5__components_Place__["a" /* default */](place, placeId);
-        __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].cancelForm();
+    const place = getPlace(this);
+    place.createPlace()
+      .then((data) => {
+        const index = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].nextIndex;
+        const newPlace = new __WEBPACK_IMPORTED_MODULE_5__components_Place__["a" /* default */](data, index);
+        __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].nextIndex += 1;
+        place.cancelForm();
         __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.push(newPlace);
-        __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].add(newPlace);
+        __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].appendPlace(newPlace, __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.length - 1);
       })
       .catch(err => console.log(err));
   });
@@ -487,18 +492,15 @@ function setupEventListeners() {
   });
 
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('change', `${__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeAddPhotoBtn} input`, function () {
-    const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
-    const id = $place.data('id');
-    __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].addPhoto(this.files[0]);
+    getPlace(this).addPhoto(this.files[0]);
   });
 
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeDeleteBtn, function () {
-    const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
-    const id = $place.data('id');
-    const place = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id];
+    const place = getPlace(this);
     place.delete()
       .then(() => {
-        __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.splice(id, 1);
+        const index = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.findIndex(p => p.index === place.index);
+        __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.splice(index, 1);
         __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].clear();
         __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].display(__WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places);
       })
@@ -514,6 +516,7 @@ function init() {
       __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places = places || [];
       __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.unshift(null);
       __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.map((place, i) => new __WEBPACK_IMPORTED_MODULE_5__components_Place__["a" /* default */](place, i));
+      __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].nextIndex = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.length;
       __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].display(__WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places);
     })
     .catch(err => console.log(err));
@@ -537,4 +540,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvcAAAH0CAMAAACO
 
 /***/ })
 ],[19]);
-//# sourceMappingURL=location.f4f0b2976435036ae672.js.map
+//# sourceMappingURL=location.4e86d34ab039b2998e80.js.map

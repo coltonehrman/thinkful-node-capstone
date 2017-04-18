@@ -68,11 +68,17 @@ function setupEventListeners() {
     })
     .fail((xhr) => {
       const $err = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_2__controllers_UIController__["a" /* DOM */].errorMessage);
-      const message = JSON.parse(xhr.responseText).message;
+      let message = JSON.parse(xhr.responseText).message;
 
-      if (xhr.status === 401) {
-        $err.html(`${message}<i class="${__WEBPACK_IMPORTED_MODULE_2__controllers_UIController__["a" /* DOM */].errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
-      } else if (xhr.status === 500) {
+      if (message.match(/duplicate/) && message.match(/email/)) {
+        message = 'Email already in use.';
+      }
+
+      if (message.match(/duplicate/) && message.match(/username/)) {
+        message = 'Username not available.';
+      }
+
+      if (xhr.status === 401 || xhr.status === 500) {
         $err.html(`${message}<i class="${__WEBPACK_IMPORTED_MODULE_2__controllers_UIController__["a" /* DOM */].errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
       }
     });
@@ -93,4 +99,4 @@ __WEBPACK_IMPORTED_MODULE_1_jquery___default()(init);
 /***/ })
 
 },[25]);
-//# sourceMappingURL=signup.f0e8338cd8598ba69b26.js.map
+//# sourceMappingURL=signup.d76f3ea865b0004ce99e.js.map

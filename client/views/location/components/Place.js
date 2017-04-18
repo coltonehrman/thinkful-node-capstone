@@ -6,8 +6,8 @@ import { DOM } from '../controllers/UIController';
 import APIController from '../controllers/APIController';
 
 export default class Place {
-  constructor(place, id) {
-    this.id = id;
+  constructor(place, index) {
+    this.index = index;
     this.placeholderPhoto = require('placeholder-img.png');
 
     if (!place) {
@@ -46,7 +46,7 @@ export default class Place {
 
   createElement() {
     let html = `
-      <div class="place__item col s12 m6" data-id="${this.id}">
+      <div class="place__item col s12 m6" data-index="${this.index}">
         <div class="card">
           <div class="card-image">
             <img src="${this.place.photo || this.placeholderPhoto}">

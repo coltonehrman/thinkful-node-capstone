@@ -26,8 +26,6 @@ if (config.env !== config.prod) {
   app.use(express.static(path.resolve('build', 'client')));
 }
 
-// app.get('*', (req, res) => res.redirect('/'));
-
 app.use((err, req, res, next) => { // eslint-disable-line
   logger.error(err.stack);
   res.status(500).json({ message: err.message });

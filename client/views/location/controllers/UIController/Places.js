@@ -6,8 +6,8 @@ function hideProgress() {
   $(DOM.progress).hide();
 }
 
-function appendPlace(place, id) {
-  if (id % 2 === 0) {
+function appendPlace(place, index) {
+  if (index % 2 === 0) {
     const $newRow = $('<div class="row"></div>');
     $newRow.append(place.$element);
     $(DOM.places).append($newRow);
@@ -27,13 +27,9 @@ function display(places) {
   state.places.forEach(appendPlace);
 }
 
-function add(place) {
-  appendPlace(place, place.id);
-}
-
 export default {
   hideProgress,
   clear,
   display,
-  add,
+  appendPlace,
 };

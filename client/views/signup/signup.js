@@ -28,11 +28,17 @@ function setupEventListeners() {
     })
     .fail((xhr) => {
       const $err = $(DOM.errorMessage);
-      const message = JSON.parse(xhr.responseText).message;
+      let message = JSON.parse(xhr.responseText).message;
 
-      if (xhr.status === 401) {
-        $err.html(`${message}<i class="${DOM.errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
-      } else if (xhr.status === 500) {
+      if (message.match(/duplicate/) && message.match(/email/)) {
+        message = 'Email already in use.';
+      }
+
+      if (message.match(/duplicate/) && message.match(/username/)) {
+        message = 'Username not available.';
+      }
+
+      if (xhr.status === 401 || xhr.status === 500) {
         $err.html(`${message}<i class="${DOM.errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
       }
     });
