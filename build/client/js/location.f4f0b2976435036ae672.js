@@ -120,9 +120,23 @@ function createPlace(data) {
   });
 }
 
+function deletePlace(id) {
+  return new Promise((resolve, reject) => {
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.ajax(`${API_ENDPOINT}/${id}`, {
+      method: 'DELETE',
+    })
+    .done(res => resolve(res))
+    .fail((xhr) => {
+      const message = JSON.parse(xhr.responseText).message;
+      reject(message);
+    });
+  });
+}
+
 /* harmony default export */ __webpack_exports__["a"] = ({
   findPlaces,
   createPlace,
+  deletePlace,
 });
 
 
@@ -159,6 +173,7 @@ function createPlace(data) {
   placeAddBtn: '.place__add-btn',
   placeCancelBtn: '.place__cancel-btn',
   placeCreateBtn: '.place__create-btn',
+  placeDeleteBtn: '.place__delete-btn',
   placeAddPhotoBtn: '.place__add-photo-btn',
   places: '.place__results',
   place: '.place__item',
@@ -167,14 +182,7 @@ function createPlace(data) {
 
 /***/ }),
 /* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -192,11 +200,11 @@ function createPlace(data) {
 class Place {
   constructor(place, id) {
     this.id = id;
+    this.placeholderPhoto = __webpack_require__(27);
 
     if (!place) {
       this.isPlaceholder = true;
       this.place = this.placeholderData();
-      this.placeholderPhoto = __webpack_require__(27);
       this.$element = this.createElement();
       this.addOverlay();
     } else {
@@ -253,7 +261,7 @@ class Place {
       if (this.place.isOwner) {
         html += `
                 <li><a class="btn-floating amber"><i class="material-icons">mode_edit</i></a></li>
-                <li><a class="btn-floating red"><i class="material-icons">close</i></a></li>`;
+                <li><a class="${__WEBPACK_IMPORTED_MODULE_1__controllers_UIController__["a" /* DOM */].placeDeleteBtn.slice(1)} btn-floating red"><i class="material-icons">close</i></a></li>`;
       }
       html += `
               </ul>
@@ -354,12 +362,23 @@ class Place {
     this.$element.find('.card-action').empty();
     this.$element.find('.card__overlay').show();
   }
+
+  delete() {
+    return __WEBPACK_IMPORTED_MODULE_2__controllers_APIController__["a" /* default */].deletePlace(this.place.id);
+  }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Place;
 
 
 
 /***/ }),
+/* 11 */,
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
 /* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -367,9 +386,7 @@ class Place {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__DOM__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Place__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__state__ = __webpack_require__(7);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state__ = __webpack_require__(7);
 
 
 
@@ -388,24 +405,24 @@ function appendPlace(place, id) {
   }
 }
 
+function clear() {
+  __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].places).empty();
+}
+
 function display(places) {
-  places.unshift(null);
   if (places.length === 0) {
     // show no places
   }
-  __WEBPACK_IMPORTED_MODULE_3__state__["a" /* default */].places = places.map((place, i) => new __WEBPACK_IMPORTED_MODULE_2__components_Place__["a" /* default */](place, i));
-  __WEBPACK_IMPORTED_MODULE_3__state__["a" /* default */].places.forEach(appendPlace);
+  __WEBPACK_IMPORTED_MODULE_2__state__["a" /* default */].places.forEach(appendPlace);
 }
 
 function add(place) {
-  const id = __WEBPACK_IMPORTED_MODULE_3__state__["a" /* default */].places.length;
-  const newPlace = new __WEBPACK_IMPORTED_MODULE_2__components_Place__["a" /* default */](place, id);
-  __WEBPACK_IMPORTED_MODULE_3__state__["a" /* default */].places.push(newPlace);
-  appendPlace(newPlace, id);
+  appendPlace(place, place.id);
 }
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   hideProgress,
+  clear,
   display,
   add,
 });
@@ -425,7 +442,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_google___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_google__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_APIController__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__state__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Place__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__state__ = __webpack_require__(7);
 /* global google document */
 /* eslint func-names: 0 */
  // eslint-disable-line
@@ -435,26 +453,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 function setupEventListeners() {
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeAddBtn, function () {
     const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
     const id = $place.data('id');
-    __WEBPACK_IMPORTED_MODULE_5__state__["a" /* default */].places[id].toForm();
+    __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].toForm();
   });
 
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeCancelBtn, function () {
     const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
     const id = $place.data('id');
-    __WEBPACK_IMPORTED_MODULE_5__state__["a" /* default */].places[id].cancelForm();
+    __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].cancelForm();
   });
 
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeCreateBtn, function () {
     const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
     const id = $place.data('id');
-    __WEBPACK_IMPORTED_MODULE_5__state__["a" /* default */].places[id].createPlace()
+    __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].createPlace()
       .then((place) => {
-        __WEBPACK_IMPORTED_MODULE_5__state__["a" /* default */].places[id].cancelForm();
-        __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].add(place);
+        const placeId = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.length;
+        const newPlace = new __WEBPACK_IMPORTED_MODULE_5__components_Place__["a" /* default */](place, placeId);
+        __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].cancelForm();
+        __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.push(newPlace);
+        __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].add(newPlace);
       })
       .catch(err => console.log(err));
   });
@@ -467,7 +489,20 @@ function setupEventListeners() {
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('change', `${__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeAddPhotoBtn} input`, function () {
     const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
     const id = $place.data('id');
-    __WEBPACK_IMPORTED_MODULE_5__state__["a" /* default */].places[id].addPhoto(this.files[0]);
+    __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id].addPhoto(this.files[0]);
+  });
+
+  __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeDeleteBtn, function () {
+    const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(this).parents(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].place);
+    const id = $place.data('id');
+    const place = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places[id];
+    place.delete()
+      .then(() => {
+        __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.splice(id, 1);
+        __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].clear();
+        __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].display(__WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places);
+      })
+      .catch(err => console.log(err));
   });
 }
 
@@ -476,8 +511,10 @@ function init() {
   __WEBPACK_IMPORTED_MODULE_3__controllers_APIController__["a" /* default */].findPlaces()
     .then((places) => {
       __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].hideProgress();
-      console.log(places);
-      __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].display(places || []);
+      __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places = places || [];
+      __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.unshift(null);
+      __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places = __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.map((place, i) => new __WEBPACK_IMPORTED_MODULE_5__components_Place__["a" /* default */](place, i));
+      __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].display(__WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places);
     })
     .catch(err => console.log(err));
 }
@@ -500,4 +537,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvcAAAH0CAMAAACO
 
 /***/ })
 ],[19]);
-//# sourceMappingURL=location.96b5d961ac270dc06ce2.js.map
+//# sourceMappingURL=location.f4f0b2976435036ae672.js.map

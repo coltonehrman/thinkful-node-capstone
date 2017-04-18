@@ -103,7 +103,8 @@ const DOM = {
 
 /***/ }),
 /* 10 */,
-/* 11 */
+/* 11 */,
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -151,7 +152,7 @@ function createLocation(name) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -164,7 +165,6 @@ function createLocation(name) {
 
 
 /***/ }),
-/* 13 */,
 /* 14 */,
 /* 15 */,
 /* 16 */,
@@ -232,8 +232,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_google__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_google___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_google__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_APIController__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_APIController__ = __webpack_require__(12);
 /* global window google document */
 /* eslint comma-dangle: ["error", "ignore"] */
  // eslint-disable-line
@@ -287,4 +287,4 @@ __WEBPACK_IMPORTED_MODULE_1_jquery___default()(init);
 
 /***/ })
 ],[23]);
-//# sourceMappingURL=main.9d6fcf7533c4a5409cd3.js.map
+//# sourceMappingURL=main.ab497510b4b91a4edf6b.js.map

@@ -1,10 +1,10 @@
-webpackJsonp([3],{
+webpackJsonp([2],{
 
-/***/ 10:
+/***/ 14:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DOM__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DOM__ = __webpack_require__(24);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__DOM__["a"]; });
 
 
@@ -13,7 +13,7 @@ webpackJsonp([3],{
 
 /***/ }),
 
-/***/ 20:
+/***/ 24:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28,7 +28,7 @@ const DOM = {
 
 /***/ }),
 
-/***/ 21:
+/***/ 25:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37,7 +37,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_styles___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_styles__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__controllers_UIController__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__controllers_UIController__ = __webpack_require__(14);
 /* global window */
  // eslint-disable-line
 
@@ -55,7 +55,7 @@ function setupEventListeners() {
       data[field.name] = field.value;
     });
 
-    __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax('/login', {
+    __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax('/users', {
       data,
       method: 'POST',
     })
@@ -73,7 +73,7 @@ function setupEventListeners() {
       if (xhr.status === 401) {
         $err.html(`${message}<i class="${__WEBPACK_IMPORTED_MODULE_2__controllers_UIController__["a" /* DOM */].errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
       } else if (xhr.status === 500) {
-        // server error
+        $err.html(`${message}<i class="${__WEBPACK_IMPORTED_MODULE_2__controllers_UIController__["a" /* DOM */].errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
       }
     });
   });
@@ -92,5 +92,5 @@ __WEBPACK_IMPORTED_MODULE_1_jquery___default()(init);
 
 /***/ })
 
-},[21]);
-//# sourceMappingURL=login.e1099b431303ee9ca826.js.map
+},[25]);
+//# sourceMappingURL=signup.f0e8338cd8598ba69b26.js.map

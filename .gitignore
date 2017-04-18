@@ -10,6 +10,7 @@
 *~
 *.sass-cache
 node_modules/
+photos/
 .tmp/
 
 # OS or Editor folders
@@ -27,4 +28,3 @@ nbproject
 .komodotools
 _notes
 dwsync.xml
-photos/
