@@ -21,3 +21,6 @@ exports.getFile = fileName => (
     }
   })
 );
+
+exports.isLoggedIn = user => !!user;
+exports.isAdmin = user => !!user.admin;

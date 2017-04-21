@@ -5,6 +5,6 @@ const controller = require('./locationController');
 router.get('/', controller.get, controller.getOne);
 router.post('/', controller.post);
 
-router.get('/:id', auth.isLoggedIn, controller.getLocationPageMenu, controller.getLocationPage);
+router.get('/:id', auth.redirectIfNeedsLogin, controller.getLocationPageMenu, controller.getLocationPage);
 
 module.exports = router;

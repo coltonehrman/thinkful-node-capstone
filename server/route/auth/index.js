@@ -1,15 +1,16 @@
+const fn = require('../../util/functions');
 const logger = require('../../util/logger');
 
-exports.isLoggedIn = (req, res, next) => {
-  if (!req.user) {
+exports.redirectIfNeedsLogin = (req, res, next) => {
+  if (!fn.isLoggedIn(req.user)) {
     logger.error('User is not logged in!');
     return res.redirect('/login');
   }
   return next();
 };
 
-exports.isAdmin = (req, res, next) => {
-  if (!req.user.admin) {
+exports.redirectIfNeedsAdmin = (req, res, next) => {
+  if (!fn.isAdmin(req.user)) {
     logger.error('User is not authorized!');
     return res.redirect('/');
   }

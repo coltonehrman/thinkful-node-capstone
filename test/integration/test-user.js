@@ -1,12 +1,17 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
-const config = require('../../server/config');
+const sinon = require('sinon');
+const passportStub = require('passport-stub');
 const { app, runServer, closeServer } = require('../../server');
 const User = require('../../server/model/userModel');
+const fn = require('../../server/util/functions');
 const expect = chai.expect;
 
 chai.use(chaiHttp);
+passportStub.install(app);
+
+let user;
 
 function seedDatabase() {
   const user = new User({
@@ -41,7 +46,7 @@ describe('User routes', function () {
 
   describe('GET /users', function () {
     context('not logged in', function () {
-      it('should redirect to login page', function() {
+      it('should redirect to /login', function() {
         return chai.request(app)
           .get('/users')
           .redirects(0)
@@ -54,27 +59,56 @@ describe('User routes', function () {
     });
 
     context('logged in & not admin', function () {
-      xit('should redirect to login page', function() {
+      let stubs = [];
+
+      beforeEach(function () {
+        stubs.push(sinon.stub(fn, 'isLoggedIn').returns(true));
+        stubs.push(sinon.stub(fn, 'isAdmin').returns(false));
+      });
+
+      afterEach(function () {
+        stubs.forEach(stub => stub.restore());
+      });
+
+      it('should redirect to /', function() {
         return chai.request(app)
           .get('/users')
           .redirects(0)
           .then(Promise.reject)
           .catch(function(err) {
             expect(err.response).to.redirect;
-            expect(err.response).to.redirectTo('/login');
+            expect(err.response).to.redirectTo('/');
           });
       });
     });
 
     context('logged in & admin', function () {
-      xit('should return users', function() {
+      let stubs = [];
+
+      beforeEach(function () {
+        stubs.push(sinon.stub(fn, 'isLoggedIn').returns(true));
+        stubs.push(sinon.stub(fn, 'isAdmin').returns(true));
+      });
+
+      afterEach(function () {
+        stubs.forEach(stub => stub.restore());
+      });
+
+      it('should return users', function() {
+        let res;
+
         return chai.request(app)
           .get('/users')
-          .redirects(0)
-          .then(Promise.reject)
-          .catch(function(err) {
-            expect(err.response).to.redirect;
-            expect(err.response).to.redirectTo('/login');
+          .then(function(_res) {
+            res = _res;
+            expect(res).to.be.json;
+            return User.find()
+              .select('-password')
+              .exec();
+          })
+          .then(function(_users) {
+            const users = _users.map(user => user.toJson());
+            expect(res.body).to.deep.equal(users);
           });
       });
     });
@@ -134,8 +168,96 @@ describe('User routes', function () {
               const res = err.response;
               expect(res).to.have.status(500);
               expect(res).to.be.json;
+              expect(res.body).to.haveOwnProperty('message');
+              expect(res.body.message.toLowerCase()).to.have.string('missing field');
             });
         });
+
+        it('respond server error on missing email', function () {
+          return chai.request(app)
+            .post('/users')
+            .field('username', 'cjames615')
+            .field('password', 'password')
+            .then(Promise.reject)
+            .catch(function(err) {
+              const res = err.response;
+              expect(res).to.have.status(500);
+              expect(res).to.be.json;
+              expect(res.body).to.haveOwnProperty('message');
+              expect(res.body.message.toLowerCase()).to.have.string('missing field');
+            });
+        });
+
+        it('respond server error on missing username', function () {
+          return chai.request(app)
+            .post('/users')
+            .field('email', 'cjames615@hotmail.com')
+            .field('password', 'password')
+            .then(Promise.reject)
+            .catch(function(err) {
+              const res = err.response;
+              expect(res).to.have.status(500);
+              expect(res).to.be.json;
+              expect(res.body).to.haveOwnProperty('message');
+              expect(res.body.message.toLowerCase()).to.have.string('missing field');
+            });
+        });
+
+        it('respond server error on missing password', function () {
+          return chai.request(app)
+            .post('/users')
+            .field('email', 'cjames615@hotmail.com')
+            .field('username', 'cjames615')
+            .then(Promise.reject)
+            .catch(function(err) {
+              const res = err.response;
+              expect(res).to.have.status(500);
+              expect(res).to.be.json;
+              expect(res.body).to.haveOwnProperty('message');
+              expect(res.body.message.toLowerCase()).to.have.string('missing field');
+            });
+        });
+      });
+    });
+  });
+
+  describe('GET /users/me', function () {
+    context('not logged in', function () {
+      it('should redirect to /login', function() {
+        return chai.request(app)
+          .get('/users/me')
+          .redirects(0)
+          .then(Promise.reject)
+          .catch(function(err) {
+            expect(err.response).to.redirect;
+            expect(err.response).to.redirectTo('/login');
+          });
+      });
+    });
+
+    context('is logged in', function () {
+      beforeEach(function () {
+        return seedDatabase()
+          .then(function(_user) {
+            user = _user;
+            passportStub.login(user);
+          });
+      });
+
+      afterEach(function () {
+        passportStub.logout();
+        return tearDownDatabase();
+      });
+
+      it('should return logged in user', function() {
+        return chai.request(app)
+          .get('/users/me')
+          .then(function(res) {
+            user = JSON.parse(JSON.stringify(user.toJson()));
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+            expect(res.body).to.deep.equal(user);
+          });
       });
     });
   });

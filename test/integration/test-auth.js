@@ -1,7 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
-const config = require('../../server/config');
 const { app, runServer, closeServer } = require('../../server');
 const User = require('../../server/model/userModel');
 const expect = chai.expect;
@@ -85,7 +84,6 @@ describe('Auth routes', function () {
       });
 
       it('should not return redirect object', function () {
-        expect(res).to.have.status(401);
         expect(res).to.be.json;
         expect(res.body).to.not.haveOwnProperty('redirect');
       });
@@ -95,8 +93,8 @@ describe('Auth routes', function () {
         expect(res.body.message.toLowerCase()).to.have.string('incorrect username');
       });
 
-      xit('should not be authorized', function () {
-
+      it('should not be authorized', function () {
+        expect(res).to.have.status(401);
       });
     });
 
@@ -122,7 +120,6 @@ describe('Auth routes', function () {
       });
 
       it('should not return redirect object', function () {
-        expect(res).to.have.status(401);
         expect(res).to.be.json;
         expect(res.body).to.not.haveOwnProperty('redirect');
       });
@@ -133,8 +130,8 @@ describe('Auth routes', function () {
         expect(res.body.message.toLowerCase()).to.have.string('incorrect password');
       });
 
-      xit('should not be authorized', function () {
-
+      it('should not be authorized', function () {
+        expect(res).to.have.status(401);
       });
     });
 
@@ -169,8 +166,8 @@ describe('Auth routes', function () {
         expect(res.body.redirect).to.equal('/');
       });
 
-      xit('should be authorized', function () {
-
+      it('should be authorized', function () {
+        expect(res).to.have.status(200);
       });
     });
   });
