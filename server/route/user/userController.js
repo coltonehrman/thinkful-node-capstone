@@ -48,37 +48,6 @@ exports.post = (req, res, next) => {
     .catch(err => next(err));
 };
 
-// exports.getOne = function(req, res, next) {
-//   var user = req.user.toJson();
-//   res.json(user.toJson());
-// };
-//
-// exports.put = function(req, res, next) {
-//   var user = req.user;
-//
-//   var update = req.body;
-//
-//   _.merge(user, update);
-//
-//   user.save(function(err, saved) {
-//     if (err) {
-//       next(err);
-//     } else {
-//       res.json(saved.toJson());
-//     }
-//   })
-// };
-//
-// exports.delete = function(req, res, next) {
-//   req.user.remove(function(err, removed) {
-//     if (err) {
-//       next(err);
-//     } else {
-//       res.json(removed.toJson());
-//     }
-//   });
-// };
-
 exports.me = (req, res) => {
   res.json(req.user.toJson());
 };

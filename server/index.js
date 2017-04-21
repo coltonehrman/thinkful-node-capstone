@@ -19,7 +19,7 @@ app.use('/users', require('./route/user/userRouter'));
 app.use('/locations', require('./route/location/locationRouter'));
 app.use('/places', require('./route/place/placeRouter'));
 
-if (config.env !== config.prod) {
+if (config.env === config.dev) {
   const { webpackMiddleware } = require('./middleware/webpackMiddleware'); // eslint-disable-line
   app.use(webpackMiddleware);
 } else {
@@ -35,7 +35,7 @@ let server;
 
 function runServer(databaseUrl = config.db.url, port = config.port) {
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl, (connectErr) => {
+    mongoose.connect(databaseUrl, connectErr => { // eslint-disable-line
       if (connectErr) {
         return reject(connectErr);
       }
@@ -47,23 +47,22 @@ function runServer(databaseUrl = config.db.url, port = config.port) {
         mongoose.disconnect();
         reject(appErr);
       });
-      return server;
     });
   });
 }
 
 function closeServer() {
-  return mongoose.disconnect().then(() => (
-    new Promise((resolve, reject) => {
+  return mongoose.connection.close().then(() => { // eslint-disable-line
+    return new Promise((resolve, reject) => {
       logger.log('Closing server');
-      server.close((err) => {
+      return server.close((err) => {
         if (err) {
           return reject(err);
         }
         return resolve();
       });
     })
-  ));
+  });
 }
 
 module.exports = {

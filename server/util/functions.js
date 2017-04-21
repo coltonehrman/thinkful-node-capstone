@@ -8,7 +8,7 @@ exports.getMenu = (items, loggedIn) => (
 
 exports.getFile = fileName => (
   new Promise((resolve, reject) => {
-    if (compiler && config.env !== config.prod) {
+    if (compiler && config.env === config.dev) {
       compiler.outputFileSystem.readFile(path.resolve(compiler.outputPath, fileName),
       (err, file) => {
         if (err) {
