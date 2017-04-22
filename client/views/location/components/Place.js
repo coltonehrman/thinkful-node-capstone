@@ -58,10 +58,10 @@ export default class Place {
             <blockquote>${this.place.description}</blockquote>
           </div>
 
-          <div class="card-action">`;
+          <div class="card-action clearfix">`;
     if (!this.isPlaceholder) {
       html += `       
-            <div class="fixed-action-btn horizontal click-to-toggle">
+            <div class="fixed-action-btn horizontal click-to-toggle right">
               <a class="btn-floating btn-large red">
                 <i class="material-icons">menu</i>
               </a>

@@ -35,3 +35,11 @@ body {
 .no-margin {
   margin: 0 !important;
 }
+
+.clearfix {
+  &:before, &:after {
+    display: table;
+    clear: both;
+    content: " ";
+  }
+}

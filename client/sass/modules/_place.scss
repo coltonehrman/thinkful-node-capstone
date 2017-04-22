@@ -12,7 +12,6 @@
   &__item {
     & .card {
       background-color: #fff;
-      min-height: 610px;
 
       & .card-image {
         overflow: visible;
@@ -23,8 +22,8 @@
         min-height: 80%;
       }
 
-      & .card-reveal {
-        overflow: hidden;
+      & .card-action {
+        min-height: 65px;
       }
 
       & .input-field {
@@ -40,42 +39,15 @@
           }
         }
       }
-    }
-  }
 
-  &__categories {
-    padding: 10px;
-    padding-bottom: 0;
-  }
+      & .fixed-action-btn {
+        position: static !important;
 
-  &__category {
-    margin: 5px 10px;
-  }
-
-  &__hours {
-    font-size: 1rem;
-    font-style: italic;
-  }
-
-  &__rating {
-    font-style: italic;
-  }
-
-  &__price {
-    background-color: $dark-blue !important;
-    cursor: default;
-    margin: 0;
-    &--1 {
-      padding-left: 16px;
-    }
-    &--2 {
-      padding-left: 12px;
-    }
-    &--3 {
-      padding-left: 8px;
-    }
-    &--4 {
-      padding-left: 4px;
+        & ul {
+          right: 78px;
+          top: 62%;
+        }
+      }
     }
   }
 }
