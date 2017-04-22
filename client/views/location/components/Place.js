@@ -68,7 +68,6 @@ export default class Place {
               <ul>`;
       if (this.place.isOwner) {
         html += `
-                <li><a class="btn-floating amber"><i class="material-icons">mode_edit</i></a></li>
                 <li><a class="${DOM.placeDeleteBtn.slice(1)} btn-floating red"><i class="material-icons">close</i></a></li>`;
       }
       html += `
