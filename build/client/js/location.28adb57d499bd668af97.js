@@ -233,10 +233,33 @@ class Place {
     const data = new FormData();
     data.set('name', name);
     data.set('description', description);
-    if (this.photo) {
-      data.set('photo', this.photo);
+
+    if (!this.photo) {
+      return __WEBPACK_IMPORTED_MODULE_2__controllers_APIController__["a" /* default */].createPlace(data);
     }
-    return __WEBPACK_IMPORTED_MODULE_2__controllers_APIController__["a" /* default */].createPlace(data);
+
+    return this.getBase64(this.photo)
+      .then((photo) => {
+        data.set('photo', photo);
+        return __WEBPACK_IMPORTED_MODULE_2__controllers_APIController__["a" /* default */].createPlace(data);
+      });
+  }
+
+  getBase64(file) { // eslint-disable-line
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+
+      reader.onerror = (error) => {
+        console.log('Error: ', error);
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
   }
 
   createElement() {
@@ -539,4 +562,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvcAAAH0CAMAAACO
 
 /***/ })
 ],[19]);
-//# sourceMappingURL=location.1eb487c2f983dccc73e3.js.map
+//# sourceMappingURL=location.28adb57d499bd668af97.js.map

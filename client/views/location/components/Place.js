@@ -38,10 +38,33 @@ export default class Place {
     const data = new FormData();
     data.set('name', name);
     data.set('description', description);
-    if (this.photo) {
-      data.set('photo', this.photo);
+
+    if (!this.photo) {
+      return APIController.createPlace(data);
     }
-    return APIController.createPlace(data);
+
+    return this.getBase64(this.photo)
+      .then((photo) => {
+        data.set('photo', photo);
+        return APIController.createPlace(data);
+      });
+  }
+
+  getBase64(file) { // eslint-disable-line
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+
+      reader.onerror = (error) => {
+        console.log('Error: ', error);
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
   }
 
   createElement() {

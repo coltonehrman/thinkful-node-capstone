@@ -23,13 +23,17 @@ exports.getByLocationId = (req, res, next) => {
 };
 
 exports.savePhoto = (req, res, next) => {
-  if (!req.files || !req.files.photo) {
+  if (!req.body || !req.body.photo) {
     return next();
   }
 
-  return cloudinary.uploader.upload(req.files.photo.data.toString(), (result) => {
-    logger.log(result);
-    res.end();
+  return cloudinary.v2.uploader.upload(req.body.photo, (err, result) => {
+    if (err) {
+      return next(err);
+    }
+
+    req.photo = result.url;
+    return next();
   });
 };
 
