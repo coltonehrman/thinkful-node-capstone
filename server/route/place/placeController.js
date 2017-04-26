@@ -1,4 +1,5 @@
-const path = require('path');
+const cloudinary = require('cloudinary');
+const logger = require('../../util/logger');
 const Location = require('../../model/locationModel');
 const Place = require('../../model/placeModel');
 
@@ -25,15 +26,10 @@ exports.savePhoto = (req, res, next) => {
   if (!req.files || !req.files.photo) {
     return next();
   }
-  const photo = req.files.photo;
-  const photoPath = path.resolve('photos', photo.name);
 
-  return photo.mv(photoPath, (err) => {
-    if (err) {
-      return next(err);
-    }
-    req.photo = `/photos/${photo.name}`;
-    return next();
+  return cloudinary.uploader.upload(req.files.photo.data.toString(), (result) => {
+    logger.log(result);
+    res.end();
   });
 };
 

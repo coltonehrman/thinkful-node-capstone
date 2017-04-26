@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary');
 const config = require('./config');
 const logger = require('./util/logger');
 
@@ -22,6 +23,7 @@ app.use('/places', require('./route/place/placeRouter'));
 if (config.env === config.dev) {
   const { webpackMiddleware } = require('./middleware/webpackMiddleware'); // eslint-disable-line
   app.use(webpackMiddleware);
+  cloudinary.config(config.cloudinaryConfig);
 } else {
   app.use(express.static(path.resolve('build', 'client')));
 }
@@ -61,7 +63,7 @@ function closeServer() {
         }
         return resolve();
       });
-    })
+    });
   });
 }
 
