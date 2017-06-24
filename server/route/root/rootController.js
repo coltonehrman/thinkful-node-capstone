@@ -5,7 +5,7 @@ exports.getMenu = (req, res, next) => {
   const items = [
     {
       text: 'Login',
-      link: '/',
+      link: '/login',
       onLoggedIn: false,
       onLoggedOut: true,
     },

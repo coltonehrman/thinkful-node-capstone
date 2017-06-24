@@ -18,31 +18,28 @@ describe('Root routes', function () {
   });
 
   describe('GET /', function () {
+    let stubs = [];
+
+    beforeEach(function () {
+      stubs.push(sinon.stub(fn, 'isLoggedIn').returns(true));
+    });
+
+    afterEach(function () {
+      stubs.forEach(stub => stub.restore());
+    });
+
     context('not logged in', function () {
-      it('should redirect to /login', function () {
+      it('should return html', function () {
         return chai.request(app)
           .get('/')
-          .redirects(0)
-          .then(Promise.reject)
-          .catch(function(err) {
-            const res = err.response;
-            expect(res).to.redirect;
-            expect(res).to.redirectTo('/login');
+          .then(function(res) {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
           });
       });
     });
 
     context('logged in', function () {
-      let stubs = [];
-
-      beforeEach(function () {
-        stubs.push(sinon.stub(fn, 'isLoggedIn').returns(true));
-      });
-
-      afterEach(function () {
-        stubs.forEach(stub => stub.restore());
-      });
-
       it('should return html', function () {
         return chai.request(app)
           .get('/')
