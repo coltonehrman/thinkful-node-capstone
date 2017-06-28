@@ -7044,7 +7044,8 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   box-sizing: border-box; }
 
 html, body {
-  height: 100%; }
+  height: 100%;
+  overflow: auto; }
 
 body {
   background-color: #73A3CD; }
