@@ -21,7 +21,7 @@ exports.getLocationPageMenu = (req, res, next) => {
 };
 
 exports.get = (req, res, next) => {
-  if (req.params.id) {
+  if (req.query.name) {
     return next();
   }
   return Location.find({})

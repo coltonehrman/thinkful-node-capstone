@@ -103,7 +103,7 @@ describe('Location routes', function () {
     });
 
     context('not logged in', function () {
-      it('should redirect to /login', function () {
+      it('should redirect to /login with query of location id', function () {
         return chai.request(app)
           .get(`/locations/${locations[0].id}`)
           .redirects(0)
@@ -111,7 +111,7 @@ describe('Location routes', function () {
           .catch(function(err) {
             const res = err.response;
             expect(res).to.redirect;
-            expect(res).to.redirectTo('/login');
+            expect(res).to.redirectTo(`/login?redirect=${locations[0].id}`);
           });
       });
     });
