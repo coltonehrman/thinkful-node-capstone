@@ -26,7 +26,7 @@ exports.getLogin = (req, res, next) => {
     .then((file) => {
       if (file) {
         res.set('content-type', 'text/html');
-        return res.send(ejs.render(file.toString(), { menu: req.menu }));
+        return res.send(ejs.render(file.toString(), { redirect: req.query.redirect, menu: req.menu }));
       }
       return res.render('login', { menu: req.menu });
     })
@@ -47,7 +47,9 @@ exports.postLogin = (req, res, next) => {
       if (loginErr) {
         return next(err);
       }
-      // from where user came
+      if (req.body.redirect) {
+        return res.json({ redirect: `/locations/${req.body.redirect}` });
+      }
       return res.json({ redirect: '/' });
     });
   })(req, res, next);

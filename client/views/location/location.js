@@ -36,6 +36,7 @@ function setupEventListeners() {
         state.nextIndex += 1;
         place.cancelForm();
         state.places.push(newPlace);
+        Places.hideToast();
         Places.appendPlace(newPlace, state.places.length - 1);
       })
       .catch(err => console.log(err));

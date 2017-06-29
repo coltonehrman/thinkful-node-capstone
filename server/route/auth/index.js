@@ -2,9 +2,13 @@ const fn = require('../../util/functions');
 const logger = require('../../util/logger');
 
 exports.redirectIfNeedsLogin = (req, res, next) => {
+  let url = '/login';
   if (!fn.isLoggedIn(req.user)) {
     logger.error('User is not logged in!');
-    return res.redirect('/login');
+    if (req.params.id) {
+      url += `?redirect=${req.params.id}`;
+    }
+    return res.redirect(url);
   }
   return next();
 };

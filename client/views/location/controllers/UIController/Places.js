@@ -1,4 +1,6 @@
+/* global Materialize */
 import $ from 'jquery';
+import 'materialize'; // eslint-disable-line
 import DOM from './DOM';
 import state from '../../state';
 
@@ -20,9 +22,17 @@ function clear() {
   $(DOM.places).empty();
 }
 
+function showToast() {
+  Materialize.toast('There are currently no places in this location yet!<br>Be the first to add one!');
+}
+
+function hideToast() {
+  $('#toast-container').hide();
+}
+
 function display(places) {
-  if (places.length === 0) {
-    // show no places
+  if (places.length === 1) {
+    showToast();
   }
   state.places.forEach(appendPlace);
 }
@@ -32,4 +42,5 @@ export default {
   clear,
   display,
   appendPlace,
+  hideToast,
 };
