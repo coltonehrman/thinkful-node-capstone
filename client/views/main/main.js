@@ -35,7 +35,8 @@ function setupEventListeners() {
         return location;
       })
       .then((location) => {
-        window.location.replace(`/locations/${location[0].id}`);
+        console.log(location);
+        window.location.replace(`/locations/${location.id}`);
       })
       .catch(err => console.log(err));
   });

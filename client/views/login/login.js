@@ -6,6 +6,13 @@ import { DOM } from './controllers/UIController';
 function setupEventListeners() {
   const $form = $(DOM.form);
   const $errorMessage = $(DOM.errorMessage);
+  const $demoMenu = $(DOM.demoMenu);
+  const $demoInfo = $(DOM.demoInfo);
+
+  $demoMenu.on('click', () => {
+    console.log('clicked');
+    $demoInfo.tapTarget('open');
+  });
 
   $form.on('submit', (e) => {
     const data = {};
