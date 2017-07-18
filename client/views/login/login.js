@@ -52,6 +52,7 @@ function setupEventListeners() {
 
 function init() {
   setupEventListeners();
+  $(DOM.demoInfo).tapTarget('open');
 }
 
 $(init);
