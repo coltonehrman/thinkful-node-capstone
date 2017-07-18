@@ -36,7 +36,9 @@
               </div>
             </div>
 
+            <%% if (typeof redirect !== 'undefined') { %>
             <input type="hidden" value="<%%= redirect %>" name="redirect" />
+            <%% } %>
 
             <button class="btn btn-large btn--full-width btn--margin-top waves-effect waves-light" type="submit">Login</button>
           </form>
