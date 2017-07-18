@@ -1,10 +1,10 @@
-webpackJsonp([3],{
+webpackJsonp([2],{
 
-/***/ 11:
+/***/ 15:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DOM__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DOM__ = __webpack_require__(24);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__DOM__["a"]; });
 
 
@@ -13,7 +13,7 @@ webpackJsonp([3],{
 
 /***/ }),
 
-/***/ 20:
+/***/ 24:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28,7 +28,7 @@ const DOM = {
 
 /***/ }),
 
-/***/ 21:
+/***/ 25:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -37,7 +37,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_styles___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_styles__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__controllers_UIController__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__controllers_UIController__ = __webpack_require__(15);
 /* global window */
  // eslint-disable-line
 
@@ -55,7 +55,7 @@ function setupEventListeners() {
       data[field.name] = field.value;
     });
 
-    __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax('/login', {
+    __WEBPACK_IMPORTED_MODULE_1_jquery___default.a.ajax('/users', {
       data,
       method: 'POST',
     })
@@ -68,12 +68,18 @@ function setupEventListeners() {
     })
     .fail((xhr) => {
       const $err = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_2__controllers_UIController__["a" /* DOM */].errorMessage);
-      const message = JSON.parse(xhr.responseText).message;
+      let message = JSON.parse(xhr.responseText).message;
 
-      if (xhr.status === 401) {
+      if (message.match(/duplicate/) && message.match(/email/)) {
+        message = 'Email already in use.';
+      }
+
+      if (message.match(/duplicate/) && message.match(/username/)) {
+        message = 'Username not available.';
+      }
+
+      if (xhr.status === 401 || xhr.status === 500) {
         $err.html(`${message}<i class="${__WEBPACK_IMPORTED_MODULE_2__controllers_UIController__["a" /* DOM */].errorCloseBtn.slice(1)} material-icons right">close</i>`).removeClass('hide');
-      } else if (xhr.status === 500) {
-        // server error
       }
     });
   });
@@ -92,5 +98,5 @@ __WEBPACK_IMPORTED_MODULE_1_jquery___default()(init);
 
 /***/ })
 
-},[21]);
-//# sourceMappingURL=login.3db109d977425bd0ed15.js.map
+},[25]);
+//# sourceMappingURL=signup.bbd5e04d6beaa5dbd0db.js.map

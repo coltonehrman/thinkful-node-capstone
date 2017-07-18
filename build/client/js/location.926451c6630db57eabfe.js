@@ -145,7 +145,7 @@ function deletePlace(id) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DOM__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__DOM__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Places__ = __webpack_require__(18);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__DOM__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_1__Places__["a"]; });
@@ -167,7 +167,8 @@ function deletePlace(id) {
 
 
 /***/ }),
-/* 8 */
+/* 8 */,
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -184,8 +185,8 @@ function deletePlace(id) {
 
 
 /***/ }),
-/* 9 */,
-/* 10 */
+/* 10 */,
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -397,7 +398,6 @@ class Place {
 
 
 /***/ }),
-/* 11 */,
 /* 12 */,
 /* 13 */,
 /* 14 */,
@@ -410,35 +410,47 @@ class Place {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__DOM__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__state__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_materialize__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_materialize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_materialize__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DOM__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__state__ = __webpack_require__(7);
+/* global Materialize */
 
+ // eslint-disable-line
 
 
 
 function hideProgress() {
-  __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].progress).hide();
+  __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_2__DOM__["a" /* default */].progress).hide();
 }
 
 function appendPlace(place, index) {
   if (index % 2 === 0) {
     const $newRow = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('<div class="row"></div>');
     $newRow.append(place.$element);
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].places).append($newRow);
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_2__DOM__["a" /* default */].places).append($newRow);
   } else {
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].places).find('.row').last().append(place.$element);
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_2__DOM__["a" /* default */].places).find('.row').last().append(place.$element);
   }
 }
 
 function clear() {
-  __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].places).empty();
+  __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_2__DOM__["a" /* default */].places).empty();
+}
+
+function showToast() {
+  Materialize.toast('There are currently no places in this location yet!<br>Be the first to add one!');
+}
+
+function hideToast() {
+  __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#toast-container').hide();
 }
 
 function display(places) {
-  if (places.length === 0) {
-    // show no places
+  if (places.length === 1) {
+    showToast();
   }
-  __WEBPACK_IMPORTED_MODULE_2__state__["a" /* default */].places.forEach(appendPlace);
+  __WEBPACK_IMPORTED_MODULE_3__state__["a" /* default */].places.forEach(appendPlace);
 }
 
 /* harmony default export */ __webpack_exports__["a"] = ({
@@ -446,6 +458,7 @@ function display(places) {
   clear,
   display,
   appendPlace,
+  hideToast,
 });
 
 
@@ -463,7 +476,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_google___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_google__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_APIController__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Place__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Place__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__state__ = __webpack_require__(7);
 /* global google document */
 /* eslint func-names: 0 */
@@ -503,6 +516,7 @@ function setupEventListeners() {
         __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].nextIndex += 1;
         place.cancelForm();
         __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.push(newPlace);
+        __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].hideToast();
         __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["b" /* Places */].appendPlace(newPlace, __WEBPACK_IMPORTED_MODULE_6__state__["a" /* default */].places.length - 1);
       })
       .catch(err => console.log(err));
@@ -562,4 +576,4 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvcAAAH0CAMAAACO
 
 /***/ })
 ],[19]);
-//# sourceMappingURL=location.28adb57d499bd668af97.js.map
+//# sourceMappingURL=location.926451c6630db57eabfe.js.map

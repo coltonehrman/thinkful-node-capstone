@@ -29,20 +29,37 @@
 
     <div class="container">
       <div class="card-panel card--margin grey lighten-5">
+
+        <div class="fixed-action-btn">
+          <a id="demo-menu" class="waves-effect waves-light btn btn-large btn-floating pulse" ><i class="material-icons">menu</i></a>
+        </div>
+
+        <div style="background-color: #031989;" class="demo-info tap-target" data-activates="demo-menu">
+          <div style="color: #fff;" class="tap-target-content">
+            <h6 style="font-size: 1.25rem; text-decoration: underline;">Demo Account</h6>
+            <p style="margin-top: 5px;">
+              <strong>Username:</strong> demo<br>
+              <strong>Password:</strong> demo
+            </p>
+          </div>
+        </div>
+
         <div class="row">
           <form class="col s12">
 
             <div class="row row--no-margin">
               <div class="input-field col s12 m6">
-                <input placeholder="Username" id="username" type="text" name="username">
+                <input placeholder="Username" id="username" type="text" name="username" value="demo">
                 <label for="username"></label>
               </div>
 
               <div class="input-field col s12 m6">
-                <input placeholder="Password" id="password" type="password" name="password">
+                <input placeholder="Password" id="password" type="password" name="password" value="demo">
                 <label for="password"></label>
               </div>
             </div>
+
+            <input type="hidden" value="<%= redirect %>" name="redirect" />
 
             <button class="btn btn-large btn--full-width btn--margin-top waves-effect waves-light" type="submit">Login</button>
           </form>
@@ -58,6 +75,6 @@
     <!-- Import Google Places API -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
     <% } %>
-  <script type="text/javascript" src="/js/vendor.d8d5c7409183c3a17adb.js"></script><script type="text/javascript" src="/js/login.3db109d977425bd0ed15.js"></script></body>
+  <script type="text/javascript" src="/js/vendor.ee3e7ad83eb2abee0bdd.js"></script><script type="text/javascript" src="/js/login.8cd00f5950c120ce2c46.js"></script></body>
 </html>
 
