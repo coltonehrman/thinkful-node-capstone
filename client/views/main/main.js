@@ -6,20 +6,26 @@ import { autocomplete } from 'google'; // eslint-disable-line
 import { DOM, Search } from './controllers/UIController';
 import APIController from './controllers/APIController';
 
-function setupEventListeners() {
-  const $placeSearch = $(DOM.placeSearch);
+function getSearchResults() {
+  const $locationSearch = $(DOM.locationSearch);
+  const search = $locationSearch.val().trim();
 
-  $placeSearch.on('keyup', () => {
-    const search = $placeSearch.val().trim();
-    if (search === '') {
-      Search.hideResults();
-    } else {
-      Search.clearResults();
-      autocomplete.cities(search)
-        .then(results => Search.displayResults(results))
-        .catch(() => Search.hideResults());
-    }
-  });
+  console.log(search);
+
+  if (search === '') {
+    Search.hideResults();
+  } else {
+    Search.clearResults();
+    autocomplete.cities(search)
+      .then(Search.displayResults)
+      .catch(Search.hideResults);
+  }
+}
+
+function setupEventListeners() {
+  const $locationSearch = $(DOM.locationSearch);
+
+  $locationSearch.on('keyup', getSearchResults);
 
   $(document).on('click', DOM.searchResult, (e) => {
     const $place = $(e.target).parents(DOM.searchResult);
@@ -43,7 +49,6 @@ function setupEventListeners() {
 }
 
 function init() {
-  Search.focus();
   setupEventListeners();
 }
 

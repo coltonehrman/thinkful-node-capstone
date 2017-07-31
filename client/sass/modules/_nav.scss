@@ -1,5 +1,22 @@
-nav {
-  background: #67B26F;
-  background: linear-gradient(to left, $light-blue, $dark-blue);
-  border-bottom: 3px solid $light-blue;
+.main-nav {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  @media screen and (max-width: 600px) {
+    margin-top: 50px;
+  }
+
+  & .nav-wrapper {
+    display: flex;  
+    justify-content: center;
+    letter-spacing: 0.2rem;
+  }
+
+  & .brand-logo {
+    font-family: 'Gravitas One', cursive;
+    font-size: 10rem;
+    position: absolute;
+    top: 100px;
+  }
 }

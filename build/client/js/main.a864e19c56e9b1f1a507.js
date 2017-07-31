@@ -87,7 +87,7 @@ exports.default = {
 
 "use strict";
 const DOM = {
-  placeSearch: '.place-search',
+  locationSearch: '.search__input',
   searchResults: '.results__list',
   searchResult: '.results__item',
   progressBar: '.progress',
@@ -196,7 +196,7 @@ function clearResults() {
   hideResults,
   clearResults,
   focus() {
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].placeSearch).focus();
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].locationSearch).focus();
   },
   displayResults(results) {
     const $searchResults = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].searchResults);
@@ -213,7 +213,7 @@ function clearResults() {
     $searchResults.show();
   },
   clear() {
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].placeSearch).val('');
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1__DOM__["a" /* default */].locationSearch).val('');
     clearResults();
     hideResults();
   },
@@ -242,20 +242,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-function setupEventListeners() {
-  const $placeSearch = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["a" /* DOM */].placeSearch);
+function getSearchResults() {
+  const $locationSearch = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["a" /* DOM */].locationSearch);
+  const search = $locationSearch.val().trim();
 
-  $placeSearch.on('keyup', () => {
-    const search = $placeSearch.val().trim();
-    if (search === '') {
-      __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].hideResults();
-    } else {
-      __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].clearResults();
-      __WEBPACK_IMPORTED_MODULE_2_google__["autocomplete"].cities(search)
-        .then(results => __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].displayResults(results))
-        .catch(() => __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].hideResults());
-    }
-  });
+  console.log(search);
+
+  if (search === '') {
+    __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].hideResults();
+  } else {
+    __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].clearResults();
+    __WEBPACK_IMPORTED_MODULE_2_google__["autocomplete"].cities(search)
+      .then(__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].displayResults)
+      .catch(__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].hideResults);
+  }
+}
+
+function setupEventListeners() {
+  const $locationSearch = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["a" /* DOM */].locationSearch);
+
+  $locationSearch.on('keyup', getSearchResults);
 
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(document).on('click', __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["a" /* DOM */].searchResult, (e) => {
     const $place = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(e.target).parents(__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["a" /* DOM */].searchResult);
@@ -279,7 +285,6 @@ function setupEventListeners() {
 }
 
 function init() {
-  __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].focus();
   setupEventListeners();
 }
 
@@ -288,4 +293,4 @@ __WEBPACK_IMPORTED_MODULE_1_jquery___default()(init);
 
 /***/ })
 ],[23]);
-//# sourceMappingURL=main.90fb7357a99648451d13.js.map
+//# sourceMappingURL=main.a864e19c56e9b1f1a507.js.map

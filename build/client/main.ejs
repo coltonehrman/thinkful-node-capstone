@@ -1,4 +1,4 @@
-<% var title = 'Home' %>
+<% var title = 'V2 | I Need A Vacation' %>
 <% var bodyClass = 'home' %>
 <!DOCTYPE html>
 <html>
@@ -6,19 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><%= title %></title>
 
-    <!-- Import Google Icon Font -->
+    <!-- Import Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Gravitas+One|Lato:300,400,700" rel="stylesheet">
+
     <!-- Import Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <link href="/./css/styles.css" rel="stylesheet"></head>
 
-  <body <% if (typeof bodyClass !== 'undefined') { %>class="<%= bodyClass %>"<% } %>>
+  <body<% if (typeof bodyClass !== 'undefined') { %> class="<%= bodyClass %>"<% } %>>
 
 
-    <nav>
-  <div class="container nav-wrapper">
-    <a href="/" class="brand-logo">I Need A Vacation</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
+  <nav class="main-nav">
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo">V2</a>
+    <ul class="manu-list">
       <% menu.forEach(function(item) { %>
         <li><a href="<%= item.link %>"><%= item.text %></a></li>
       <% }) %>
@@ -27,61 +29,54 @@
 </nav>
 
 
+    <div class="search input-field">
+      <input class="search__input" type="search" placeholder="Enter your favorite location...">
+      <label class="search__icon" for="search"><i class="material-icons">search</i></label>
+      <i class="material-icons search__close">close</i>
 
-      <div class="container">
-        <div class="card-panel white">
-          <h1>I Need a Vacation</h1>
-          <strong><u>How does it work?</u></strong>
-          <ul class="browser-default">
-            <li><strong>Step 1:</strong>
-              <ul class="browser-default">
-                <li style="line-height: 15px;"><a href="/login">Login</a> or <a href="/signup">signup</a> if you have not already.<br>
-                <small><em>Or use demo account on <a href="/login">login page</a></em></small></li>
-              </ul>
-            </li>
+      <ul class="results__list autocomplete-content dropdown-content"></ul>
+    </div>
 
-            <li><strong>Step 2:</strong>
-              <ul class="browser-default">
-                <li style="line-height: 15px;">Search for a location in the search bar below. (says "Search for a place...")<br>
-                <small>Search for <em>Las Vegas</em> to get demo content.</small></li>
-                <li>Click on a location that is provided in the list after you type something.</li>
-              </ul>
-            </li>
+    <main class="container">
+      <h2 class="lead-text">
+        Find the most <span class="stand-out">popular places</span> to go for your favorite locations &ndash; 
+        Share your experiences with others from <span class="stand-out">around the world!</span>
+      </h2>
+    </main>
 
-            <li><strong>Step 3:</strong>
-              <ul class="browser-default">
-                <li>Check out the different places added by others and yourself.</li>
-                <li>Add places to your favorite locations by clicking the blue circle "+" button in the middle of the placeholder card.</li>
-                <li>Give your place a noteworthy image, a name, and a description.</li>
-                <li>Click the green circle button at the bottom right of the card to add your new place. <em>(places are only added to the location that you are currently viewing)</em></li>
-                <li>Delete any places you no longer wish to be displayed by clicking on the bottom right red circle button. <em>(you can only delete places you added)</em></li>
-              </ul>
-            </li>
+    <article class="container white">
+      <header>
+        <p class="heading">How does it work?</p>
+        <p class="heading__info">Here are some different features of the app.</p>
+      </header>
 
-            <li><strong>Step 3:</strong>
-              <ul class="browser-default">
-                <li>Go back to the home page to check out other locations!</li>
-                <li>Tell your friends to come check out the places you added and to add some of there own!</li>
-              </ul>
-            </li>
-          </ul>
+      <div class="row">
+        <div class="col s12 m6 l3 border-top-blue">
+          <p class="heading heading--small heading--margin-bottom">Find Favorite Location</p>
+          <div class="heading__info heading__info--small">Search for your favorite location in the world using a state of the art autocomplete API.</div>
         </div>
-        <nav>
-          <div class="nav-wrapper">
-            <div class="input-field">
-              <input class="place-search" type="search" placeholder="Search for a place...">
-              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-              <i class="material-icons">close</i>
-            </div>
-          </div>
-        </nav>
-        <ul class="results__list autocomplete-content dropdown-content"></ul>
+
+        <div class="col s12 m6 l3 border-top-blue">
+          <p class="heading heading--small heading--margin-bottom">Add Places To Any Location</p>
+          <div class="heading__info heading__info--small">Add popular locations to any location, for EVERYONE to see and check out.</div>
+        </div>
+
+        <div class="col s12 m6 l3 border-top-blue">
+          <p class="heading heading--small heading--margin-bottom">Review Other Popular Places</p>
+          <div class="heading__info heading__info--small">Check out and review other popular places added by somebody else.</div>
+        </div>
+
+        <div class="col s12 m6 l3 border-top-blue">
+          <p class="heading heading--small heading--margin-bottom">Share Your Experiences</p>
+          <div class="heading__info heading__info--small">Share your experiences at different places you have been to with other people around the world.</div>
+        </div>
       </div>
+    </article>
 
 <% var google = true %>
     <% if (typeof google !== 'undefined' && google) { %>
     <!-- Import Google Places API -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
     <% } %>
-  <script type="text/javascript" src="/js/vendor.ee3e7ad83eb2abee0bdd.js"></script><script type="text/javascript" src="/js/main.90fb7357a99648451d13.js"></script></body>
+  <script type="text/javascript" src="/js/vendor.958392c236c835642ac8.js"></script><script type="text/javascript" src="/js/main.a864e19c56e9b1f1a507.js"></script></body>
 </html>

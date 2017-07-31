@@ -1,0 +1,42 @@
+.heading {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  &--margin-bottom {
+    margin-bottom: 2rem;
+  }
+
+  &--extra-margin-bottom {
+    margin-bottom: 10rem;
+  }
+
+  &--small {
+    font-size: 1.25rem;
+  }
+
+  &--big {
+    font-size: 3.5rem;
+  }
+
+  &--skiny {
+    width: 65%;
+  }
+
+  &--center {
+    text-align: center;
+  }
+
+  &__info {
+    color: lighten($grey, 50);
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+
+    &--small {
+      font-size: 1rem;
+    }
+  }
+}

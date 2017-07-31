@@ -1,0 +1,40 @@
+.input-field.search {
+  position: fixed;
+  top: 0;
+  width: 35%;
+
+  @media screen and (max-width: 800px) {
+    width: 65%;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: calc(100% - 50px);
+  }
+
+  @media screen and (max-width: 400px) {
+    width: calc(100% - 14px);
+  }
+
+  & .search {
+    &__input {
+      background: transparent !important;
+      border: 1px solid #fff !important;
+      color: #fff !important;
+
+      &::placeholder {
+        color: #fff;
+      }
+    }
+
+    &__icon,
+    &__icon i {
+      color: #fff !important;
+      transform: none !important;
+    }
+
+    &__close {
+      color: #fff !important;
+      top: 8px !important;
+    }
+  }
+}
