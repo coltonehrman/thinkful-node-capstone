@@ -1,5 +1,5 @@
 const DOM = {
-  placeSearch: '.place-search',
+  locationSearch: '.search__input',
   searchResults: '.results__list',
   searchResult: '.results__item',
   progressBar: '.progress',

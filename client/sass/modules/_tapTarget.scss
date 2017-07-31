@@ -1,0 +1,15 @@
+.tap-target {
+  background: $orange;
+
+  & .tap-target-content {
+    color: #fff;
+
+    & h6 {
+      border-bottom: 1px dashed #fff;
+      display: inline-block;
+      font-size: 1.25rem;
+      padding-bottom: 5px;
+      margin-bottom: 0;
+    }
+  }
+}

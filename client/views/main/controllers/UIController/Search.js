@@ -14,7 +14,7 @@ export default {
   hideResults,
   clearResults,
   focus() {
-    $(DOM.placeSearch).focus();
+    $(DOM.locationSearch).focus();
   },
   displayResults(results) {
     const $searchResults = $(DOM.searchResults);
@@ -31,7 +31,7 @@ export default {
     $searchResults.show();
   },
   clear() {
-    $(DOM.placeSearch).val('');
+    $(DOM.locationSearch).val('');
     clearResults();
     hideResults();
   },
