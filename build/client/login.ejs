@@ -1,24 +1,25 @@
 <% var title = 'Login' %>
-<% var bodyClass = 'white' %>
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><%= title %></title>
 
-    <!-- Import Google Icon Font -->
+    <!-- Import Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Gravitas+One|Lato:300,400,700" rel="stylesheet">
+
     <!-- Import Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <link href="/./css/styles.css" rel="stylesheet"></head>
 
-  <body <% if (typeof bodyClass !== 'undefined') { %>class="<%= bodyClass %>"<% } %>>
+  <body<% if (typeof bodyClass !== 'undefined') { %> class="<%= bodyClass %>"<% } %>>
 
 
-  <nav>
-  <div class="container nav-wrapper">
-    <a href="/" class="brand-logo">I Need A Vacation</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
+  <nav class="main-nav">
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo">V2</a>
+    <ul class="manu-list">
       <% menu.forEach(function(item) { %>
         <li><a href="<%= item.link %>"><%= item.text %></a></li>
       <% }) %>
@@ -28,16 +29,16 @@
 
 
     <div class="container">
-      <div class="card-panel card--margin grey lighten-5">
+      <div class="card-panel card--margin">
 
         <div class="fixed-action-btn">
           <a id="demo-menu" class="waves-effect waves-light btn btn-large btn-floating pulse" ><i class="material-icons">menu</i></a>
         </div>
 
-        <div style="background-color: #031989;" class="demo-info tap-target" data-activates="demo-menu">
-          <div style="color: #fff;" class="tap-target-content">
-            <h6 style="font-size: 1.25rem; text-decoration: underline;">Demo Account</h6>
-            <p style="margin-top: 5px;">
+        <div class="demo-info tap-target" data-activates="demo-menu">
+          <div class="tap-target-content">
+            <h6>Demo Account</h6>
+            <p>
               <strong>Username:</strong> demo<br>
               <strong>Password:</strong> demo
             </p>
@@ -77,6 +78,6 @@
     <!-- Import Google Places API -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
     <% } %>
-  <script type="text/javascript" src="/js/vendor.ee3e7ad83eb2abee0bdd.js"></script><script type="text/javascript" src="/js/login.8cd00f5950c120ce2c46.js"></script></body>
+  <script type="text/javascript" src="/js/vendor.958392c236c835642ac8.js"></script><script type="text/javascript" src="/js/login.8cd00f5950c120ce2c46.js"></script></body>
 </html>
 

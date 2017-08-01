@@ -1,24 +1,25 @@
 <% var title = 'Signup' %>
-<% var bodyClass = 'white' %>
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><%= title %></title>
 
-    <!-- Import Google Icon Font -->
+    <!-- Import Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Gravitas+One|Lato:300,400,700" rel="stylesheet">
+
     <!-- Import Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <link href="/./css/styles.css" rel="stylesheet"></head>
 
-  <body <% if (typeof bodyClass !== 'undefined') { %>class="<%= bodyClass %>"<% } %>>
+  <body<% if (typeof bodyClass !== 'undefined') { %> class="<%= bodyClass %>"<% } %>>
 
 
-  <nav>
-  <div class="container nav-wrapper">
-    <a href="/" class="brand-logo">I Need A Vacation</a>
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
+  <nav class="main-nav">
+  <div class="nav-wrapper">
+    <a href="/" class="brand-logo">V2</a>
+    <ul class="manu-list">
       <% menu.forEach(function(item) { %>
         <li><a href="<%= item.link %>"><%= item.text %></a></li>
       <% }) %>
@@ -65,6 +66,6 @@
     <!-- Import Google Places API -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
     <% } %>
-  <script type="text/javascript" src="/js/vendor.ee3e7ad83eb2abee0bdd.js"></script><script type="text/javascript" src="/js/signup.bbd5e04d6beaa5dbd0db.js"></script></body>
+  <script type="text/javascript" src="/js/vendor.958392c236c835642ac8.js"></script><script type="text/javascript" src="/js/signup.bbd5e04d6beaa5dbd0db.js"></script></body>
 </html>
 
