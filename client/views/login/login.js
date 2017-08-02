@@ -10,7 +10,6 @@ function setupEventListeners() {
   const $demoInfo = $(DOM.demoInfo);
 
   $demoMenu.on('click', () => {
-    console.log('clicked');
     $demoInfo.tapTarget('open');
   });
 

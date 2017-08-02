@@ -1,5 +1,4 @@
 const cloudinary = require('cloudinary');
-const logger = require('../../util/logger');
 const Location = require('../../model/locationModel');
 const Place = require('../../model/placeModel');
 
@@ -18,8 +17,11 @@ exports.getByLocationId = (req, res, next) => {
   Location.findById(location_id)
     .populate('places')
     .exec()
-    .then(location => res.json(location.places.map(place => place.toJson(req.user.id))))
-    .catch(err => next(err));
+    .then((location) => {
+      const userId = (req.user) ? req.user.id : null;
+      return res.json(location.places.map(place => place.toJson(userId)));
+    })
+    .catch(next);
 };
 
 exports.savePhoto = (req, res, next) => {

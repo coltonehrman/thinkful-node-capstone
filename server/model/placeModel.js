@@ -32,7 +32,7 @@ PlaceSchema.methods = {
   toJson(userId) {
     const place = this.toObject();
     place.id = this._id;
-    place.isOwner = this.isOwner(userId);
+    place.isOwner = userId && this.isOwner(userId);
     delete place._id;
     return place;
   },

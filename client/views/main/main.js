@@ -10,8 +10,6 @@ function getSearchResults() {
   const $locationSearch = $(DOM.locationSearch);
   const search = $locationSearch.val().trim();
 
-  console.log(search);
-
   if (search === '') {
     Search.hideResults();
   } else {
@@ -41,7 +39,6 @@ function setupEventListeners() {
         return location;
       })
       .then((location) => {
-        console.log(location);
         window.location.replace(`/locations/${location.id}`);
       })
       .catch(err => console.log(err));

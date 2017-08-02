@@ -246,8 +246,6 @@ function getSearchResults() {
   const $locationSearch = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["a" /* DOM */].locationSearch);
   const search = $locationSearch.val().trim();
 
-  console.log(search);
-
   if (search === '') {
     __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["b" /* Search */].hideResults();
   } else {
@@ -277,7 +275,6 @@ function setupEventListeners() {
         return location;
       })
       .then((location) => {
-        console.log(location);
         window.location.replace(`/locations/${location.id}`);
       })
       .catch(err => console.log(err));
@@ -293,4 +290,4 @@ __WEBPACK_IMPORTED_MODULE_1_jquery___default()(init);
 
 /***/ })
 ],[23]);
-//# sourceMappingURL=main.a864e19c56e9b1f1a507.js.map
+//# sourceMappingURL=main.3c40ebb8d41673f43f67.js.map

@@ -52,7 +52,6 @@ function setupEventListeners() {
   const $demoInfo = __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_2__controllers_UIController__["a" /* DOM */].demoInfo);
 
   $demoMenu.on('click', () => {
-    console.log('clicked');
     $demoInfo.tapTarget('open');
   });
 
@@ -103,4 +102,4 @@ __WEBPACK_IMPORTED_MODULE_1_jquery___default()(init);
 /***/ })
 
 },[21]);
-//# sourceMappingURL=login.8cd00f5950c120ce2c46.js.map
+//# sourceMappingURL=login.ecf2e17c3b95963a5ee8.js.map

@@ -3,7 +3,10 @@ const config = require('../config');
 const { compiler } = require('../middleware/webpackMiddleware');
 
 exports.getMenu = (items, loggedIn) => (
-  items.filter(item => item.onLoggedIn === loggedIn)
+  items.filter(item => (
+    item.onLoggedIn === loggedIn ||
+    item.onLoggedOut === !loggedIn
+  ))
 );
 
 exports.getFile = fileName => (

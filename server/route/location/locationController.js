@@ -8,6 +8,19 @@ exports.getLocationPageMenu = (req, res, next) => {
       text: 'Home',
       link: '/',
       onLoggedIn: true,
+      onLoggedOut: true,
+    },
+    {
+      text: 'Login',
+      link: '/login',
+      onLoggedIn: false,
+      onLoggedOut: true,
+    },
+    {
+      text: 'Signup',
+      link: '/signup',
+      onLoggedIn: false,
+      onLoggedOut: true,
     },
     {
       text: 'Logout',

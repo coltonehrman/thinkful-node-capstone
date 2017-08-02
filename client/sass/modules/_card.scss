@@ -1,6 +1,13 @@
 .card {
   position: relative;
 
+  &-panel {
+    @media screen and (max-width: 1200px) {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+
   &__overlay {
     background-color: rgba(255,255,255,0.75);
     bottom: 0;

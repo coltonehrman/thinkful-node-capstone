@@ -7241,6 +7241,10 @@ main.container {
 
 .card {
   position: relative; }
+  @media screen and (max-width: 1200px) {
+    .card-panel {
+      margin-left: 0 !important;
+      margin-right: 0 !important; } }
   .card__overlay {
     background-color: rgba(255, 255, 255, 0.75);
     bottom: 0;

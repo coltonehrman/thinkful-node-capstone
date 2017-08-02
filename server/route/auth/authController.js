@@ -9,11 +9,13 @@ exports.getLoginMenu = (req, res, next) => {
       text: 'Home',
       link: '/',
       onLoggedIn: true,
+      onLoggedOut: true,
     },
     {
       text: 'Signup',
       link: '/signup',
       onLoggedIn: false,
+      onLoggedOut: true,
     },
   ];
 
@@ -61,7 +63,7 @@ exports.getSignupMenu = (req, res, next) => {
       text: 'Home',
       link: '/',
       onLoggedIn: true,
-      onLoggedOut: false,
+      onLoggedOut: true,
     },
     {
       text: 'Login',
