@@ -4,7 +4,7 @@ import 'styles'; // eslint-disable-line
 import $ from 'jquery';
 import { autocomplete } from 'google'; // eslint-disable-line
 import APIController from './controllers/APIController';
-import { DOM, Places } from './controllers/UIController';
+import { DOM, Places, isLoggedIn } from './controllers/UIController';
 import Place from './components/Place';
 import state from './state';
 
@@ -33,13 +33,15 @@ function setupEventListeners() {
       .then((data) => {
         const index = state.nextIndex;
         const newPlace = new Place(data, index);
+
         state.nextIndex += 1;
-        place.cancelForm();
         state.places.push(newPlace);
+
+        place.cancelForm();
         Places.hideToast();
         Places.appendPlace(newPlace, state.places.length - 1);
       })
-      .catch(err => console.log(err));
+      .catch(console.error);
   });
 
   $(DOM.places).on('click', `${DOM.placeAddPhotoBtn} a`, function () {
@@ -51,16 +53,23 @@ function setupEventListeners() {
     getPlace(this).addPhoto(this.files[0]);
   });
 
+  $(DOM.places).on('click', DOM.placeReviewBtn, function () {
+    const place = getPlace(this);
+    place.toggleReviewForm();
+  });
+
   $(DOM.places).on('click', DOM.placeDeleteBtn, function () {
     const place = getPlace(this);
     place.delete()
       .then(() => {
         const index = state.places.findIndex(p => p.index === place.index);
+        const placesCount = (isLoggedIn()) ? state.places.length - 2 : state.places.length - 1;
+
         state.places.splice(index, 1);
         Places.clear();
-        Places.display(state.places);
+        Places.display(placesCount);
       })
-      .catch(err => console.log(err));
+      .catch(console.error);
   });
 }
 
@@ -68,14 +77,20 @@ function init() {
   setupEventListeners();
   APIController.findPlaces()
     .then((places) => {
+      const placesCount = places.length;
+
       Places.hideProgress();
       state.places = places || [];
-      state.places.unshift(null);
+
+      if (isLoggedIn()) {
+        state.places.unshift(null);
+      }
+
       state.places = state.places.map((place, i) => new Place(place, i));
       state.nextIndex = state.places.length;
-      Places.display(state.places);
+      Places.display(placesCount);
     })
-    .catch(err => console.log(err));
+    .catch(console.error);
 }
 
 $(init);

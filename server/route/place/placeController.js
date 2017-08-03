@@ -7,6 +7,7 @@ exports.get = (req, res, next) => {
     return next();
   }
   return Place.find({})
+    .populate('reviews')
     .exec()
     .then(places => res.json(places.map(place => place.toJson(req.user.id))))
     .catch(err => next(err));
@@ -15,7 +16,10 @@ exports.get = (req, res, next) => {
 exports.getByLocationId = (req, res, next) => {
   const { location_id } = req.query;
   Location.findById(location_id)
-    .populate('places')
+    .populate({
+      path: 'places',
+      populate: { path: 'user' },
+    })
     .exec()
     .then((location) => {
       const userId = (req.user) ? req.user.id : null;

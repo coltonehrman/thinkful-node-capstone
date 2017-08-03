@@ -48,8 +48,17 @@ function deletePlace(id) {
   });
 }
 
+function isLoggedIn() {
+  return new Promise((resolve, reject) => {
+    $.get('/users/me')
+      .done(resolve)
+      .fail(reject);
+  });
+}
+
 export default {
   findPlaces,
   createPlace,
   deletePlace,
+  isLoggedIn,
 };

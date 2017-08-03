@@ -61,9 +61,10 @@ exports.getLocationPage = (req, res, next) => {
     .then((file) => {
       if (file) {
         res.set('content-type', 'text/html');
-        return res.send(ejs.render(file.toString(), { menu: req.menu }));
+        console.log(req.user);
+        return res.send(ejs.render(file.toString(), { menu: req.menu, user: req.user }));
       }
-      return res.render('location', { menu: req.menu });
+      return res.render('location', { menu: req.menu, user: req.user });
     })
     .catch(err => next(err));
 };

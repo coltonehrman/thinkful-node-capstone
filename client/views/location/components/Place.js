@@ -69,7 +69,7 @@ export default class Place {
 
   createElement() {
     let html = `
-      <div class="place__item col s12 m6" data-index="${this.index}">
+      <div class="place__item col m12 l6" data-index="${this.index}">
         <div class="card">
           <div class="card-image">
             <img src="${this.place.photo || this.placeholderPhoto}">
@@ -82,22 +82,39 @@ export default class Place {
           </div>
 
           <div class="card-action clearfix">`;
+    if (this.place.user) {
+      html += `
+            <p class="left">Author: ${this.place.user}</p>`;
+    }
+
     if (!this.isPlaceholder) {
       html += `       
-            <div class="fixed-action-btn horizontal click-to-toggle right">
-              <a class="btn-floating btn-large red">
-                <i class="material-icons">menu</i>
-              </a>
-              <ul>`;
+            <div class="right">
+              <ul>
+                <li class="left"><a class="${DOM.placeReviewBtn.slice(1)} btn-floating btn-large blue"><i class="material-icons">rate_review
+</i></a></li>`;
       if (this.place.isOwner) {
         html += `
-                <li><a class="${DOM.placeDeleteBtn.slice(1)} btn-floating red"><i class="material-icons">close</i></a></li>`;
+                <li class="left"><a class="${DOM.placeDeleteBtn.slice(1)} btn-floating btn-large red"><i class="material-icons">delete_forever
+</i></a></li>`;
       }
       html += `
               </ul>
             </div>`;
     }
     html += `
+          </div>
+          
+          <div class="${DOM.placeReviewForm.slice(1)}">
+            <blockquote>
+              <i class="material-icons prefix">mode_edit</i>
+              <textarea id="review" class="materialize-textarea">Leave a review of this place...</textarea>
+              <label for="review">Review</label>
+            </blockquote>
+
+            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+              <i class="material-icons right">send</i>
+            </button>
           </div>
         </div>
       </div>
@@ -191,6 +208,10 @@ export default class Place {
     this.$element.find(DOM.placeAddPhotoBtn).remove();
     this.$element.find('.card-action').empty();
     this.$element.find('.card__overlay').show();
+  }
+
+  toggleReviewForm() {
+    this.$element.find(DOM.placeReviewForm).toggleClass(`${DOM.placeReviewForm.slice(1)}--active`);
   }
 
   delete() {

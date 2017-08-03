@@ -19,6 +19,7 @@ app.use('/', require('./route/root/rootRouter'));
 app.use('/users', require('./route/user/userRouter'));
 app.use('/locations', require('./route/location/locationRouter'));
 app.use('/places', require('./route/place/placeRouter'));
+app.use('/reviews', require('./route/review/reviewRouter'));
 
 if (config.env === config.dev) {
   const { webpackMiddleware } = require('./middleware/webpackMiddleware'); // eslint-disable-line

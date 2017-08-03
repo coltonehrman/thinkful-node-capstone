@@ -27,11 +27,11 @@ function showToast() {
 }
 
 function hideToast() {
-  $('#toast-container').hide();
+  $('.toast').fadeOut();
 }
 
-function display(places) {
-  if (places.length === 1) {
+function display(placesCount) {
+  if (placesCount <= 0) {
     showToast();
   }
   state.places.forEach(appendPlace);

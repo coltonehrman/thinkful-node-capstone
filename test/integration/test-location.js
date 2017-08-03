@@ -103,15 +103,12 @@ describe('Location routes', function () {
     });
 
     context('not logged in', function () {
-      it('should redirect to /login with query of location id', function () {
+      it('should return html', function () {
         return chai.request(app)
           .get(`/locations/${locations[0].id}`)
-          .redirects(0)
-          .then(Promise.reject)
-          .catch(function(err) {
-            const res = err.response;
-            expect(res).to.redirect;
-            expect(res).to.redirectTo(`/login?redirect=${locations[0].id}`);
+          .then(function(res) {
+            expect(res).to.have.status(200);
+            expect(res).to.be.html;
           });
       });
     });

@@ -23,17 +23,30 @@ const PlaceSchema = new Schema({
     require: true,
     type: Schema.Types.ObjectId,
   },
+  reviews: [{
+    ref: 'review',
+    type: Schema.Types.ObjectId,
+    default: [],
+  }],
 });
 
 PlaceSchema.methods = {
   isOwner(id) {
-    return this.user.toString() === id.toString();
+    const thisId = this.user._id || this.user;
+    return thisId.toString() === id.toString();
   },
   toJson(userId) {
     const place = this.toObject();
     place.id = this._id;
     place.isOwner = userId && this.isOwner(userId);
     delete place._id;
+
+    if (place.user.constructor === Object) {
+      const username = place.user.username;
+      delete place.user;
+      place.user = username;
+    }
+
     return place;
   },
 };
