@@ -8,7 +8,7 @@ module.exports = {
     location: resolve('client/views/location/location.js'),
     login: resolve('client/views/login/login.js'),
     signup: resolve('client/views/signup/signup.js'),
-    vendor: ['jquery', 'jquery-bar-rating', 'hammer', 'materialize'],
+    vendor: ['jquery', 'hammer', 'materialize'],
   },
   output: {
     filename: 'js/[name].[chunkhash].js',
@@ -25,6 +25,7 @@ module.exports = {
     alias: {
       google: resolve('client/js/lib/google'),
       hammer: resolve('client/js/hammer.js'),
+      hammerjs: resolve('client/js/hammer.js'),
       materialize: resolve('client/js/materialize.js'),
     },
     extensions: ['.js', '.sass', 'jpg'],
@@ -41,10 +42,6 @@ module.exports = {
           resolve('client/js'),
         ],
         use: ['babel-loader'],
-      },
-      {
-        test: /jquery-bar-rating/,
-        use: ['imports-loader?jQuery=jquery,$=jquery,define=>false,exports=>false'],
       },
       {
         test: /\.hbs$/,

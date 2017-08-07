@@ -15,7 +15,7 @@ module.exports = merge(baseConfig, {
           fallback: 'style-loader',
           use: [
             'css-loader?sourceMap!autoprefixer-loader?browsers=last 2 versions',
-            'sass-loader?sourceMap',
+            'sass-loader',
           ],
           publicPath: '../',
         }),
