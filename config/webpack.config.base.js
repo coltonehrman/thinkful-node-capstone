@@ -19,6 +19,7 @@ module.exports = {
     modules: [
       resolve('client/assets'),
       resolve('client/sass'),
+      resolve('client/templates'),
       'node_modules',
     ],
     alias: {
@@ -44,6 +45,10 @@ module.exports = {
       {
         test: /jquery-bar-rating/,
         use: ['imports-loader?jQuery=jquery,$=jquery,define=>false,exports=>false'],
+      },
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,

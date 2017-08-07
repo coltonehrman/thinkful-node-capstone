@@ -44,18 +44,17 @@ function setupEventListeners() {
       .catch(console.error);
   });
 
-  $(DOM.places).on('click', `${DOM.placeAddPhotoBtn} a`, function () {
+  $(DOM.places).on('click', DOM.placeAddPhotoBtn, function () {
     const $fileInput = $(this).siblings('input');
     $fileInput.click();
   });
 
-  $(DOM.places).on('change', `${DOM.placeAddPhotoBtn} input`, function () {
+  $(DOM.places).on('change', 'input[type=file]', function () {
     getPlace(this).addPhoto(this.files[0]);
   });
 
   $(DOM.places).on('click', DOM.placeReviewBtn, function () {
-    const place = getPlace(this);
-    place.toggleReviewForm();
+    getPlace(this).toggleReviewForm();
   });
 
   $(DOM.places).on('click', DOM.placeDeleteBtn, function () {
@@ -71,18 +70,28 @@ function setupEventListeners() {
       })
       .catch(console.error);
   });
+
+  $(DOM.places).on('click', DOM.placeReviewFormSubmitBtn, function () {
+    getPlace(this).submitReview();
+  });
 }
 
 function init() {
+  let placesCount;
+
   setupEventListeners();
+  
   APIController.findPlaces()
     .then((places) => {
-      const placesCount = places.length;
+      placesCount = places.length;
 
       Places.hideProgress();
       state.places = places || [];
 
-      if (isLoggedIn()) {
+      return isLoggedIn();
+    })
+    .then((loggedIn) => {
+      if (loggedIn) {
         state.places.unshift(null);
       }
 

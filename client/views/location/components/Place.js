@@ -2,23 +2,17 @@
 /* eslint global-require: 0, import/no-extraneous-dependencies: 0, import/no-unresolved: 0 */
 /* eslint comma-dangle: ["error", "ignore"] */
 import $ from 'jquery';
+import placeTemplate from 'place.hbs';
+import placeFormTemplate from 'placeForm.hbs';
 import { DOM } from '../controllers/UIController';
 import APIController from '../controllers/APIController';
 
 export default class Place {
   constructor(place, index) {
     this.index = index;
-    this.placeholderPhoto = require('placeholder-img.png');
-
-    if (!place) {
-      this.isPlaceholder = true;
-      this.place = this.placeholderData();
-      this.$element = this.createElement();
-      this.addOverlay();
-    } else {
-      this.place = place;
-      this.$element = this.createElement();
-    }
+    this.isPlaceholder = !place;
+    this.place = place || this.placeholderData();
+    this.$element = $(placeTemplate(this));
   }
 
   placeholderData() { // eslint-disable-line
@@ -59,68 +53,12 @@ export default class Place {
       };
 
       reader.onerror = (error) => {
-        console.log('Error: ', error);
+        console.error('Error: ', error);
         reject(error);
       };
 
       reader.readAsDataURL(file);
     });
-  }
-
-  createElement() {
-    let html = `
-      <div class="place__item col m12 l6" data-index="${this.index}">
-        <div class="card">
-          <div class="card-image">
-            <img src="${this.place.photo || this.placeholderPhoto}">
-          </div>
-
-          <div class="card-content">
-            <div class="card-title">${this.place.name}</div>
-
-            <blockquote>${this.place.description}</blockquote>
-          </div>
-
-          <div class="card-action clearfix">`;
-    if (this.place.user) {
-      html += `
-            <p class="left">Author: ${this.place.user}</p>`;
-    }
-
-    if (!this.isPlaceholder) {
-      html += `       
-            <div class="right">
-              <ul>
-                <li class="left"><a class="${DOM.placeReviewBtn.slice(1)} btn-floating btn-large blue"><i class="material-icons">rate_review
-</i></a></li>`;
-      if (this.place.isOwner) {
-        html += `
-                <li class="left"><a class="${DOM.placeDeleteBtn.slice(1)} btn-floating btn-large red"><i class="material-icons">delete_forever
-</i></a></li>`;
-      }
-      html += `
-              </ul>
-            </div>`;
-    }
-    html += `
-          </div>
-          
-          <div class="${DOM.placeReviewForm.slice(1)}">
-            <blockquote>
-              <i class="material-icons prefix">mode_edit</i>
-              <textarea id="review" class="materialize-textarea">Leave a review of this place...</textarea>
-              <label for="review">Review</label>
-            </blockquote>
-
-            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-              <i class="material-icons right">send</i>
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-
-    return $(html);
   }
 
   addPhoto(file) {
@@ -129,85 +67,31 @@ export default class Place {
     }
 
     const img = document.createElement('img');
-
     this.photo = file;
 
     img.src = window.URL.createObjectURL(file);
     img.onload = () => window.URL.revokeObjectURL(img.src);
 
-    this.$element.find('.card-image img').replaceWith(img);
+    this.$element.find('.card-image').html(img).removeClass('hide');
   }
 
-  addOverlay() {
-    this.$element.find('.card').append(`
-      <div class="card__overlay">
-        <a class="btn-floating btn-large ${DOM.placeAddBtn.slice(1)}">
-          <i class="material-icons">add</i>
-        </a>
-      </div>
-    `);
+  submitReview() {
+    const review = this.$element.find('#review').val();
+    APIController.submitReview(this.place.id, review);
   }
 
   toForm() {
-    this.$element.find('.card-image').append(`
-      <div class="${DOM.placeAddPhotoBtn.slice(1)}">
-        <input type="file" class="hide" name="fileInput" />
-        <a class="btn-floating halfway-fab waves-effect waves-light red">
-          <i class="material-icons">add_a_photo</i>
-        </a>
-      </div>
-    `);
-
-    this.$element.find('.card-title').replaceWith(`
-      <div class="input-field card-title">
-        <input id="name" type="text">
-        <label for="name">Name</label>
-      </div>
-    `);
-
-    this.$element.find('blockquote').replaceWith(`
-      <div class="input-field">
-        <blockquote>
-          <textarea id="description" class="materialize-textarea"></textarea>
-          <label for="description">Description</label>
-        </blockquote>
-      </div>
-    `);
-
-    this.$element.find('.card-action').append(`
-      <a class="${DOM.placeCancelBtn.slice(1)} btn-floating btn-large waves-effect waves-light red">
-        <i class="material-icons">close</i>
-      </a>
-    `, `
-      <a class="${DOM.placeCreateBtn.slice(1)} btn-floating btn-large right waves-effect waves-light green accent-3">
-        <i class="material-icons">check</i>
-      </a>
-    `);
-
-    this.$element.find('.card__overlay').hide();
+    const $form = $(placeFormTemplate(this));
+    this.$element.replaceWith($form);
+    this.$element = $form;
+    this.$element.find('input').first().focus();
   }
 
   cancelForm() {
-    if (this.isPlaceholder) {
-      this.$element.find('.card-image img').attr('src', this.placeholderPhoto);
-    }
-
-    this.$element.find('.card-title').replaceWith(`
-      <div class="card-title">Lorem ipsum dolor</div>
-    `);
-
-    this.$element.find('blockquote').parents('.input-field').replaceWith(`
-      <blockquote>
-        Lorem ipsum dolor sit amet
-        Fusce eu nibh accumsan
-        Integer eget diam tempor
-        Praesent a lacus eu metus
-      </blockquote>
-    `);
-
-    this.$element.find(DOM.placeAddPhotoBtn).remove();
-    this.$element.find('.card-action').empty();
-    this.$element.find('.card__overlay').show();
+    const $place = $(placeTemplate(this));
+    this.$element.replaceWith($place);
+    this.$element = $place;
+    this.photo = null;
   }
 
   toggleReviewForm() {

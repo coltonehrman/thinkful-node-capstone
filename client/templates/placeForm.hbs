@@ -1,0 +1,42 @@
+<div class="place__item" data-index="{{index}}">
+  <div class="card">
+    <div class="card-image hide"></div>
+
+    <div class="card-content">
+      <div class="card-title input-field">
+        <input id="name" type="text">
+        <label for="name">Name</label>
+      </div>
+
+      <div class="input-field">
+        <textarea id="description" class="materialize-textarea"></textarea>
+        <label for="description">Description</label>
+      </div>
+    </div>
+
+    <div class="card-action clearfix">
+      <div class="left">
+        <input type="file" class="hide" name="fileInput">
+        <a class="place__add-photo-btn btn-floating btn-large waves-effect waves-light red">
+          <i class="material-icons">add_a_photo</i>
+        </a>
+      </div>
+
+      <div class="right">
+        <ul>
+          <li class="left">
+            <a class="place__cancel-btn btn-floating btn-large waves-effect waves-light red">
+              <i class="material-icons">close</i>
+            </a>
+          </li>
+
+          <li class="left">
+            <a class="place__create-btn btn-floating btn-large right waves-effect waves-light green accent-3">
+              <i class="material-icons">check</i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
