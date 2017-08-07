@@ -8,14 +8,8 @@ function hideProgress() {
   $(DOM.progress).hide();
 }
 
-function appendPlace(place, index) {
-  if (index % 2 === 0) {
-    const $newRow = $('<div class="row"></div>');
-    $newRow.append(place.$element);
-    $(DOM.places).append($newRow);
-  } else {
-    $(DOM.places).find('.row').last().append(place.$element);
-  }
+function appendPlace(place) {
+  $(DOM.places).append(place.$element);
 }
 
 function clear() {

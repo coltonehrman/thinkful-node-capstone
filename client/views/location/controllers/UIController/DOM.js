@@ -7,6 +7,7 @@ export default {
   placeReviewBtn: '.place__review-btn',
   placeAddPhotoBtn: '.place__add-photo-btn',
   placeReviewForm: '.place__review-form',
+  placeReviewFormSubmitBtn: '.place__review-form .btn',
   places: '.place__results',
   place: '.place__item',
 };

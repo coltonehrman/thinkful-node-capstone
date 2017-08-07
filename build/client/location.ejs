@@ -7,7 +7,7 @@
 
     <!-- Import Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Gravitas+One|Lato:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Gravitas+One|Lato:300,400,700" rel="stylesheet">
 
     <!-- Import Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
@@ -30,17 +30,20 @@
 
     <main class="container">
         <h2 class="place__name"></h2>
-        <div class="place__results row"></div>
+        <div class="row">
+            <div class="col s12 place__results cards-container"></div>
+        </div>
         <div class="progress">
             <div class="indeterminate"></div>
         </div>
     </main>
     
+    <input class="is-logged-in" type="hidden" value="<%= (user) ? 'true' : 'false' %>">
 
 <% var google = true %>
     <% if (typeof google !== 'undefined' && google) { %>
     <!-- Import Google Places API -->
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCYlbzHkh8NuvIE8NVPdu0K5vgraQuoZbo&libraries=places"></script>
     <% } %>
-  <script type="text/javascript" src="/js/vendor.8f1cfd2daf8e34720946.js"></script><script type="text/javascript" src="/js/location.926451c6630db57eabfe.js"></script></body>
+  <script type="text/javascript" src="/js/vendor.283a12ae73a17feb1b20.js"></script><script type="text/javascript" src="/js/location.f074c097bd6bfdbe0e49.js"></script></body>
 </html>

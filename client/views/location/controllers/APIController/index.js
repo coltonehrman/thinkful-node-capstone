@@ -10,7 +10,7 @@ function findPlaces() {
     $.ajax(API_ENDPOINT, {
       data: { location_id: LOCATION_ID },
     })
-    .done(res => resolve(res))
+    .done(resolve)
     .fail((xhr) => {
       const message = JSON.parse(xhr.responseText).message;
       reject(message);
@@ -27,7 +27,7 @@ function createPlace(data) {
       contentType: false,
       processData: false,
     })
-    .done(res => resolve(res))
+    .done(resolve)
     .fail((xhr) => {
       const message = JSON.parse(xhr.responseText).message;
       reject(message);
@@ -40,7 +40,21 @@ function deletePlace(id) {
     $.ajax(`${API_ENDPOINT}/${id}`, {
       method: 'DELETE',
     })
-    .done(res => resolve(res))
+    .done(resolve)
+    .fail((xhr) => {
+      const message = JSON.parse(xhr.responseText).message;
+      reject(message);
+    });
+  });
+}
+
+function submitReview(placeId, review) {
+  return new Promise((resolve, reject) => {
+    $.post('/reviews', {
+      place_id: placeId,
+      description: review,
+    })
+    .done(resolve)
     .fail((xhr) => {
       const message = JSON.parse(xhr.responseText).message;
       reject(message);
@@ -60,5 +74,6 @@ export default {
   findPlaces,
   createPlace,
   deletePlace,
+  submitReview,
   isLoggedIn,
 };
