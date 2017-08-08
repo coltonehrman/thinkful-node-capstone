@@ -6,52 +6,77 @@
                 <i class="material-icons">add</i>
             </a>
         </div>
-        {{/if}} {{#if place.photo}}
+        {{/if}} 
+        
+        {{#if place.photo}}
         <div class="card-image">
             <img src="{{place.photo}}">
         </div>
         {{/if}}
 
         <div class="card-content">
-            <div class="card-title">{{place.name}}</div>
+            <div class="card-title">
+                {{place.name}}
+                <p class="author">By: {{place.user}}</p>
+            </div>
 
-            {{#if isPlaceholder}}
+            {{#unless isPlaceholder}}
             <div class="card-separator"></div>
-            {{/if}}
+            {{/unless}}
 
             <div class="card-info">{{place.description}}</div>
         </div>
 
         {{#unless isPlaceholder}}
         <div class="card-action clearfix">
-            <p class="left">Author: {{place.user}}</p>
-            <div class="right">
-                <ul>
-                    <li class="left">
-                        <a class="place__review-btn btn-floating btn-large blue">
-                            <i class="material-icons">rate_review</i>
-                        </a>
-                    </li>
-                    <li class="left">
-                        <a class="place__delete-btn btn-floating btn-large red">
-                            <i class="material-icons">delete_forever</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <ul>
+                <li>
+                    <a class="place__review-btn btn-floating">
+                        <i class="material-icons">rate_review</i>
+                    </a>
+                </li>
+                
+                {{#if hasReviews}}
+                <li>
+                    <button class="place__reviews-btn btn">Reviews <span class="badge">{{place.reviews.length}}</span></button>
+                </li>
+                {{/if}}
+
+                <li>
+                    <a class="place__delete-btn btn-floating">
+                        <i class="material-icons">delete_forever</i>
+                    </a>
+                </li>
+            </ul>
         </div>
         {{/unless}}
 
         <div class="place__review-form">
-            <blockquote>
-                <i class="material-icons prefix">mode_edit</i>
-                <textarea id="review" class="materialize-textarea">Leave a review of this place...</textarea>
-                <label for="review">Review</label>
-            </blockquote>
-
+            <label for="review">Review</label>
+            <textarea id="review" class="materialize-textarea">Leave a review of this place...</textarea>
+            
             <button class="btn waves-effect waves-light" type="submit" name="action">
                 Submit<i class="material-icons right">send</i>
             </button>
         </div>
+
+        {{#unless isPlaceholder}}
+        <div class="place__reviews">
+            {{#if place.reviews.length}}
+            <ul class="hide">
+                {{#each place.reviews}}
+                <li class="review">
+                    <p class="review__author">{{#if this.author}}
+                                                Author: {{this.author.username}}
+                                            {{else}}
+                                                Anonymous
+                                            {{/if}}</p>
+                    <p class="review__text">- {{this.description}}</p> 
+                </li>
+                {{/each}}
+            </ul>
+            {{/if}}
+        </div>
+        {{/unless}}
     </div>
 </div>

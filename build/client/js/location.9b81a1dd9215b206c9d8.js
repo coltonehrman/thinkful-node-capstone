@@ -270,6 +270,15 @@ exports.default = {
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Create a simple path alias to allow browserify to resolve
+// the runtime on a supported path.
+module.exports = __webpack_require__(32)['default'];
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -357,14 +366,14 @@ function isLoggedIn() {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isLoggedIn; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__DOM__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__DOM__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Places__ = __webpack_require__(21);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__DOM__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_2__Places__["a"]; });
@@ -380,7 +389,7 @@ function isLoggedIn() {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -391,9 +400,9 @@ function isLoggedIn() {
 
 
 /***/ }),
-/* 10 */,
 /* 11 */,
-/* 12 */
+/* 12 */,
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -403,8 +412,10 @@ function isLoggedIn() {
   placeCancelBtn: '.place__cancel-btn',
   placeCreateBtn: '.place__create-btn',
   placeDeleteBtn: '.place__delete-btn',
-  placeReviewBtn: '.place__review-btn',
   placeAddPhotoBtn: '.place__add-photo-btn',
+  placeReviews: '.place__reviews',
+  placeReviewBtn: '.place__review-btn',
+  placeReviewsBtn: '.place__reviews-btn',
   placeReviewForm: '.place__review-form',
   placeReviewFormSubmitBtn: '.place__review-form .btn',
   places: '.place__results',
@@ -413,8 +424,8 @@ function isLoggedIn() {
 
 
 /***/ }),
-/* 13 */,
-/* 14 */
+/* 14 */,
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -432,11 +443,11 @@ var _exception = __webpack_require__(3);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _helpers = __webpack_require__(34);
+var _helpers = __webpack_require__(35);
 
-var _decorators = __webpack_require__(32);
+var _decorators = __webpack_require__(33);
 
-var _logger = __webpack_require__(42);
+var _logger = __webpack_require__(43);
 
 var _logger2 = _interopRequireDefault(_logger);
 
@@ -525,15 +536,6 @@ exports.logger = _logger2['default'];
 
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Create a simple path alias to allow browserify to resolve
-// the runtime on a supported path.
-module.exports = __webpack_require__(31)['default'];
-
-
-/***/ }),
 /* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -544,11 +546,14 @@ module.exports = __webpack_require__(31)['default'];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_place_hbs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_place_hbs__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_placeForm_hbs__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_placeForm_hbs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_placeForm_hbs__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_UIController__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_APIController__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_review_hbs__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_review_hbs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_review_hbs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__controllers_APIController__ = __webpack_require__(8);
 /* global window document FileReader FormData */
 /* eslint global-require: 0, import/no-extraneous-dependencies: 0, import/no-unresolved: 0 */
 /* eslint comma-dangle: ["error", "ignore"] */
+
 
 
 
@@ -559,6 +564,7 @@ class Place {
   constructor(place, index) {
     this.index = index;
     this.isPlaceholder = !place;
+    this.hasReviews = (place.reviews) ? place.reviews.length > 0 : false;
     this.place = place || this.placeholderData();
     this.$element = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1_place_hbs___default()(this));
   }
@@ -582,13 +588,13 @@ class Place {
     data.set('description', description);
 
     if (!this.photo) {
-      return __WEBPACK_IMPORTED_MODULE_4__controllers_APIController__["a" /* default */].createPlace(data);
+      return __WEBPACK_IMPORTED_MODULE_5__controllers_APIController__["a" /* default */].createPlace(data);
     }
 
     return this.getBase64(this.photo)
       .then((photo) => {
         data.set('photo', photo);
-        return __WEBPACK_IMPORTED_MODULE_4__controllers_APIController__["a" /* default */].createPlace(data);
+        return __WEBPACK_IMPORTED_MODULE_5__controllers_APIController__["a" /* default */].createPlace(data);
       });
   }
 
@@ -623,9 +629,22 @@ class Place {
     this.$element.find('.card-image').html(img).removeClass('hide');
   }
 
+  updateReviewButton() {
+    const $badge = this.$element.find(`${__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeReviewsBtn} .badge`);
+    const currentNumber = parseInt($badge.text(), 10);
+    $badge.text(currentNumber + 1);
+  }
+
   submitReview() {
     const review = this.$element.find('#review').val();
-    __WEBPACK_IMPORTED_MODULE_4__controllers_APIController__["a" /* default */].submitReview(this.place.id, review);
+    __WEBPACK_IMPORTED_MODULE_5__controllers_APIController__["a" /* default */].submitReview(this.place.id, review)
+      .then(this.appendReview.bind(this))
+      .then(this.updateReviewButton.bind(this))
+      .catch(console.error);
+  }
+
+  appendReview(review) {
+    this.$element.find(`${__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeReviews} ul`).append(__WEBPACK_IMPORTED_MODULE_3_review_hbs___default()(review));
   }
 
   toForm() {
@@ -643,11 +662,15 @@ class Place {
   }
 
   toggleReviewForm() {
-    this.$element.find(__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["a" /* DOM */].placeReviewForm).toggleClass(`${__WEBPACK_IMPORTED_MODULE_3__controllers_UIController__["a" /* DOM */].placeReviewForm.slice(1)}--active`);
+    this.$element.find(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeReviewForm).toggleClass(`${__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeReviewForm.slice(1)}--active`);
+  }
+
+  toggleReviews() {
+    this.$element.find(`${__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeReviews} ul`).toggleClass('hide');
   }
 
   delete() {
-    return __WEBPACK_IMPORTED_MODULE_4__controllers_APIController__["a" /* default */].deletePlace(this.place.id);
+    return __WEBPACK_IMPORTED_MODULE_5__controllers_APIController__["a" /* default */].deletePlace(this.place.id);
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Place;
@@ -665,10 +688,10 @@ class Place {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_materialize__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_materialize__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_materialize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_materialize__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DOM__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__state__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__DOM__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__state__ = __webpack_require__(10);
 /* global Materialize */
 
  // eslint-disable-line
@@ -723,11 +746,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_google__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_google___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_google__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_APIController__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__controllers_APIController__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Place__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__state__ = __webpack_require__(9);
-/* global google document */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__state__ = __webpack_require__(10);
 /* eslint func-names: 0 */
  // eslint-disable-line
 
@@ -803,13 +825,17 @@ function setupEventListeners() {
   __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeReviewFormSubmitBtn, function () {
     getPlace(this).submitReview();
   });
+
+  __WEBPACK_IMPORTED_MODULE_1_jquery___default()(__WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].places).on('click', __WEBPACK_IMPORTED_MODULE_4__controllers_UIController__["a" /* DOM */].placeReviewsBtn, function () {
+    getPlace(this).toggleReviews();
+  });
 }
 
 function init() {
   let placesCount;
 
   setupEventListeners();
-  
+
   __WEBPACK_IMPORTED_MODULE_3__controllers_APIController__["a" /* default */].findPlaces()
     .then((places) => {
       placesCount = places.length;
@@ -844,14 +870,14 @@ __WEBPACK_IMPORTED_MODULE_1_jquery___default()(init);
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(15);
+var Handlebars = __webpack_require__(7);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
-    return "        <div class=\"card__overlay\">\n            <a class=\"place__add-btn btn-floating btn-large\">\n                <i class=\"material-icons\">add</i>\n            </a>\n        </div>\n        ";
+    return "        <div class=\"card__overlay\">\n            <a class=\"place__add-btn btn-floating btn-large\">\n                <i class=\"material-icons\">add</i>\n            </a>\n        </div>\n";
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "\n        <div class=\"card-image\">\n            <img src=\""
+  return "        <div class=\"card-image\">\n            <img src=\""
     + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.photo : stack1), depth0))
     + "\">\n        </div>\n";
 },"5":function(container,depth0,helpers,partials,data) {
@@ -859,9 +885,43 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 },"7":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "        <div class=\"card-action clearfix\">\n            <p class=\"left\">Author: "
-    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.user : stack1), depth0))
-    + "</p>\n            <div class=\"right\">\n                <ul>\n                    <li class=\"left\">\n                        <a class=\"place__review-btn btn-floating btn-large blue\">\n                            <i class=\"material-icons\">rate_review</i>\n                        </a>\n                    </li>\n                    <li class=\"left\">\n                        <a class=\"place__delete-btn btn-floating btn-large red\">\n                            <i class=\"material-icons\">delete_forever</i>\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n";
+  return "        <div class=\"card-action clearfix\">\n            <ul>\n                <li>\n                    <a class=\"place__review-btn btn-floating\">\n                        <i class=\"material-icons\">rate_review</i>\n                    </a>\n                </li>\n                \n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.hasReviews : depth0),{"name":"if","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n                <li>\n                    <a class=\"place__delete-btn btn-floating\">\n                        <i class=\"material-icons\">delete_forever</i>\n                    </a>\n                </li>\n            </ul>\n        </div>\n";
+},"8":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "                <li>\n                    <button class=\"place__reviews-btn btn\">Reviews <span class=\"badge\">"
+    + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1)) != null ? stack1.length : stack1), depth0))
+    + "</span></button>\n                </li>\n";
+},"10":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "        <div class=\"place__reviews\">\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "        </div>\n";
+},"11":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "            <ul class=\"hide\">\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1),{"name":"each","hash":{},"fn":container.program(12, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </ul>\n";
+},"12":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "                <li class=\"review\">\n                    <p class=\"review__author\">"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.author : depth0),{"name":"if","hash":{},"fn":container.program(13, data, 0),"inverse":container.program(15, data, 0),"data":data})) != null ? stack1 : "")
+    + "</p>\n                    <p class=\"review__text\">- "
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.description : depth0), depth0))
+    + "</p> \n                </li>\n";
+},"13":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "\n                                                Author: "
+    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.author : depth0)) != null ? stack1.username : stack1), depth0))
+    + "\n";
+},"15":function(container,depth0,helpers,partials,data) {
+    return "                                                Anonymous\n                                            ";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression, alias3=container.lambda;
 
@@ -869,24 +929,28 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + alias2(((helper = (helper = helpers.index || (depth0 != null ? depth0.index : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"index","hash":{},"data":data}) : helper)))
     + "\">\n    <div class=\"card\">\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isPlaceholder : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + " "
+    + "        \n"
     + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.photo : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n        <div class=\"card-content\">\n            <div class=\"card-title\">"
+    + "\n        <div class=\"card-content\">\n            <div class=\"card-title\">\n                "
     + alias2(alias3(((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.name : stack1), depth0))
-    + "</div>\n\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.isPlaceholder : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n                <p class=\"author\">By: "
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.user : stack1), depth0))
+    + "</p>\n            </div>\n\n"
+    + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.isPlaceholder : depth0),{"name":"unless","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n            <div class=\"card-info\">"
     + alias2(alias3(((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.description : stack1), depth0))
     + "</div>\n        </div>\n\n"
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.isPlaceholder : depth0),{"name":"unless","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n        <div class=\"place__review-form\">\n            <blockquote>\n                <i class=\"material-icons prefix\">mode_edit</i>\n                <textarea id=\"review\" class=\"materialize-textarea\">Leave a review of this place...</textarea>\n                <label for=\"review\">Review</label>\n            </blockquote>\n\n            <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">\n                Submit<i class=\"material-icons right\">send</i>\n            </button>\n        </div>\n    </div>\n</div>";
+    + "\n        <div class=\"place__review-form\">\n            <label for=\"review\">Review</label>\n            <textarea id=\"review\" class=\"materialize-textarea\">Leave a review of this place...</textarea>\n            \n            <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">\n                Submit<i class=\"material-icons right\">send</i>\n            </button>\n        </div>\n\n"
+    + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.isPlaceholder : depth0),{"name":"unless","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </div>\n</div>";
 },"useData":true});
 
 /***/ }),
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Handlebars = __webpack_require__(15);
+var Handlebars = __webpack_require__(7);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper;
@@ -898,6 +962,30 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[7,"
 
 /***/ }),
 /* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Handlebars = __webpack_require__(7);
+function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "\n                                Author: "
+    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.author : depth0)) != null ? stack1.username : stack1), depth0))
+    + "\n";
+},"3":function(container,depth0,helpers,partials,data) {
+    return "                                Anonymous\n                            ";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<li class=\"review\">\n    <p class=\"review__author\">"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.author : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
+    + "</p>\n    <p class=\"review__text\">- "
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.description : depth0), depth0))
+    + "</p> \n</li>";
+},"useData":true});
+
+/***/ }),
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -912,14 +1000,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'd
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
-var _handlebarsBase = __webpack_require__(14);
+var _handlebarsBase = __webpack_require__(15);
 
 var base = _interopRequireWildcard(_handlebarsBase);
 
 // Each of these augment the Handlebars object. No need to setup here.
 // (This is done to easily share code between commonjs and browse envs)
 
-var _handlebarsSafeString = __webpack_require__(45);
+var _handlebarsSafeString = __webpack_require__(46);
 
 var _handlebarsSafeString2 = _interopRequireDefault(_handlebarsSafeString);
 
@@ -931,11 +1019,11 @@ var _handlebarsUtils = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_handlebarsUtils);
 
-var _handlebarsRuntime = __webpack_require__(44);
+var _handlebarsRuntime = __webpack_require__(45);
 
 var runtime = _interopRequireWildcard(_handlebarsRuntime);
 
-var _handlebarsNoConflict = __webpack_require__(43);
+var _handlebarsNoConflict = __webpack_require__(44);
 
 var _handlebarsNoConflict2 = _interopRequireDefault(_handlebarsNoConflict);
 
@@ -970,7 +1058,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -982,7 +1070,7 @@ exports.registerDefaultDecorators = registerDefaultDecorators;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _decoratorsInline = __webpack_require__(33);
+var _decoratorsInline = __webpack_require__(34);
 
 var _decoratorsInline2 = _interopRequireDefault(_decoratorsInline);
 
@@ -993,7 +1081,7 @@ function registerDefaultDecorators(instance) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1029,7 +1117,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1041,31 +1129,31 @@ exports.registerDefaultHelpers = registerDefaultHelpers;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var _helpersBlockHelperMissing = __webpack_require__(35);
+var _helpersBlockHelperMissing = __webpack_require__(36);
 
 var _helpersBlockHelperMissing2 = _interopRequireDefault(_helpersBlockHelperMissing);
 
-var _helpersEach = __webpack_require__(36);
+var _helpersEach = __webpack_require__(37);
 
 var _helpersEach2 = _interopRequireDefault(_helpersEach);
 
-var _helpersHelperMissing = __webpack_require__(37);
+var _helpersHelperMissing = __webpack_require__(38);
 
 var _helpersHelperMissing2 = _interopRequireDefault(_helpersHelperMissing);
 
-var _helpersIf = __webpack_require__(38);
+var _helpersIf = __webpack_require__(39);
 
 var _helpersIf2 = _interopRequireDefault(_helpersIf);
 
-var _helpersLog = __webpack_require__(39);
+var _helpersLog = __webpack_require__(40);
 
 var _helpersLog2 = _interopRequireDefault(_helpersLog);
 
-var _helpersLookup = __webpack_require__(40);
+var _helpersLookup = __webpack_require__(41);
 
 var _helpersLookup2 = _interopRequireDefault(_helpersLookup);
 
-var _helpersWith = __webpack_require__(41);
+var _helpersWith = __webpack_require__(42);
 
 var _helpersWith2 = _interopRequireDefault(_helpersWith);
 
@@ -1082,7 +1170,7 @@ function registerDefaultHelpers(instance) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1128,7 +1216,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1229,7 +1317,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1261,7 +1349,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1297,7 +1385,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1330,7 +1418,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1349,7 +1437,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1389,7 +1477,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1443,7 +1531,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1468,10 +1556,10 @@ exports['default'] = function (Handlebars) {
 module.exports = exports['default'];
 //# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2xpYi9oYW5kbGViYXJzL25vLWNvbmZsaWN0LmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7O3FCQUNlLFVBQVMsVUFBVSxFQUFFOztBQUVsQyxNQUFJLElBQUksR0FBRyxPQUFPLE1BQU0sS0FBSyxXQUFXLEdBQUcsTUFBTSxHQUFHLE1BQU07TUFDdEQsV0FBVyxHQUFHLElBQUksQ0FBQyxVQUFVLENBQUM7O0FBRWxDLFlBQVUsQ0FBQyxVQUFVLEdBQUcsWUFBVztBQUNqQyxRQUFJLElBQUksQ0FBQyxVQUFVLEtBQUssVUFBVSxFQUFFO0FBQ2xDLFVBQUksQ0FBQyxVQUFVLEdBQUcsV0FBVyxDQUFDO0tBQy9CO0FBQ0QsV0FBTyxVQUFVLENBQUM7R0FDbkIsQ0FBQztDQUNIIiwiZmlsZSI6Im5vLWNvbmZsaWN0LmpzIiwic291cmNlc0NvbnRlbnQiOlsiLyogZ2xvYmFsIHdpbmRvdyAqL1xuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24oSGFuZGxlYmFycykge1xuICAvKiBpc3RhbmJ1bCBpZ25vcmUgbmV4dCAqL1xuICBsZXQgcm9vdCA9IHR5cGVvZiBnbG9iYWwgIT09ICd1bmRlZmluZWQnID8gZ2xvYmFsIDogd2luZG93LFxuICAgICAgJEhhbmRsZWJhcnMgPSByb290LkhhbmRsZWJhcnM7XG4gIC8qIGlzdGFuYnVsIGlnbm9yZSBuZXh0ICovXG4gIEhhbmRsZWJhcnMubm9Db25mbGljdCA9IGZ1bmN0aW9uKCkge1xuICAgIGlmIChyb290LkhhbmRsZWJhcnMgPT09IEhhbmRsZWJhcnMpIHtcbiAgICAgIHJvb3QuSGFuZGxlYmFycyA9ICRIYW5kbGViYXJzO1xuICAgIH1cbiAgICByZXR1cm4gSGFuZGxlYmFycztcbiAgfTtcbn1cbiJdfQ==
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(48)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(49)))
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1500,7 +1588,7 @@ var _exception = __webpack_require__(3);
 
 var _exception2 = _interopRequireDefault(_exception);
 
-var _base = __webpack_require__(14);
+var _base = __webpack_require__(15);
 
 function checkRevision(compilerInfo) {
   var compilerRevision = compilerInfo && compilerInfo[0] || 1,
@@ -1785,7 +1873,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1807,9 +1895,9 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 46 */,
 /* 47 */,
-/* 48 */
+/* 48 */,
+/* 49 */
 /***/ (function(module, exports) {
 
 var g;
@@ -1837,4 +1925,4 @@ module.exports = g;
 
 /***/ })
 ],[22]);
-//# sourceMappingURL=location.076390653195275e9335.js.map
+//# sourceMappingURL=location.9b81a1dd9215b206c9d8.js.map

@@ -7178,6 +7178,39 @@ main.container {
     .heading__info--small {
       font-size: 1rem; }
 
+.place__reviews .review {
+  padding: 25px;
+  border-bottom: 1px solid rgba(160, 160, 160, 0.2); }
+  .place__reviews .review:last-child {
+    border: none; }
+
+.place__reviews-btn {
+  color: #69D2E7;
+  background: transparent !important;
+  text-transform: none; }
+  .place__reviews-btn .badge {
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 1px 1px 5px rgba(105, 210, 231, 0.5);
+    color: #69D2E7 !important;
+    font-weight: bold;
+    font-size: 16px;
+    height: 28px !important;
+    line-height: 11px !important;
+    margin-top: 4px;
+    min-width: 0 !important;
+    padding: 5px !important;
+    width: 28px !important; }
+
+.place__review-form {
+  display: none;
+  padding: 24px; }
+  .place__review-form--active {
+    display: block; }
+  .place__review-form button[type=submit] {
+    background: transparent;
+    color: #69D2E7; }
+
 .row--no-margin {
   margin: 0; }
 
@@ -7214,6 +7247,9 @@ main.container {
     line-height: normal !important;
     margin: 15px 0 25px 0 !important;
     text-align: center; }
+    .card-title .author {
+      color: #8b9393 !important;
+      font-size: 1rem; }
   .card-image {
     height: auto; }
     .card-image > img {
@@ -7234,6 +7270,10 @@ main.container {
   .card-action {
     position: relative !important; }
     .card-action ul {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
       margin: 0; }
 
 .cards-container {
@@ -7291,10 +7331,10 @@ main.container {
     min-height: 80%; }
   .place__item .card .card-action {
     min-height: 65px; }
-    .place__item .card .card-action ul li {
-      margin-right: 10px; }
-      .place__item .card .card-action ul li::last-child {
-        margin-right: 0; }
+    .place__item .card .card-action a {
+      background: transparent !important; }
+      .place__item .card .card-action a i {
+        color: #69D2E7; }
   .place__item .card .input-field blockquote {
     padding-left: 15px; }
   .place__item .card .input-field #description {
@@ -7306,11 +7346,5 @@ main.container {
     .place__item .card .fixed-action-btn ul {
       right: 78px;
       top: 62%; }
-
-.place__review-form {
-  display: none;
-  padding: 24px; }
-  .place__review-form--active {
-    display: block; }
 
 /*# sourceMappingURL=styles.css.map*/

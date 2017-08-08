@@ -18,7 +18,10 @@ exports.getByLocationId = (req, res, next) => {
   Location.findById(location_id)
     .populate({
       path: 'places',
-      populate: { path: 'user' },
+      populate: [{ path: 'user' }, {
+        path: 'reviews',
+        populate: { path: 'author', select: 'username' },
+      }],
     })
     .exec()
     .then((location) => {

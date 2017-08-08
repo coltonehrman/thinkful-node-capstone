@@ -25,13 +25,11 @@
       & .card-action {
         min-height: 65px;
 
-        & ul {
-          & li {
-            margin-right: 10px;
-
-            &::last-child {
-              margin-right: 0;
-            }
+        & a {
+          background: transparent !important;
+          
+          & i {
+            color: $light-blue;
           }
         }
       }
@@ -58,15 +56,6 @@
           top: 62%;
         }
       }
-    }
-  }
-
-  &__review-form {
-    display: none;
-    padding: 24px;
-
-    &--active {
-      display: block;
     }
   }
 }

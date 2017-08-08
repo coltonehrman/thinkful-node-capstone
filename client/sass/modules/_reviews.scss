@@ -1,0 +1,47 @@
+.place__review {
+  &s {
+    & .review {
+      padding: 25px;
+      border-bottom: 1px solid rgba(160, 160, 160, 0.2);
+
+      &:last-child {
+        border: none;
+      }
+    }
+
+    &-btn {
+      color: $light-blue;
+      background: transparent !important;
+      text-transform: none;
+
+      & .badge {
+        border: 3px solid #fff;
+        border-radius: 50%;
+        box-shadow: 1px 1px 5px rgba(red($light-blue), green($light-blue), blue($light-blue), 0.5);
+        color: $light-blue !important;
+        font-weight: bold;
+        font-size: 16px;
+        height: 28px !important;
+        line-height: 11px !important;
+        margin-top: 4px;
+        min-width: 0 !important;
+        padding: 5px !important;
+        width: 28px !important;
+      }
+    }
+  }
+
+  &-form {
+    display: none;
+    padding: 24px;
+
+    &--active {
+      display: block;
+    }
+
+    & button[type=submit] {
+      background: transparent;
+      color: $light-blue;
+    }
+  }
+}
