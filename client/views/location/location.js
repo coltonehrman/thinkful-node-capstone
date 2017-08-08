@@ -1,4 +1,3 @@
-/* global google document */
 /* eslint func-names: 0 */
 import 'styles'; // eslint-disable-line
 import $ from 'jquery';
@@ -74,13 +73,17 @@ function setupEventListeners() {
   $(DOM.places).on('click', DOM.placeReviewFormSubmitBtn, function () {
     getPlace(this).submitReview();
   });
+
+  $(DOM.places).on('click', DOM.placeReviewsBtn, function () {
+    getPlace(this).toggleReviews();
+  });
 }
 
 function init() {
   let placesCount;
 
   setupEventListeners();
-  
+
   APIController.findPlaces()
     .then((places) => {
       placesCount = places.length;

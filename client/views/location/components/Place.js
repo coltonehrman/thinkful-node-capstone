@@ -4,6 +4,7 @@
 import $ from 'jquery';
 import placeTemplate from 'place.hbs';
 import placeFormTemplate from 'placeForm.hbs';
+import reviewTemplate from 'review.hbs';
 import { DOM } from '../controllers/UIController';
 import APIController from '../controllers/APIController';
 
@@ -11,6 +12,7 @@ export default class Place {
   constructor(place, index) {
     this.index = index;
     this.isPlaceholder = !place;
+    this.hasReviews = (place.reviews) ? place.reviews.length > 0 : false;
     this.place = place || this.placeholderData();
     this.$element = $(placeTemplate(this));
   }
@@ -75,9 +77,22 @@ export default class Place {
     this.$element.find('.card-image').html(img).removeClass('hide');
   }
 
+  updateReviewButton() {
+    const $badge = this.$element.find(`${DOM.placeReviewsBtn} .badge`);
+    const currentNumber = parseInt($badge.text(), 10);
+    $badge.text(currentNumber + 1);
+  }
+
   submitReview() {
     const review = this.$element.find('#review').val();
-    APIController.submitReview(this.place.id, review);
+    APIController.submitReview(this.place.id, review)
+      .then(this.appendReview.bind(this))
+      .then(this.updateReviewButton.bind(this))
+      .catch(console.error);
+  }
+
+  appendReview(review) {
+    this.$element.find(`${DOM.placeReviews} ul`).append(reviewTemplate(review));
   }
 
   toForm() {
@@ -96,6 +111,10 @@ export default class Place {
 
   toggleReviewForm() {
     this.$element.find(DOM.placeReviewForm).toggleClass(`${DOM.placeReviewForm.slice(1)}--active`);
+  }
+
+  toggleReviews() {
+    this.$element.find(`${DOM.placeReviews} ul`).toggleClass('hide');
   }
 
   delete() {

@@ -38,7 +38,9 @@ let server;
 
 function runServer(databaseUrl = config.db.url, port = config.port) {
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl, connectErr => { // eslint-disable-line
+    mongoose.connect(databaseUrl, {
+      useMongoClient: true,
+    }, connectErr => { // eslint-disable-line
       if (connectErr) {
         return reject(connectErr);
       }

@@ -32,6 +32,11 @@
     line-height: normal !important;
     margin: 15px 0 25px 0 !important;
     text-align: center;
+
+    & .author {
+      color: lighten($grey, 35%) !important;
+      font-size: 1rem;
+    }
   }
 
   &-image {
@@ -67,6 +72,8 @@
     position: relative !important;
 
     & ul {
+      display: flex;
+      justify-content: space-between;
       margin: 0;
     }
   }
