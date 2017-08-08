@@ -564,7 +564,7 @@ class Place {
   constructor(place, index) {
     this.index = index;
     this.isPlaceholder = !place;
-    this.hasReviews = (place.reviews) ? place.reviews.length > 0 : false;
+    this.hasReviews = (place) ? place.reviews.length > 0 : false;
     this.place = place || this.placeholderData();
     this.$element = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(__WEBPACK_IMPORTED_MODULE_1_place_hbs___default()(this));
   }
@@ -1925,4 +1925,4 @@ module.exports = g;
 
 /***/ })
 ],[22]);
-//# sourceMappingURL=location.9b81a1dd9215b206c9d8.js.map
+//# sourceMappingURL=location.0aec6647812aa4d7f7a5.js.map

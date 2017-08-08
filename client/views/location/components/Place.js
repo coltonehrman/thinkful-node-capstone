@@ -12,7 +12,7 @@ export default class Place {
   constructor(place, index) {
     this.index = index;
     this.isPlaceholder = !place;
-    this.hasReviews = (place.reviews) ? place.reviews.length > 0 : false;
+    this.hasReviews = (place) ? place.reviews.length > 0 : false;
     this.place = place || this.placeholderData();
     this.$element = $(placeTemplate(this));
   }
