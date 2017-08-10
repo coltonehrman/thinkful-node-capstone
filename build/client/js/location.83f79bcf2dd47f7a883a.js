@@ -897,30 +897,24 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 },"12":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "        <div class=\"place__reviews\">\n"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(13, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "        </div>\n";
+  return "        <div class=\"place__reviews\">\n            <ul class=\"hide\">\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1),{"name":"each","hash":{},"fn":container.program(13, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "            </ul>\n        </div>\n";
 },"13":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "            <ul class=\"hide\">\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1),{"name":"each","hash":{},"fn":container.program(14, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "            </ul>\n";
-},"14":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
   return "                <li class=\"review\">\n                    <p class=\"review__author\">"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.author : depth0),{"name":"if","hash":{},"fn":container.program(15, data, 0),"inverse":container.program(17, data, 0),"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.author : depth0),{"name":"if","hash":{},"fn":container.program(14, data, 0),"inverse":container.program(16, data, 0),"data":data})) != null ? stack1 : "")
     + "</p>\n                    <p class=\"review__text\">- "
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.description : depth0), depth0))
     + "</p> \n                </li>\n";
-},"15":function(container,depth0,helpers,partials,data) {
+},"14":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return "\n                                                Author: "
     + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.author : depth0)) != null ? stack1.username : stack1), depth0))
     + "\n";
-},"17":function(container,depth0,helpers,partials,data) {
+},"16":function(container,depth0,helpers,partials,data) {
     return "                                                Anonymous\n                                            ";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression, alias3=container.lambda;
@@ -1925,4 +1919,4 @@ module.exports = g;
 
 /***/ })
 ],[22]);
-//# sourceMappingURL=location.f5626213af2b9a57a8aa.js.map
+//# sourceMappingURL=location.83f79bcf2dd47f7a883a.js.map

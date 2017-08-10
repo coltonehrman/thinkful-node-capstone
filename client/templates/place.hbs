@@ -64,7 +64,6 @@
 
         {{#unless isPlaceholder}}
         <div class="place__reviews">
-            {{#if place.reviews.length}}
             <ul class="hide">
                 {{#each place.reviews}}
                 <li class="review">
@@ -77,7 +76,6 @@
                 </li>
                 {{/each}}
             </ul>
-            {{/if}}
         </div>
         {{/unless}}
     </div>
