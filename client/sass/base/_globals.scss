@@ -51,6 +51,11 @@ body {
   font-weight: 700;
 }
 
+.empty-btn {
+  height: 40px;
+  width: 40px;
+}
+
 .clearfix {
   &:before, &:after {
     display: table;

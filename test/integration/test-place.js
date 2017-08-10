@@ -108,6 +108,7 @@ describe('Place routes', function () {
           expect(res).to.have.status(200);
           expect(res).to.be.json;
           place = JSON.parse(JSON.stringify(res.body));
+          place.user = user.id;
           return Place.find();
         })
         .then(function(_places) {

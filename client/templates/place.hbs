@@ -40,11 +40,15 @@
                     <button class="place__reviews-btn btn">Reviews <span class="badge">{{place.reviews.length}}</span></button>
                 </li>
 
+                {{#if place.isOwner}}
                 <li>
                     <a class="place__delete-btn btn-floating">
                         <i class="material-icons">delete_forever</i>
                     </a>
                 </li>
+                {{else}}
+                <li class="empty-btn"></li>
+                {{/if}}
             </ul>
         </div>
         {{/unless}}

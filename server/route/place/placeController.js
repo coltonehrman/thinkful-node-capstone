@@ -1,6 +1,7 @@
 const cloudinary = require('cloudinary');
 const Location = require('../../model/locationModel');
 const Place = require('../../model/placeModel');
+const Review = require('../../model/reviewModel');
 
 exports.get = (req, res, next) => {
   if (req.query.location_id) {
@@ -67,10 +68,18 @@ exports.post = (req, res, next) => {
 
 exports.delete = (req, res, next) => {
   const { id } = req.params;
+  let removedPlace;
   Place.findByIdAndRemove(id).exec()
-    .then(place =>
-      Location.findByIdAndUpdate(place.location, {
-        $pull: { places: place.id },
+    .then((place) => {
+      removedPlace = place;
+
+      return Review.find({
+        place: removedPlace.id,
+      }).remove().exec();
+    })
+    .then(() =>
+      Location.findByIdAndUpdate(removedPlace.location, {
+        $pull: { places: removedPlace.id },
       }).exec() // eslint-disable-line
     )
     .then(() => res.status(204).end())
