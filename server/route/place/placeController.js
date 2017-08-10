@@ -56,6 +56,7 @@ exports.post = (req, res, next) => {
   Place.create(data)
     .then((newPlace) => {
       place = newPlace.toJson(req.user.id);
+      place.user = req.user.username;
       return Location.findByIdAndUpdate(location, {
         $addToSet: { places: place.id },
       }).exec();
