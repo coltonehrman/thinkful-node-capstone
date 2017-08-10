@@ -7029,6 +7029,10 @@ body {
   border-bottom: 3px dashed #343838;
   font-weight: 700; }
 
+.empty-btn {
+  height: 40px;
+  width: 40px; }
+
 .clearfix:before, .clearfix:after {
   display: table;
   clear: both;

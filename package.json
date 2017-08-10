@@ -4,6 +4,7 @@
   "scripts": {
     "prebuild": "rimraf build",
     "build": "webpack --config ./config/webpack.config.development.js",
+    "deploy": "./scripts.sh",
     "start": "node index.js",
     "test": "NODE_ENV=testing mocha --recursive ./test"
   },

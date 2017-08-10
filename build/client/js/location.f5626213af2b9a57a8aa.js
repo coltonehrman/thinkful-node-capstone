@@ -887,34 +887,40 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 
   return "        <div class=\"card-action clearfix\">\n            <ul>\n                <li>\n                    <a class=\"place__review-btn btn-floating\">\n                        <i class=\"material-icons\">rate_review</i>\n                    </a>\n                </li>\n                \n                <li>\n                    <button class=\"place__reviews-btn btn\">Reviews <span class=\"badge\">"
     + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1)) != null ? stack1.length : stack1), depth0))
-    + "</span></button>\n                </li>\n\n                <li>\n                    <a class=\"place__delete-btn btn-floating\">\n                        <i class=\"material-icons\">delete_forever</i>\n                    </a>\n                </li>\n            </ul>\n        </div>\n";
-},"9":function(container,depth0,helpers,partials,data) {
+    + "</span></button>\n                </li>\n\n"
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.isOwner : stack1),{"name":"if","hash":{},"fn":container.program(8, data, 0),"inverse":container.program(10, data, 0),"data":data})) != null ? stack1 : "")
+    + "            </ul>\n        </div>\n";
+},"8":function(container,depth0,helpers,partials,data) {
+    return "                <li>\n                    <a class=\"place__delete-btn btn-floating\">\n                        <i class=\"material-icons\">delete_forever</i>\n                    </a>\n                </li>\n";
+},"10":function(container,depth0,helpers,partials,data) {
+    return "                <li class=\"empty-btn\"></li>\n";
+},"12":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return "        <div class=\"place__reviews\">\n"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1)) != null ? stack1.length : stack1),{"name":"if","hash":{},"fn":container.program(13, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "        </div>\n";
-},"10":function(container,depth0,helpers,partials,data) {
+},"13":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return "            <ul class=\"hide\">\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1),{"name":"each","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.place : depth0)) != null ? stack1.reviews : stack1),{"name":"each","hash":{},"fn":container.program(14, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "            </ul>\n";
-},"11":function(container,depth0,helpers,partials,data) {
+},"14":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return "                <li class=\"review\">\n                    <p class=\"review__author\">"
-    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.author : depth0),{"name":"if","hash":{},"fn":container.program(12, data, 0),"inverse":container.program(14, data, 0),"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? depth0.author : depth0),{"name":"if","hash":{},"fn":container.program(15, data, 0),"inverse":container.program(17, data, 0),"data":data})) != null ? stack1 : "")
     + "</p>\n                    <p class=\"review__text\">- "
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.description : depth0), depth0))
     + "</p> \n                </li>\n";
-},"12":function(container,depth0,helpers,partials,data) {
+},"15":function(container,depth0,helpers,partials,data) {
     var stack1;
 
   return "\n                                                Author: "
     + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.author : depth0)) != null ? stack1.username : stack1), depth0))
     + "\n";
-},"14":function(container,depth0,helpers,partials,data) {
+},"17":function(container,depth0,helpers,partials,data) {
     return "                                                Anonymous\n                                            ";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression, alias3=container.lambda;
@@ -936,7 +942,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + "</div>\n        </div>\n\n"
     + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.isPlaceholder : depth0),{"name":"unless","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n        <div class=\"place__review-form\">\n            <label for=\"review\">Review</label>\n            <textarea id=\"review\" class=\"materialize-textarea\">Leave a review of this place...</textarea>\n            \n            <button class=\"btn waves-effect waves-light\" type=\"submit\" name=\"action\">\n                Submit<i class=\"material-icons right\">send</i>\n            </button>\n        </div>\n\n"
-    + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.isPlaceholder : depth0),{"name":"unless","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.unless.call(alias1,(depth0 != null ? depth0.isPlaceholder : depth0),{"name":"unless","hash":{},"fn":container.program(12, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n</div>";
 },"useData":true});
 
@@ -1919,4 +1925,4 @@ module.exports = g;
 
 /***/ })
 ],[22]);
-//# sourceMappingURL=location.7ee7a91d7522bd0fc813.js.map
+//# sourceMappingURL=location.f5626213af2b9a57a8aa.js.map
